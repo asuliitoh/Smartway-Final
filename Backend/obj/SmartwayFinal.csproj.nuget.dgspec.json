@@ -1,17 +1,17 @@
 {
   "format": 1,
   "restore": {
-    "C:\\SmartwayFinal\\Backend\\SmartwayFinal\\SmartwayFinal.csproj": {}
+    "C:\\SmartwayFinal\\Smartway-Final\\Backend\\SmartwayFinal.csproj": {}
   },
   "projects": {
-    "C:\\SmartwayFinal\\Backend\\SmartwayFinal\\SmartwayFinal.csproj": {
+    "C:\\SmartwayFinal\\Smartway-Final\\Backend\\SmartwayFinal.csproj": {
       "version": "1.0.0",
       "restore": {
-        "projectUniqueName": "C:\\SmartwayFinal\\Backend\\SmartwayFinal\\SmartwayFinal.csproj",
+        "projectUniqueName": "C:\\SmartwayFinal\\Smartway-Final\\Backend\\SmartwayFinal.csproj",
         "projectName": "SmartwayFinal",
-        "projectPath": "C:\\SmartwayFinal\\Backend\\SmartwayFinal\\SmartwayFinal.csproj",
+        "projectPath": "C:\\SmartwayFinal\\Smartway-Final\\Backend\\SmartwayFinal.csproj",
         "packagesPath": "C:\\Users\\jesus\\.nuget\\packages\\",
-        "outputPath": "C:\\SmartwayFinal\\Backend\\SmartwayFinal\\obj\\",
+        "outputPath": "C:\\SmartwayFinal\\Smartway-Final\\Backend\\obj\\",
         "projectStyle": "PackageReference",
         "configFilePaths": [
           "C:\\Users\\jesus\\AppData\\Roaming\\NuGet\\NuGet.Config"
@@ -43,9 +43,33 @@
         "net8.0": {
           "targetAlias": "net8.0",
           "dependencies": {
+            "Microsoft.EntityFrameworkCore.Design": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
             "Microsoft.EntityFrameworkCore.InMemory": {
               "target": "Package",
               "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.SqlServer": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Sqlite": {
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.EntityFrameworkCore.Tools": {
+              "include": "Runtime, Build, Native, ContentFiles, Analyzers, BuildTransitive",
+              "suppressParent": "All",
+              "target": "Package",
+              "version": "[9.0.6, )"
+            },
+            "Microsoft.VisualStudio.Web.CodeGeneration.Design": {
+              "target": "Package",
+              "version": "[9.0.0, )"
             },
             "Swashbuckle.AspNetCore": {
               "target": "Package",
