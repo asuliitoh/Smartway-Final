@@ -52,6 +52,7 @@ C:\SmartwayFinal\Smartway-Final\Backend\bin\Debug\net8.0\SmartwayFinal.pdb
 C:\SmartwayFinal\Smartway-Final\Backend\bin\Debug\net8.0\Azure.Core.dll
 C:\SmartwayFinal\Smartway-Final\Backend\bin\Debug\net8.0\Azure.Identity.dll
 C:\SmartwayFinal\Smartway-Final\Backend\bin\Debug\net8.0\Humanizer.dll
+C:\SmartwayFinal\Smartway-Final\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Authentication.JwtBearer.dll
 C:\SmartwayFinal\Smartway-Final\Backend\bin\Debug\net8.0\Microsoft.AspNetCore.Razor.Language.dll
 C:\SmartwayFinal\Smartway-Final\Backend\bin\Debug\net8.0\Microsoft.Bcl.AsyncInterfaces.dll
 C:\SmartwayFinal\Smartway-Final\Backend\bin\Debug\net8.0\Microsoft.Build.dll

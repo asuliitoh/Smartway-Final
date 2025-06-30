@@ -7,12 +7,15 @@ const cardQuerie = computed ( () => ({
     'image-full': ! x.matches
 }))
 
-const emits = defineEmits(["login", "registro"])
+const emits = defineEmits(["login", "register"])
 
 const activeLogin = ref(true)
 
 const id = ref('')
-const password = ref('')
+const nombre=ref('')
+const apellidos=ref('')
+const passwordLogin = ref('')
+const passwordRegister = ref('')
 
 function clickLogin() {
     activeLogin.value = true
@@ -20,9 +23,15 @@ function clickLogin() {
 
 function submitLogin() {
     const idValue = id.value
-    const passwordValue = password.value
-    console.log("peto")
-    emits("login", { idValue, passwordValue})    
+    const passwordValue = passwordLogin.value
+    emits("login", { id:idValue, password:passwordValue})    
+}
+
+function submitRegister() {
+    const nombreValue = nombre.value
+    const apellidosValue = apellidos.value
+    const passwordValue = passwordRegister.value
+    emits("register", {nombre:nombreValue, apellidos:apellidosValue, password:passwordValue})
 }
 
 function clickRegister() {
@@ -33,54 +42,56 @@ function clickRegister() {
 
 <template>
 
-<div class="h-max card bg-base-100 shadow-lg border border-gray-200 gap-10 lg:card-side lg:justify-center lg:items-center">
-     <img src="./images/login_image.jpg" alt="Login Imagen" class=" hidden lg:block rounded-xl w-fit h-fit">   
-     <div class="p-20 card-body border-l-1 border-gray-200 bg-neutral/90 justify-center items-center">
-        <h2 class="card-title text-2xl justify-center pb-5 text-neutral-content">CiberPulse Labs</h2>
-        <p v-if="activeLogin" class="text-xs text-neutral-content/70">Bienvenido, Agente </p>
+<div class="h-max card bg-base-100 shadow-lg border border-gray-200 lg:card-side lg:justify-center lg:items-center">
+   <img src="./images/animation.gif" alt="Login Imagen" class="w-150 h-110 hidden lg:block">
+     
+    <div class="card-body border-l-1 border-gray-200 bg-base justify-center items-center">
+        <h2 class="card-title font-semibold text-2xl justify-center text-base-content">CiberPulse Labs</h2>
+        <p v-if="activeLogin" class="text-xs text-base-content/70">Bienvenido, Agente </p>
         
-        <div class="flex flex-row justify-center items-center gap-x-5">
-            <p @click="clickLogin" :class="{'underline': activeLogin, 'text-neutral-content/80': activeLogin}" class="cursor-pointer text-neutral-content/40 hover:text-neutral-content/80">Login</p>
-            <p @click="clickRegister" :class="{'underline': !activeLogin, 'text-neutral-content/80': !activeLogin}"class="cursor-pointer text-neutral-content/40 hover:text-neutral-content/80">Registro</p>
+        <div class="flex flex-row justify-center items-center pt-5 pb-3 gap-x-5">
+            <p @click="clickLogin" :class="{'underline': activeLogin, 'text-primary/80': activeLogin}" class="cursor-pointer text-primary/40 hover:text-primary/80">Login</p>
+            <p @click="clickRegister" :class="{'underline': !activeLogin, 'text-primary/80': !activeLogin}"class="cursor-pointer text-primary/40 hover:text-primary/80">Registro</p>
         </div>
         
-        <div v-if="activeLogin" class="min-w-50 border-t border-neutral-content/40">   
+        <div v-if="activeLogin" class="min-w-50 border-t border-base-content/20">   
             <fieldset class="fieldset">
-                <legend class="fieldset-legend text-neutral-content">Identificador de Agente</legend>
-                <input v-model=id type="text" class="input text-xs text-neutral-content bg-neutral/70" placeholder="Introduce tu ID de agente"/>
+                <legend class="fieldset-legend text-primary">Identificador de Agente</legend>
+                <input v-model=id type="text" class="input text-xs text-base-content bg-base/70" placeholder="Introduce tu ID de agente"/>
             </fieldset>
 
             <fieldset class="fieldset">
-                <legend class="fieldset-legend text-neutral-content">Contraseña</legend>
-                <input v-model=password type="text" class="input text-xs text-neutral-content bg-neutral/70" placeholder="Introduce tu contraseña secreta"/>
+                <legend class="fieldset-legend text-primary">Contraseña</legend>
+                <input v-model="passwordLogin" type="password" class="input text-xs text-base-content bg-base/70" placeholder="Introduce tu contraseña secreta"/>
             </fieldset>
  
             <div class="card-actions pt-4 flex-col items-center gap-5">
-                <button @click="submitLogin" type="button" class="btn btn">Iniciar sesión</button>
-                <p class="text-xs text-neutral-content">Nuevo agente? <span @click="clickRegister" class="cursor-pointer underline">Registrate</span></p>
+                <button @click="submitLogin" type="button" class="btn btn-primary">Iniciar sesión</button>
+                <p class="text-xs text-base-content">Nuevo agente? <span @click="clickRegister" class="cursor-pointer underline">Registrate</span></p>
             </div>
 
 
         </div>
 
-        <div v-else class="min-w-50 border-t border-neutral-content/40">   
+        <div v-else class="min-w-50 border-t border-base-content/20">   
             <fieldset class="fieldset">
-                <legend class="fieldset-legend text-neutral-content">Nombre del Agente</legend>
-                <input type="text" class="input text-xs text-neutral-content bg-neutral/70" placeholder="Introduce tu nombre"/>
+                <legend class="fieldset-legend text-primary">Nombre del Agente</legend>
+                <input v-model="nombre" type="text" class="input text-xs text-base-content bg-base/70" placeholder="Introduce tu nombre"/>
             </fieldset>
 
             <fieldset class="fieldset">
-                <legend class="fieldset-legend text-neutral-content">Apellidos del Agente</legend>
-                <input type="text" class="input text-xs text-neutral-content bg-neutral/70" placeholder="Introduce tus apellidos"/>
+                <legend class="fieldset-legend text-primary">Apellidos del Agente</legend>
+                <input v-model="apellidos" type="text" class="input text-xs text-base-content bg-base/70" placeholder="Introduce tus apellidos"/>
             </fieldset>
 
             <fieldset class="fieldset">
-                <legend class="fieldset-legend text-neutral-content">Contraseña</legend>
-                <input type="text" class="input text-xs text-neutral-content bg-neutral/70" placeholder="Introduce tu contraseña secreta"/>
+                <legend class="fieldset-legend text-primary">Contraseña</legend>
+                <input v-model="passwordRegister" type="password" class="input text-xs text-base-content bg-base/70" placeholder="Introduce tu contraseña secreta"/>
             </fieldset>
  
             <div class="card-actions pt-4 flex-col items-center gap-5">
-                <button type="button" class="btn">Registrarse</button>
+                <button @click="submitRegister" type="button" class="btn btn-primary">Registrarse</button>
+                <dialog></dialog>
             </div>
 
 

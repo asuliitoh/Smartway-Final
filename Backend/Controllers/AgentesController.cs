@@ -6,6 +6,7 @@ using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartwayFinal.Models;
+using SmartwayFinal.Services;
 
 namespace SmartwayFinal.Controllers
 {
@@ -14,10 +15,12 @@ namespace SmartwayFinal.Controllers
     public class AgentesController : ControllerBase
     {
         private readonly TodoContext _context;
+        private readonly JWTHandler _jwt;
 
-        public AgentesController(TodoContext context)
+        public AgentesController(TodoContext context, JWTHandler jwt)
         {
             _context = context;
+            _jwt = jwt;
         }
 
 
@@ -44,7 +47,7 @@ namespace SmartwayFinal.Controllers
 
         // GET: api/Agentes/login
         [HttpPost("login")]
-        public async Task<ActionResult<Agente>> Login(AgenteLoginDTO agenteLoginDTO)
+        public async Task<ActionResult<ResponseAgenteLoginDTO>> Login(AgenteLoginDTO agenteLoginDTO)
         {
             var agente = await _context.Agentes.FindAsync(agenteLoginDTO.Id);
 
@@ -52,7 +55,9 @@ namespace SmartwayFinal.Controllers
 
             else if (!String.Equals(agente.Password, agenteLoginDTO.Password)) return Unauthorized();
 
-            return agente;
+            string token = _jwt.GenerateToken(agente.Nombre, agente.Apellidos, agente.Id);
+
+            return NewResponseAgenteLoginDTO(agente, token);
         }
         /*
                     // PUT: api/Agentes/5
@@ -109,7 +114,7 @@ namespace SmartwayFinal.Controllers
         // POST: api/Agentes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("registro")]
-        public async Task<ActionResult<ResponseAgenteRegistroDTO>> Registrarse(AgenteRegistroDTO agenteRegistroDTO)
+        public async Task<ActionResult<ResponseAgenteRegistroDTO>> Register(AgenteRegistroDTO agenteRegistroDTO)
         {
 
             var agente = new Agente
@@ -158,5 +163,16 @@ namespace SmartwayFinal.Controllers
                 Apellidos = agente.Apellidos
             };
         }
+
+        private ResponseAgenteLoginDTO NewResponseAgenteLoginDTO(Agente agente, string token){
+            return new ResponseAgenteLoginDTO
+            {
+                Id = agente.Id,
+                Nombre = agente.Nombre,
+                Apellidos = agente.Apellidos,
+                Token = token
+            };
+        }
+
     }
 }
