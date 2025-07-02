@@ -2,14 +2,7 @@ using Microsoft.EntityFrameworkCore;
 
 namespace SmartwayFinal.Models;
 
-public class TodoContext : DbContext
+public class Context(DbContextOptions<Context> options) : DbContext(options)
 {
-    public TodoContext(DbContextOptions<TodoContext> options)
-        : base(options)
-    {
-    }
-
-    public DbSet<TodoItem> TodoItems { get; set; } = null!;
-
     public DbSet<Agente> Agentes { get; set; } = null!;
 }

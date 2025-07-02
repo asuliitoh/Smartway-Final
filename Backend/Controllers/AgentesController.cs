@@ -12,16 +12,10 @@ namespace SmartwayFinal.Controllers
 {
     [Route("[controller]")]
     [ApiController]
-    public class AgentesController : ControllerBase
+    public class AgentesController(Context context, JWTHandler jwt) : ControllerBase
     {
-        private readonly TodoContext _context;
-        private readonly JWTHandler _jwt;
-
-        public AgentesController(TodoContext context, JWTHandler jwt)
-        {
-            _context = context;
-            _jwt = jwt;
-        }
+        private readonly Context _context = context;
+        private readonly JWTHandler _jwt = jwt;
 
 
         // GET: api/Agentes
@@ -34,7 +28,7 @@ namespace SmartwayFinal.Controllers
         // GET: api/Agentes/5
         [HttpGet("{id}")]
         
-        public async Task<ActionResult<Agente>> GetAgente(AgenteLoginDTO agenteLoginDTO)
+        public async Task<ActionResult<Agente>> GetAgente(LoginRequest agenteLoginDTO)
         {
             var agente = await _context.Agentes.FindAsync(agenteLoginDTO.Id);
 
@@ -47,17 +41,17 @@ namespace SmartwayFinal.Controllers
 
         // GET: api/Agentes/login
         [HttpPost("login")]
-        public async Task<ActionResult<ResponseAgenteLoginDTO>> Login(AgenteLoginDTO agenteLoginDTO)
+        public async Task<ActionResult<LoginResponse>> Login(LoginRequest login)
         {
-            var agente = await _context.Agentes.FindAsync(agenteLoginDTO.Id);
+            var agente = await _context.Agentes.FindAsync(login.Id);
 
             if (agente == null) return NotFound();
 
-            else if (!String.Equals(agente.Password, agenteLoginDTO.Password)) return Unauthorized();
+            else if (!String.Equals(agente.Password, login.Password)) return Unauthorized();
 
             string token = _jwt.GenerateToken(agente.Nombre, agente.Apellidos, agente.Id);
 
-            return NewResponseAgenteLoginDTO(agente, token);
+            return NewLoginResponse(agente, token);
         }
         /*
                     // PUT: api/Agentes/5
@@ -92,71 +86,76 @@ namespace SmartwayFinal.Controllers
                     }
 
                 */
+
+        /*                
         // POST: api/Agentes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<ResponseAgenteRegistroDTO>> PostAgente(AgenteRegistroDTO agenteRegistroDTO)
+        public async Task<ActionResult<RegistroResponse>> PostAgente(RegistroResponse agenteRegistroDTO)
         {
 
             var agente = new Agente
             {
                 Nombre = agenteRegistroDTO.Nombre,
                 Apellidos = agenteRegistroDTO.Apellidos,
-                Password = agenteRegistroDTO.Password
+               
             };
 
             _context.Agentes.Add(agente);
             await _context.SaveChangesAsync();
 
-            return NewResponseAgenteRegistroDTO(agente);
+            return NewRegistroResponse(agente);
         }
+
+        */
 
         // POST: api/Agentes
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("registro")]
-        public async Task<ActionResult<ResponseAgenteRegistroDTO>> Register(AgenteRegistroDTO agenteRegistroDTO)
+        public async Task<ActionResult<RegistroResponse>> Register(RegistroRequest registro)
         {
 
             var agente = new Agente
             {
-                Nombre = agenteRegistroDTO.Nombre,
-                Apellidos = agenteRegistroDTO.Apellidos,
-                Password = agenteRegistroDTO.Password
+                Nombre = registro.Nombre,
+                Apellidos = registro.Apellidos,
+                Password = registro.Password
             };
 
             _context.Agentes.Add(agente);
             await _context.SaveChangesAsync();
 
-            return NewResponseAgenteRegistroDTO(agente);
+            return NewRegistroResponse(agente);
         }
 
-
-        // DELETE: api/Agentes/5
-        [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteAgente(long id)
-        {
-            var agente = await _context.Agentes.FindAsync(id);
-            if (agente == null)
+        /*
+            // DELETE: api/Agentes/5
+            [HttpDelete("{id}")]
+            public async Task<IActionResult> DeleteAgente(long id)
             {
-                return NotFound();
+                var agente = await _context.Agentes.FindAsync(id);
+                if (agente == null)
+                {
+                    return NotFound();
+                }
+
+                _context.Agentes.Remove(agente);
+                await _context.SaveChangesAsync();
+
+                return NoContent();
             }
 
-            _context.Agentes.Remove(agente);
-            await _context.SaveChangesAsync();
-
-            return NoContent();
-        }
-
+        */
     
-
-        private bool AgenteExists(long id)
+    /*
+            private bool AgenteExists(long id)
+            {
+                return _context.Agentes.Any(e => e.Id == id);
+            }
+        */
+        private static RegistroResponse NewRegistroResponse(Agente agente)
         {
-            return _context.Agentes.Any(e => e.Id == id);
-        }
-
-        private ResponseAgenteRegistroDTO NewResponseAgenteRegistroDTO(Agente agente)
-        {
-            return new ResponseAgenteRegistroDTO
+            return new RegistroResponse
             {
                 Id = agente.Id,
                 Nombre = agente.Nombre,
@@ -164,8 +163,8 @@ namespace SmartwayFinal.Controllers
             };
         }
 
-        private ResponseAgenteLoginDTO NewResponseAgenteLoginDTO(Agente agente, string token){
-            return new ResponseAgenteLoginDTO
+        private static LoginResponse NewLoginResponse(Agente agente, string token){
+            return new LoginResponse
             {
                 Id = agente.Id,
                 Nombre = agente.Nombre,

@@ -9,7 +9,7 @@ using SmartwayFinal.Models;
 
 namespace SmartwayFinal.Migrations
 {
-    [DbContext(typeof(TodoContext))]
+    [DbContext(typeof(Context))]
     [Migration("20250626115121_InitialCreate")]
     partial class InitialCreate
     {

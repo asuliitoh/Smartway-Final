@@ -1,42 +1,34 @@
 <script setup>
-import { ref, reactive, computed } from 'vue';
+    import { ref, reactive, computed } from 'vue';
+    import { axiosInstance } from '@/main';
+    import { router } from '@/main';
+    import { useAuthStore } from '@/stores/auth';
+    
+    const activeLogin = ref(true)
+    const id = ref('')
+    const nombre=ref('')
+    const apellidos=ref('')
+    const passwordLogin = ref('')
+    const passwordRegister = ref('')
+    const auth = useAuthStore();
 
-var x = window.matchMedia('(min-width:1024px)')
-const cardQuerie = computed ( () => ({
-    'card-side': x.matches,
-    'image-full': ! x.matches
-}))
+    function clickLogin() {
+        activeLogin.value = true
+    }
 
-const emits = defineEmits(["login", "register"])
 
-const activeLogin = ref(true)
+    function submitLogin() {
+        auth.login(id.value, passwordLogin.value);
+    }
 
-const id = ref('')
-const nombre=ref('')
-const apellidos=ref('')
-const passwordLogin = ref('')
-const passwordRegister = ref('')
+    function submitRegister() {
+        auth.register(nombre.value, apellidos.value, passwordRegister.value);        
+    }
 
-function clickLogin() {
-    activeLogin.value = true
-}
 
-function submitLogin() {
-    const idValue = id.value
-    const passwordValue = passwordLogin.value
-    emits("login", { id:idValue, password:passwordValue})    
-}
-
-function submitRegister() {
-    const nombreValue = nombre.value
-    const apellidosValue = apellidos.value
-    const passwordValue = passwordRegister.value
-    emits("register", {nombre:nombreValue, apellidos:apellidosValue, password:passwordValue})
-}
-
-function clickRegister() {
-    activeLogin.value = false
-}
+    function clickRegister() {
+        activeLogin.value = false
+    }
 
 </script>
 

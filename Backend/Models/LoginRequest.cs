@@ -1,7 +1,7 @@
 namespace SmartwayFinal.Models;
 using System.ComponentModel.DataAnnotations;
 
-public class AgenteLoginDTO
+public class LoginRequest
 {
     [Required]
     public long Id { get; set; }

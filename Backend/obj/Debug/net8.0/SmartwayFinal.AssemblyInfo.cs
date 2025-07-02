@@ -13,7 +13,7 @@ using System.Reflection;
 [assembly: System.Reflection.AssemblyCompanyAttribute("SmartwayFinal")]
 [assembly: System.Reflection.AssemblyConfigurationAttribute("Debug")]
 [assembly: System.Reflection.AssemblyFileVersionAttribute("1.0.0.0")]
-[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+87c02e19139b068778a20347f2613b3790093f17")]
+[assembly: System.Reflection.AssemblyInformationalVersionAttribute("1.0.0+3fb75f94c9bde669b0d7dd609f11e7c0fb5f4656")]
 [assembly: System.Reflection.AssemblyProductAttribute("SmartwayFinal")]
 [assembly: System.Reflection.AssemblyTitleAttribute("SmartwayFinal")]
 [assembly: System.Reflection.AssemblyVersionAttribute("1.0.0.0")]

@@ -1,6 +1,6 @@
 namespace SmartwayFinal.Models;
 
-public class ResponseAgenteRegistroDTO
+public class RegistroResponse
 {
 
     public long Id { get; set; }

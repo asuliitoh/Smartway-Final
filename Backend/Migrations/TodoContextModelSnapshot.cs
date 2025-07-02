@@ -8,7 +8,7 @@ using SmartwayFinal.Models;
 
 namespace SmartwayFinal.Migrations
 {
-    [DbContext(typeof(TodoContext))]
+    [DbContext(typeof(Context))]
     partial class TodoContextModelSnapshot : ModelSnapshot
     {
         protected override void BuildModel(ModelBuilder modelBuilder)

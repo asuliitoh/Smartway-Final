@@ -1,7 +1,7 @@
 namespace SmartwayFinal.Models;
 using System.ComponentModel.DataAnnotations;
 
-public class AgenteRegistroDTO
+public class RegistroRequest
 {
     [Required]
     public string? Nombre { get; set; }
