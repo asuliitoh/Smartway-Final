@@ -5,9 +5,8 @@ import Login from './components/Login.vue';
 </script>
 
 <template>
-  <main class="flex flex-1 min-w-screen min-h-screen bg-base-300 items-center justify-center">
+  <main class="min-h-screen min-w-screen container">
     <RouterView/>
-  
   </main>
 
 

@@ -33,9 +33,11 @@
 </script>
 
 <template>
+    <main class="flex flex-1 min-w-screen min-h-screen bg-base-300 items-center justify-center">
 
-<div class="h-max card bg-base-100 shadow-lg border border-gray-200 lg:card-side lg:justify-center lg:items-center">
-   <img src="./images/animation.gif" alt="Login Imagen" class="w-150 h-110 hidden lg:block">
+        <div class="h-max card bg-base-100 shadow-lg border border-gray-200 lg:card-side lg:justify-center lg:items-center">
+
+    <img src="./images/animation.avif" alt="Login Imagen" class="w-full h-full lg:w-150 lg:h-110">
      
     <div class="card-body border-l-1 border-gray-200 bg-base justify-center items-center">
         <h2 class="card-title font-semibold text-2xl justify-center text-base-content">CiberPulse Labs</h2>
@@ -92,6 +94,10 @@
      </div>
 
 </div>
+
+
+    </main>
+
 
 
 </template>
