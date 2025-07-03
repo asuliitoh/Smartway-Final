@@ -4,16 +4,23 @@ import axios from 'axios'
 import { createApp } from 'vue'
 import {createPinia } from 'pinia'
 import {createRouter, createWebHistory} from 'vue-router'
-import Login from './components/Login.vue';
-import Home from './components/Home.vue'
+import Login from './views/Login.vue';
+import Home from './views/Home.vue'
 import App from './App.vue'
 import { useAuthStore } from './stores/auth'
+import Operaciones from './views/Operaciones.vue'
+import Equipos from './views/Equipos.vue'
+import Agentes from './views/Agentes.vue'
 
 //TODO: Añadir lógica que rediriga a /login SOLO si el usuario no ha iniciado sesión.
 const routes = [
   {path:'/', redirect:'/login'},
   {path:'/login', name:'login', component:Login},
   {path: '/home', name: 'home', component: Home},
+  {path: '/operaciones', name:'operaciones', component:Operaciones},
+  {path: '/equipos', name:'equipos', component:Equipos},
+  {path: '/agentes', name:'agentes', component:Agentes}
+
 ]
 
 const router = createRouter({
