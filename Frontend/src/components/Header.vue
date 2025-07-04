@@ -33,19 +33,14 @@ function redirectToHome(){
             <a @click="redirectToHome" class="font-bold cursor-pointer">CyberPulse Labs</a>
         </div>
         <div class="flex-none">
-            <ul class="px-1 menu menu-horizontal">                
-                <li><a @click="redirectToOperaciones" class="font-semibold hover:bg-primary/20">Operaciones</a></li>
-                <li><a @click="redirectToEquipos" class="font-semibold hover:bg-primary/20">Equipos</a></li>
-                <li><a @click="redirectToAgentes" class="font-semibold hover:bg-primary/20">Agentes</a></li>
-                <li><a @click="logout" class="font-semibold hover:bg-primary/20" id="nosotros">Cerrar sesión</a></li>
-            </ul>
+       
+        <ul class="flex items-center justify-center gap-4">
+            <li><RouterLink to="/operaciones" class="px-2 py-1 font-semibold transition-all duration-300 rounded hover:bg-primary/20" active-class="bg-primary text-primary-content" >Operaciones</RouterLink></li>
+            <li><RouterLink to="/equipos" class="px-2 py-1 font-semibold transition-all duration-300 rounded hover:bg-primary/20" active-class="bg-primary text-primary-content">Equipos</RouterLink></li>
+            <li><RouterLink to="/agentes" class="px-2 py-1 font-semibold transition-all duration-300 rounded hover:bg-primary/20" active-class="bg-primary text-primary-content">Agentes</RouterLink></li>
+            <li><button @click="logout" class="px-2 py-1 font-semibold transition-all duration-300 rounded hover:bg-primary/20">Cerrar sesión </button></li>
+        </ul>
         </div>
     </div>
 
-
-
 </template>
-
-<style scoped>
-
-</style>

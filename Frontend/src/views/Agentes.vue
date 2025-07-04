@@ -1,57 +1,52 @@
 <script setup>
-import Header from '@/components/Header.vue';
+    import Card from '@/components/Card.vue';
+    import LayoutSection from '@/layouts/LayoutSection.vue';
+    import Search from '@/components/Search.vue';
 </script>
 
 <template>
 
-    <main class="flex flex-col w-screen h-screen">
-        <Header></Header>
-        <div class="flex-1 min-h-0 p-10">
-            <div class="h-full w-full grid grid-rows-[50%_50%] grid-cols-[80%_20%] gap-5">
+    <LayoutSection>
+        <div class="h-full w-full grid grid-rows-[50%_50%] grid-cols-[80%_20%] gap-5">
+                
+            <Card class="row-start-1" v-bind:horizontal="true">
+                <template v-slot:body>
+                    <div class="w-[25%]">
+                                <h2 class="card-title text-primary">Información personal</h2>
+                                <p>Modifica tu información personal aqui.</p>  
+                    </div>
 
-                <section class="row-start-1 p-3 transition-all duration-300 shadow-xl card shadow-primary/30 hover:shadow-primary/60 hover:scale-101 bg-base-200">
-                    <div class="flex-row card-body">
-                        
-                        <div class="w-[25%]">
-                            <h2 class="card-title text-primary">Información personal</h2>
-                            <p>Modifica tu información personal aqui.</p>  
-                        </div>
-                        
+                    <fieldset class="w-[75%] p-5 border border-gray-300 bg-primary/10 fieldset rounded-box shadow-lg">
+                                
+                                <div class="flex flex-row w-full gap-5">
+                                    <div>
+                                        <label class="label text-primary">Nombre</label>
+                                        <input type="text" class="input bg-primary/20 border-primary/40" placeholder="Ejemplo">
+                                    </div>
+                                    
+                                    <div>
+                                        <label class="label text-primary">Apellidos</label>
+                                        <input type="text" class="input bg-primary/20 border-primary/40" placeholder="Ejemplo">
+                                    </div>
 
-                        <fieldset class="w-[75%] p-5 border border-gray-300 bg-primary/10 fieldset rounded-box shadow-lg">
-                            
-                            <div class="flex flex-row w-full gap-5">
-                                <div>
-                                    <label class="label text-primary">Nombre</label>
-                                    <input type="text" class="input bg-primary/20 border-primary/40" placeholder="Ejemplo">
                                 </div>
                                 
-                                <div>
-                                    <label class="label text-primary">Apellidos</label>
-                                    <input type="text" class="input bg-primary/20 border-primary/40" placeholder="Ejemplo">
-                                </div>
+                                <label class="label text-primary">Rango</label>
+                                <input disabled type="text" class="input disabled:bg-primary/20 disabled:border-primary/40" placeholder="Activo">
 
-                            </div>
-
+                                <label class="label text-primary">Estado</label>
+                                <input disabled type="text" class="input disabled:bg-primary/20 disabled:border-primary/40" placeholder="Activo">
                             
-                            <label class="label text-primary">Rango</label>
-                            <input disabled type="text" class="input disabled:bg-primary/20 disabled:border-primary/40" placeholder="Activo">
+                            <div class="flex gap-3 justify-self-end">
+                                <button type="button" class="btn btn-ghost">Cancelar</button>
+                                <button type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
+                            </div>
+                    </fieldset>
+                </template>
+            </Card>
 
-                            <label class="label text-primary">Estado</label>
-                            <input disabled type="text" class="input disabled:bg-primary/20 disabled:border-primary/40" placeholder="Activo">
-                        
-                        <div class="flex gap-3 justify-self-end">
-                            <button type="button" class="btn btn-ghost">Cancelar</button>
-                            <button type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
-                        </div>
-            
-                        </fieldset>
-                    </div>
-                </section>
-
-            <section class="row-start-2 p-3 transition-all duration-300 shadow-xl card shadow-primary/30 hover:shadow-primary/60 hover:scale-101 bg-base-200">
-
-                <div class="flex-row card-body">
+            <Card class="row-start-2" v-bind:horizontal="true">
+                <template v-slot:body>
                     <div class="w-[25%]"> 
                         <h2 class="card-title text-primary">Cambiar contraseña</h2>
                         <p>Introduce tu contraseña actual y la nueva contraseña que desea para actualizarla.</p>
@@ -71,28 +66,26 @@ import Header from '@/components/Header.vue';
                             <button type="button" class="btn btn-ghost">Cancelar</button>
                             <button type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
                         </div>
-
                     </fieldset>
-                </div>
-            </section>
+                </template>
+            </Card>
 
-            <section class="col-start-2 p-3 transition-all duration-300 shadow-xl row-span-full card shadow-primary/30 hover:shadow-primary/60 hover:scale-101 bg-base-200">
-                <div class="card-title">
+            <Card class="col-start-2 row-span-full">
+                <template v-slot:title>
                     <img src="./icons/buscar.png" alt="Buscar Agente" class="w-fit h-fit">
                     <h2 class="text-primary">Buscar Agente</h2>
-                </div>
-                
-                <p class="self-center pt-3 pb-5 text-sm text-center">Introduzca el <span class="font-semibold text-primary">identificador del agente</span> para ver su información. Pulse Enter para buscar.</p>
+                </template>
 
-                <label class="w-[75%] self-center row-start-1 shadow-xl rounded-box shadow-primary/10 input col-span-full">
-                    <input type="search" placeholder="Buscar Agente" />
-                </label>
+                <template v-slot:body>
+                    <div class="join join-vertical">
+                        <p class="self-center pt-3 pb-5 text-sm text-center">Introduzca el <span class="font-semibold text-primary">identificador del agente</span> para ver su información. Pulse Enter para buscar.</p>
+                        <Search class="w-[75%] self-center row-start-1 col-span-full" v-bind:placeholder="'Buscar Agente'"></Search>
+                        
+                    </div>
+                </template>
+            </Card>
 
-            </section>
-                
             </div>            
-        </div>
-
-    </main>
+    </LayoutSection>
 
 </template>

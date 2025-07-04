@@ -1,7 +1,9 @@
 <script setup>
     import GeneralStatsEquipos from '@/components/GeneralStatsEquipos.vue';
-import GeneralStatsOperations from '@/components/GeneralStatsOperations.vue';
-    import Header from '@/components/Header.vue';
+    import GeneralStatsOperations from '@/components/GeneralStatsOperations.vue';
+    import Card from '@/components/Card.vue';
+    import Stat from '@/components/Stat.vue';
+    import LayoutSection from '@/layouts/LayoutSection.vue';
     import { router } from '@/main';
     function redirectToOperaciones(){
         router.replace({name: 'operaciones'})
@@ -9,82 +11,65 @@ import GeneralStatsOperations from '@/components/GeneralStatsOperations.vue';
 </script>
 
 <template>
-    <div class="flex flex-col w-screen h-screen">
-        <Header class="flex"></Header>
-        <div class="container m-auto">
 
-            <div class="grid grid-cols-2 gap-10 auto-rows-2">
-                
-                <section class="col-start-1 row-start-1 p-3 transition-all duration-300 shadow-xl card shadow-primary/30 hover:shadow-primary/60 hover:scale-101 bg-base-200">
-                    <div class="card-body">
-                        <h1 class="text-4xl font-bold tracking-tighter card-title">Bienvenido a CyberPulse Labs</h1>
+    <LayoutSection>
+        <div class="h-full w-full grid grid-cols-2 gap-10 grid-rows-[1fr_1fr]">
+
+            <Card class="col-start-1 row-start-1">
+                <template v-slot:body>
+                     <h1 class="text-4xl font-bold tracking-tighter card-title">Bienvenido a CyberPulse Labs</h1>
                         <p class="pt-3 text-lg leading-tight tracking-tighter ">Gestiona tus operaciones de manera <span class="font-semibold text-primary">eficiente</span> y gestiona tus equipos con otros agentes</p>
-                        <div class="grid grid-cols-3 gap-5 pt-5">
-
-                            <div class="col-start-1 transition duration-300 shadow-xl card bg-base-100 hover:bg-primary/20">
-                                <div class="items-center justify-center card-body">
-                                    <h2 class="card-title"> 0 </h2>
-                                    <p class="text-xs">Agentes Activos</p>
-                                </div>
-                            </div>
-
-                            <div class="col-start-2 transition duration-300 shadow-xl card bg-base-100 hover:bg-primary/20">
-                                <div class="items-center justify-center card-body">
-                                    <h2 class="card-title"> 0 </h2>
-                                    <p class="text-xs">Equipos Formados</p>
-                                </div>
-                            </div>
-
-                            <div class="col-start-3 transition duration-300 shadow-xl card bg-base-100 hover:bg-primary/20">
-                                <div class="items-center justify-center card-body">
-                                    <h2 class="card-title"> +0 </h2>
-                                    <p class="text-xs">Operaciones Completadas</p>
-                                </div>
-                            </div>
+                        <div class="grid grid-cols-3 gap-5">
+                            <Stat class="col-start-1" v-bind:number="0" v-bind:hover="true" v-bind:title="'Agentes Activos'"></Stat>
+                            <Stat class="col-start-2" v-bind:number="0" v-bind:hover="true" v-bind:title="'Equipos Formados'"></Stat>
+                            <Stat class="col-start-3" v-bind:number="0" v-bind:hover="true" v-bind:title="'Operaciones Completadas'"></Stat>                
                         </div>
-                    </div>
-                </section>
+                </template>
+            </Card>
             
-                <section class="col-start-1 row-start-2 p-3 transition-all duration-300 shadow-xl card shadow-primary/30 hover:shadow-primary/60 hover:scale-101 bg-base-200">
-                    <div class="card-body">
+                <Card class="col-start-1 row-start-2">
+                    <template v-slot:body>
                         <h1 class="text-4xl font-bold tracking-tighter card-title">Gestionar agentes</h1>
                         <p class="pt-3 text-lg leading-tight tracking-tighter">Actualiza periódicamente tu información profesional y credenciales para reflejar con precisión tu trayectoria, reforzar tu credibilidad y abrir nuevas oportunidades de negocio.</p>
-                    </div>
-                    <div class="justify-end card-actions">
-                         <button class="btn">Buscar Agente</button>
-                         <button class="btn btn-primary">Editar perfil de agente</button>
-                    </div>
-                </section>
+                    </template>
 
-                <section class="col-start-2 row-start-1 p-3 transition-all duration-300 shadow-xl card shadow-primary/30 hover:shadow-primary/60 hover:scale-101 bg-base-200">
-                    <div class="card-body">
+                    <template v-slot:actions>
+                        <button class="btn">Buscar Agente</button>
+                        <button class="btn btn-primary">Editar perfil de agente</button>
+                    </template>
+                </Card>
+
+                <Card class="col-start-2 row-start-1">
+                    <template v-slot:body>
                         <h1 class="text-4xl font-bold tracking-tighter card-title">Gestiona tus equipos</h1>
                         <p class="pt-3 text-lg leading-tight tracking-tighter">Organiza y supervisa equipos de trabajo, sus miembros agentes y operaciones activas.</p>
                         <GeneralStatsEquipos v-bind:hover="true"></GeneralStatsEquipos>
-                    </div>
-                    <div class="justify-end card-actions">
-                         <button class="btn">Ver Equipos</button>
-                         <button class="btn btn-primary">Gestionar Equipos</button>
-                    </div>
-                </section>
+                    </template>
 
-                <section class="col-start-2 row-start-2 p-3 transition-all duration-300 shadow-xl card shadow-primary/30 hover:shadow-primary/60 hover:scale-101 bg-base-200">
-                    <div class="card-body">
+                    <template v-slot:actions>
+                        <button class="btn">Ver Equipos</button>
+                        <button class="btn btn-primary">Gestionar Equipos</button>
+                    </template>
+                    
+                </Card>
+
+                <Card>
+                    <template v-slot:body>
                         <h1 class="text-4xl font-bold tracking-tighter card-title">Gestiona tus operaciones</h1>
                         <p class="pt-3 text-lg leading-tight tracking-tighter ">Gestiona todas las operaciones y controla aquellas operaciones en curso.</p>
                         <GeneralStatsOperations v-bind:hover="true"></GeneralStatsOperations>
-                    </div>
-                    <div class="justify-end card-actions">
-                         <button @click="redirectToOperaciones" class="btn">Ver Operaciones</button>
-                         <button class="btn btn-primary">Crear Nueva Operación</button>
-                    </div>
-                </section>
-        
+                    </template>
+
+                    <template v-slot:actions>
+                        <button @click="redirectToOperaciones" class="btn">Ver Operaciones</button>
+                        <button class="btn btn-primary">Crear Nueva Operación</button>
+                    </template>
+                </Card>
+
             </div>
+    </LayoutSection>
 
-        </div>
-
-    </div>
+  
    
 </template>
 

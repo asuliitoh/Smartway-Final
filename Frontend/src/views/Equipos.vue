@@ -1,48 +1,117 @@
 <script setup>
 import GeneralStatsEquipos from '@/components/GeneralStatsEquipos.vue';
-import Header from '@/components/Header.vue';
+import Card from '@/components/Card.vue';
+import LayoutSection from '@/layouts/LayoutSection.vue';
+import Search from '@/components/Search.vue';
 </script>
 
 <template>
+    <LayoutSection>
+          <div class="h-full w-full grid grid-rows-[auto_auto_1fr] grid-cols-2 gap-5">
+         
+                <Search class="w-full row-start-1 col-span-full" v-bind:placeholder="'Buscar Equipo'"></Search>
 
-    <main class="flex flex-col w-screen h-screen">
-        <Header></Header>
-        <div class="flex-1 min-h-0 p-10">
-             <div class="h-full w-full grid grid-rows-[auto_auto_1fr] grid-cols-2 gap-5">
-                
-                <label class="w-full row-start-1 shadow-xl col-span-full rounded-box shadow-primary/10 input">
-                    <input type="search" placeholder="Buscar Equipo"/>
-                </label>
+                <Card class="col-start-1 row-start-2 col-span-full">
+                    <template v-slot:title>
+                        <div class="flex flex-row items-center justify-center w-full text-center">
+                            <img src="./icons/postcard.png" alt="Resumen General">
+                            <h2 class="text-primary">Resumen General</h2>
+                        </div>
+                    </template>
 
-                <section class="col-start-1 row-start-2 p-5 leading-tight tracking-tighter transition-all duration-300 shadow-xl col-span-full card shadow-primary/10 bg-base-200 text-primary hover:shadow-primary/60 hover:scale-101">
-                    <h2 class="self-center card-title">Resumen General</h2>
-                    <GeneralStatsEquipos class="card-body"></GeneralStatsEquipos>
-                </section>
+                    <template v-slot:body>
+                        <GeneralStatsEquipos></GeneralStatsEquipos>
+                    </template>
+                </Card>
 
-                <section class="row-start-3 p-5 transition-all duration-300 shadow-xl card shadow-primary/10 bg-base-200 hover:shadow-primary/60 hover:scale-101">
-                    <h2 class="self-center font-semibold card-title text-primary"> Equipos propios</h2>
-                    <div class="card-body">
+                <Card class="row-start-3">
+                    <template v-slot:title>
+                        <h2 class="w-full text-center text-primary"> Equipos propios</h2>
+                    </template>
 
-                    </div>
-                    <div class="justify-end card-actions">
+                    <template v-slot:body>
+                        <table class="table overflow-x-auto table-pin-rows">
+                             <thead>
+                                 <th>Id</th>
+                                 <th>Nombre</th>
+                                 <th>Especialidad</th>
+                                 
+                            </thead>
+                            <tbody>
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </template>
+
+                    <template v-slot:actions>
                         <button type="button" class="btn btn-primary">Crear Nuevo Equipo</button>
                         <button type="button" class="btn btn-primary">Disolver Equipo</button>
-                    </div>
-                </section>
+                    </template>
 
-                <section class="col-start-2 row-start-3 p-5 transition-all duration-300 shadow-xl card shadow-primary/10 bg-base-200 hover:shadow-primary/60 hover:scale-101">
-                    <h2 class="self-center font-semibold card-title text-primary"> Equipos en los que participas</h2>
-                    <div class="card-body">
+                </Card>
 
-                    </div>
-                    <div class="justify-end card-actions">
+                <Card class="col-start-2 row-start-3">
+                    <template v-slot:title>
+                        <h2 class="w-full text-center text-primary"> Equipos en los que participas</h2>
+                       
+                    </template>
+
+                    <template v-slot:body>
+                         <table class="table overflow-x-auto table-pin-rows">
+                             <thead>
+                                 <th>Id</th>
+                                 <th>Nombre</th>
+                                 <th>Especialidad</th>
+                                 
+                            </thead>
+                            <tbody>
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+                                
+                            </tbody>
+                        </table>
+                    </template>
+
+                    <template v-slot:actions>
                         <button type="button" class="btn btn-primary">Solicitar Abandonar Equipo</button>
-                    </div>
-                </section>
+                    </template>
 
+                </Card>
 
              </div>
-        </div>
-    </main>
+    </LayoutSection>
+   
 
 </template>
