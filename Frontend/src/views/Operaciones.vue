@@ -5,21 +5,23 @@ import Header from '@/components/Header.vue';
 
 <template>
 
-    <main class="flex flex-col min-h-screen">
+    <main class="flex flex-col w-screen h-screen">
         <Header></Header>
-            <div class="grid grid-rows-[auto_auto_1fr] grid-cols-3 gap-5">
+         <div class="flex-1 min-h-0 p-10">
+
+            <div class="h-full w-full grid grid-rows-[auto_auto_1fr] grid-cols-3 gap-5">
                 
                 <label class="w-full row-start-1 shadow-xl rounded-box shadow-primary/10 input col-span-full">
                     <input type="search" placeholder="Buscar Operación" />
                 </label>
 
-                <section class="col-span-2 col-start-1 row-start-2 p-5 leading-tight tracking-tighter shadow-xl card shadow-primary/10 bg-base-200 text-primary">
+                <section class="col-span-2 col-start-1 row-start-2 p-5 leading-tight tracking-tighter transition-all duration-300 shadow-xl card shadow-primary/10 bg-base-200 text-primary hover:shadow-primary/60 hover:scale-101">
                     <h2 class="self-center card-title">Resumen General</h2>
                     <GeneralStatsOperations class="card-body"></GeneralStatsOperations>
                 </section>
 
-                <section class="col-span-2 col-start-1 row-start-3 p-5 shadow-xl card row-span-full shadow-primary/10 bg-base-200">
-                    <h2 class="self-center card-title text-primary">Operaciones Totales</h2>
+                <section class="col-span-2 col-start-1 row-start-3 p-5 transition-all duration-300 shadow-xl card row-span-full shadow-primary/10 bg-base-200 hover:shadow-primary/60 hover:scale-101">
+                    <h2 class="self-center card-title text-primary">Tabla de Operaciones</h2>
                     <div class="overflow-x-auto card-body">
                         <table class="table table-pin-rows">
                             <thead>
@@ -67,16 +69,61 @@ import Header from '@/components/Header.vue';
                     </div>
                 </section>
 
-                <section class="col-start-3 row-start-2 p-5 shadow-xl card shadow-primary/10 bg-base-200">
+                <section class="col-start-3 row-start-2 p-5 transition-all duration-300 shadow-xl card shadow-primary/10 bg-base-200 hover:shadow-primary/60 hover:scale-101">
+                    <div class="card-title">
+                        <img src="./icons/crear.png" alt="Crear Nueva Operación" class="w-fit h-fit">
+                        <h2 class="text-lg text-primary">Crear Nueva Operación</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <p>Pulsa esta tarjeta para empezar a crear tu nueva operación;
+                        al hacer clic se abrirá el formulario donde podrás introducir todos los detalles.</p>
+                    </div>
                     
-                    <h2 class="card-title text-primary">Crear nueva Operación</h2>
                 </section>
                 
-                <section class="col-start-3 row-start-3 p-5 shadow-xl card shadow-primary/10 bg-base-200">
-                    <h2 class="card-title text-primary">Tareas por finalizar</h2>
+                <section class="col-start-3 row-start-3 p-5 transition-all duration-300 shadow-xl card shadow-primary/10 bg-base-200 hover:shadow-primary/40 hover:scale-101">
+                    <div class="card-title">
+                        <img src="./icons/filtro.png" alt="Filtrar Operaciones" class="w-fit h-fit">
+                        <h2 class="text-primary">Filtrar Operaciones</h2>
+                    </div>
+
+                    <div class="card-body">
+                        <p>Seleccione el filtro que desee y pulse <span class="font-bold text-primary">Aplicar</span>
+                        para filtrar la tabla de operaciones.</p>
+                        <select class="w-full pl-1 text-xs rounded-box bg-primary/10">
+                            <option selected>Por Estado</option>
+                            <option>Planificada</option>
+                            <option>Activa</option>
+                            <option>Completada</option>
+                        </select>
+
+                        <select class="w-full pl-1 text-xs rounded-box bg-primary/10">
+                            <option selected>Por Nombre</option>
+                            <option>Orden Ascendente</option>
+                            <option>Orden Descendente</option>
+                        </select>
+
+                        <checkbox class="w-full pl-2 text-xs rounded-box bg-primary/10">
+                           Por Fecha Final
+                        </checkbox>
+
+                        <checkbox class="w-full pl-2 text-xs rounded-box bg-primary/10">
+                           Por Equipo
+                        </checkbox>
+
+                    </div>
+
+                    <div class="justify-end card-actions">
+                        <button type="button" class="btn btn-primary">Aplicar</button>
+                    </div>
+                    
                 </section>
 
             </div>
+
+
+         </div>
     </main>
 
 </template>

@@ -29,8 +29,8 @@ function redirectToHome(){
 
     <div class="bg-transparent navbar">
         <div class="flex flex-row items-center flex-1 gap-1">
-            <img class="w-8 h-8" id="logo"src="/public/favicon.ico" alt="Logotipo de CiberPulse Labs">
-            <a @click="redirectToHome" class="font-bold cursor-pointer">CiberPulse Labs</a>
+            <img class="w-8 h-8" id="logo"src="/public/favicon.ico" alt="Logotipo de CyberPulse Labs">
+            <a @click="redirectToHome" class="font-bold cursor-pointer">CyberPulse Labs</a>
         </div>
         <div class="flex-none">
             <ul class="px-1 menu menu-horizontal">                
