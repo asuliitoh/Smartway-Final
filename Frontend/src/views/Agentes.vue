@@ -2,6 +2,56 @@
     import Card from '@/components/Card.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import Search from '@/components/Search.vue';
+    import { useAgenteStore } from '@/stores/agente-store';
+    import { onBeforeMount } from 'vue';
+    import { ref } from 'vue';
+import AgenteCard from '@/components/AgenteCard.vue';
+    
+    //Atributos del agente
+    const store = useAgenteStore()
+    const nombre = ref('')
+    const apellidos = ref('')
+    const rango = ref('')
+    const activo = ref('')
+    const agenteBuscado = ref(null)
+
+    //Objetos reactivos utilizados para la actualización de los atributos del agente
+    const nombreCampo = ref('')
+    const apellidosCampo = ref('')
+    const rangoCampo = ref('')
+    const activoCampo = ref('')
+
+    async function getInformacionAgenteActual() {
+        const response = await store.getInformacionAgenteActual();
+        nombre.value = response.nombre;
+        apellidos.value = response.apellidos;
+        rango.value = response.rango;
+        activo.value = response.activo;
+    }
+
+    async function buscarAgente(id){
+        const agente= await store.getInformacionAgente(id);
+        return agente;
+    }
+
+    function setAgenteBuscado(agente){
+        console.log(agente)
+        agenteBuscado.value=agente
+    }
+
+   async function actualizarInformacionPersonal(){
+
+        const agente = 
+            {nombre: nombreCampo.value,
+            apellidos:apellidosCampo.value,
+            rango:rangoCampo.value,
+            activo:activoCampo.value
+            }
+        await store.updateInformacionAgenteActual(agente)
+
+    }
+    onBeforeMount(getInformacionAgenteActual)
+
 </script>
 
 <template>
@@ -21,25 +71,25 @@
                                 <div class="flex flex-row w-full gap-5">
                                     <div>
                                         <label class="label text-primary">Nombre</label>
-                                        <input type="text" class="input bg-primary/20 border-primary/40" placeholder="Ejemplo">
+                                        <input type="text" class="input bg-primary/20 border-primary/40" v-model="nombreCampo" :placeholder="nombre">
                                     </div>
                                     
                                     <div>
                                         <label class="label text-primary">Apellidos</label>
-                                        <input type="text" class="input bg-primary/20 border-primary/40" placeholder="Ejemplo">
+                                        <input type="text" class="input bg-primary/20 border-primary/40" v-model="apellidosCampo" :placeholder="apellidos">
                                     </div>
 
                                 </div>
                                 
                                 <label class="label text-primary">Rango</label>
-                                <input disabled type="text" class="input disabled:bg-primary/20 disabled:border-primary/40" placeholder="Activo">
+                                <input type="text" class="input bg-primary/20 border-primary/40" v-model="rangoCampo" :placeholder="rango">
 
-                                <label class="label text-primary">Estado</label>
-                                <input disabled type="text" class="input disabled:bg-primary/20 disabled:border-primary/40" placeholder="Activo">
+                                <label class="label text-primary">Activo</label>
+                                <input disabled type="text" class="input disabled:bg-primary/20 disabled:border-primary/40" v-model="activoCampo" :placeholder="activo">
                             
                             <div class="flex gap-3 justify-self-end">
                                 <button type="button" class="btn btn-ghost">Cancelar</button>
-                                <button type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
+                                <button  @click="actualizarInformacionPersonal" type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
                             </div>
                     </fieldset>
                 </template>
@@ -50,6 +100,7 @@
                     <div class="w-[25%]"> 
                         <h2 class="card-title text-primary">Cambiar contraseña</h2>
                         <p>Introduce tu contraseña actual y la nueva contraseña que desea para actualizarla.</p>
+                        <div class="flex items-center justify-center"></div>
                     </div>
                     
                     <fieldset class="w-[75%] p-5 border border-gray-300 bg-primary/10 fieldset rounded-box shadow-lg">
@@ -79,9 +130,11 @@
                 <template v-slot:body>
                     <div class="join join-vertical">
                         <p class="self-center pt-3 pb-5 text-sm text-center">Introduzca el <span class="font-semibold text-primary">identificador del agente</span> para ver su información. Pulse Enter para buscar.</p>
-                        <Search class="w-[75%] self-center row-start-1 col-span-full" v-bind:placeholder="'Buscar Agente'"></Search>
-                        
+                        <Search @searched="(agente) => {setAgenteBuscado(agente)}" class="w-[75%] self-center row-start-1 col-span-full" v-bind:function="buscarAgente" v-bind:placeholder="'Buscar Agente'"></Search>
                     </div>
+                    
+                   <AgenteCard v-if="agenteBuscado" v-bind:agente-buscado="agenteBuscado" class="mt-10"></AgenteCard>
+
                 </template>
             </Card>
 

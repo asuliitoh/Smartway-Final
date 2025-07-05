@@ -19,7 +19,7 @@ public class JWTHandler
     }
     
     
-    public string GenerateToken(string name, string surname, long id)
+    public string GenerateToken(string name, string surname, string id)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
         var claims = new[]

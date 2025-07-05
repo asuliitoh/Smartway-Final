@@ -46,6 +46,11 @@ const axiosInstance = axios.create ( {
 export {axiosInstance, router}
 
 const app = createApp(App);
+
 app.use(createPinia());
 app.use(router);
+
+const auth = useAuthStore();
+auth.init();
+
 app.mount('#app');

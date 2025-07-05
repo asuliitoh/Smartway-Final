@@ -46,7 +46,7 @@ builder.Services.AddSwaggerGen(c => {
 });
 builder.Services.AddAuthentication(JwtBearerDefaults.AuthenticationScheme)
 .AddJwtBearer( o => {
-    var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]);
+    var key = Encoding.UTF8.GetBytes(builder.Configuration["Jwt:Key"]!);
     o.TokenValidationParameters = new TokenValidationParameters {
         ValidateIssuer = true,
         ValidateAudience = true,

@@ -1,14 +1,12 @@
 namespace SmartwayFinal.Models;
 
-public class Agente
+public class AgenteDTO
 {
 
-    public string? Id { get; set; }
+    public required string Id { get; set; }
     public string? Nombre { get; set; }
     public string? Apellidos { get; set; }
-    public string? Password { get; set; }
     public string? Rango { get; set; }
     public bool Activo { get; set; }
-
     public string? EquipoId { get; set; }
 }

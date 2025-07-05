@@ -2,7 +2,7 @@ namespace SmartwayFinal.Models;
 
 public class Operacion
 {
-    public long Id { get; set; }
+    public required string Id { get; set; }
 
     public string? Nombre { get; set; }
 

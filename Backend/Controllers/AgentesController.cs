@@ -2,6 +2,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -27,17 +28,16 @@ namespace SmartwayFinal.Controllers
 
         // GET: api/Agentes/5
         [HttpGet("{id}")]
-        
-        public async Task<ActionResult<Agente>> GetAgente(LoginRequest agenteLoginDTO)
+        [Authorize]
+        public async Task<ActionResult<AgenteDTO>> GetAgente(string Id)
         {
-            var agente = await _context.Agentes.FindAsync(agenteLoginDTO.Id);
+            var agente = await _context.Agentes.FindAsync(Id);
 
             if (agente == null) return NotFound();
 
-            else if (!String.Equals(agente.Password, agenteLoginDTO.Password)) return Unauthorized();
-
-            return agente;
+            return NewAgenteDTO(agente);
         }
+        
 
         // GET: api/Agentes/login
         [HttpPost("login")]
@@ -49,43 +49,33 @@ namespace SmartwayFinal.Controllers
 
             else if (!String.Equals(agente.Password, login.Password)) return Unauthorized();
 
-            string token = _jwt.GenerateToken(agente.Nombre, agente.Apellidos, agente.Id);
+            string token = _jwt.GenerateToken(agente.Nombre!, agente.Apellidos!, agente.Id!);
 
             return NewLoginResponse(agente, token);
         }
-        /*
-                    // PUT: api/Agentes/5
-                    // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-                    [HttpPut("{id}")]
-                    public async Task<IActionResult> PutAgente(long id, Agente agente)
-                    {
-                        if (id != agente.Id)
-                        {
-                            return BadRequest();
-                        }
 
-                        _context.Entry(agente).State = EntityState.Modified;
+        // PUT: api/Agentes/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPut("{id}")]
+        [Authorize]
+        public async Task<ActionResult<AgenteDTO>> UpdateAgente(string id, AgenteDTO update)
+        {
+            if (!string.Equals(id, update.Id)) return BadRequest();
+            var agente = await _context.Agentes.FindAsync(update.Id);
+            if (agente == null) return NotFound();
+            _context.Entry(agente).State = EntityState.Modified;
 
-                        try
-                        {
-                            await _context.SaveChangesAsync();
-                        }
-                        catch (DbUpdateConcurrencyException)
-                        {
-                            if (!AgenteExists(id))
-                            {
-                                return NotFound();
-                            }
-                            else
-                            {
-                                throw;
-                            }
-                        }
+            try
+            {
+                await _context.SaveChangesAsync();
+              
+                
+            }
+            catch (DbUpdateConcurrencyException) { throw; }
+            return await GetAgente(update.Id);
+        }
 
-                        return NoContent();
-                    }
-
-                */
+                
 
         /*                
         // POST: api/Agentes
@@ -146,32 +136,44 @@ namespace SmartwayFinal.Controllers
             }
 
         */
-    
-    /*
-            private bool AgenteExists(long id)
-            {
-                return _context.Agentes.Any(e => e.Id == id);
-            }
-        */
+
+        private bool AgenteExists(string id)
+        {
+            return _context.Agentes.Any(e => e.Id == id);
+        }
+
         private static RegistroResponse NewRegistroResponse(Agente agente)
         {
             return new RegistroResponse
             {
-                Id = agente.Id,
+                Id = agente.Id!,
                 Nombre = agente.Nombre,
                 Apellidos = agente.Apellidos
             };
         }
 
-        private static LoginResponse NewLoginResponse(Agente agente, string token){
+        private static LoginResponse NewLoginResponse(Agente agente, string token)
+        {
             return new LoginResponse
             {
-                Id = agente.Id,
+                Id = agente.Id!,
                 Nombre = agente.Nombre,
                 Apellidos = agente.Apellidos,
                 Token = token
             };
         }
 
+        private static AgenteDTO NewAgenteDTO(Agente agente)
+        {
+            return new AgenteDTO
+            {
+                Id = agente.Id!,
+                Nombre = agente.Nombre,
+                Apellidos = agente.Apellidos,
+                Rango = agente.Rango,
+                Activo = agente.Activo,
+                EquipoId = agente.EquipoId
+            };
+        }
     }
 }

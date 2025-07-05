@@ -2,7 +2,7 @@
 import { defineStore } from "pinia";
 import { axiosInstance } from "@/main";
 import { router } from "@/main";
-
+import { useAgenteStore } from "./agente-store";
 export const useAuthStore = defineStore('auth', {
     state: () => ({
         user: JSON.parse(localStorage.getItem('user')),
@@ -10,6 +10,10 @@ export const useAuthStore = defineStore('auth', {
     }),
 
     actions: {
+
+        init(){
+            axiosInstance.defaults.headers.common.Authorization = `Bearer ${this.token}`;
+        },
         
         register(nombre, apellidos, password){
 
@@ -26,7 +30,7 @@ export const useAuthStore = defineStore('auth', {
                 this.token = response.data.token;
                 localStorage.setItem('user', JSON.stringify(this.user));
                 localStorage.setItem('token', JSON.stringify(this.token));
-                axiosInstance.defaults.headers.common.Authorization = 'Bearer ${this.token}';
+                axiosInstance.defaults.headers.common.Authorization = `Bearer ${this.token}`;
                 router.replace({name: 'home'});
             });
 

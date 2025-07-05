@@ -34,8 +34,7 @@ import Search from '@/components/Search.vue';
                              <thead>
                                  <th>Id</th>
                                  <th>Nombre</th>
-                                 <th>Especialidad</th>
-                                 
+                                 <th>Especialidad</th>    
                             </thead>
                             <tbody>
                                  <tr class="transition duration-300 hover:bg-primary/10">
@@ -54,8 +53,7 @@ import Search from '@/components/Search.vue';
                                     <th>1</th>
                                     <td>Ejemplo</td>
                                     <td>Ejemplo</td>
-                                </tr>
-                                
+                                </tr> 
                             </tbody>
                         </table>
                     </template>
