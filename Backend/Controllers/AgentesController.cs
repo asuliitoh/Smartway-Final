@@ -63,19 +63,53 @@ namespace SmartwayFinal.Controllers
             if (!string.Equals(id, update.Id)) return BadRequest();
             var agente = await _context.Agentes.FindAsync(update.Id);
             if (agente == null) return NotFound();
+
+            agente.Nombre = update.Nombre;
+            agente.Apellidos = update.Apellidos;
+            agente.Rango = update.Rango;
+            agente.Activo = update.Activo;
+            agente.EquipoId = update.EquipoId;
+
+            _context.Entry(agente).State = EntityState.Modified;
+
+            try
+            {
+                await _context.SaveChangesAsync();        
+                return NewAgenteDTO(agente);
+                
+            }
+            catch (DbUpdateConcurrencyException) { throw; }
+            
+        }
+
+        
+        // PUT: api/Agentes/5
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost("{id}/password")]
+        [Authorize]
+        public async Task<ActionResult<AgenteDTO>> UpdatePasswordAgente(string id, PasswordRequest update)
+        {
+            if (!string.Equals(id, update.Id)) return BadRequest();
+            var agente = await _context.Agentes.FindAsync(update.Id);
+            if (agente == null) return NotFound();
+
+            if (!String.Equals(agente.Password, update.Password) || !String.Equals(update.NewPassword, update.ConfirmPassword)) return Unauthorized();
+
+            agente.Password = update.NewPassword;
+
             _context.Entry(agente).State = EntityState.Modified;
 
             try
             {
                 await _context.SaveChangesAsync();
-              
+                Console.WriteLine(agente.Password);
+                return Ok();
                 
             }
             catch (DbUpdateConcurrencyException) { throw; }
-            return await GetAgente(update.Id);
+            
         }
 
-                
 
         /*                
         // POST: api/Agentes

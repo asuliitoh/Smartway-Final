@@ -1,10 +1,10 @@
 <script setup>
 import { useAuthStore } from '@/stores/auth';
-import { router } from '@/main';
+import { router } from '@/router/router';
 
 function logout(){
     const auth = useAuthStore();
-    auth.logout();
+    auth.logout()
 }
 
 function redirectToOperaciones(){

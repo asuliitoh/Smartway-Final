@@ -4,7 +4,7 @@
     import Search from '@/components/Search.vue';
     import { useAgenteStore } from '@/stores/agente-store';
     import { onBeforeMount } from 'vue';
-    import { ref } from 'vue';
+    import { ref, computed} from 'vue';
 import AgenteCard from '@/components/AgenteCard.vue';
     
     //Atributos del agente
@@ -16,10 +16,15 @@ import AgenteCard from '@/components/AgenteCard.vue';
     const agenteBuscado = ref(null)
 
     //Objetos reactivos utilizados para la actualización de los atributos del agente
-    const nombreCampo = ref('')
-    const apellidosCampo = ref('')
-    const rangoCampo = ref('')
-    const activoCampo = ref('')
+    const nombreCampo = ref(null)
+    const apellidosCampo = ref(null)
+    const rangoCampo = ref(null)
+    const activoCampo = ref(null)
+
+    //Objetos reactivos utilizados para el cambio de la contraseña
+    const password = ref(null)
+    const newPassword = ref(null)
+    const confirmPassword = ref(null)
 
     async function getInformacionAgenteActual() {
         const response = await store.getInformacionAgenteActual();
@@ -39,17 +44,24 @@ import AgenteCard from '@/components/AgenteCard.vue';
         agenteBuscado.value=agente
     }
 
+
    async function actualizarInformacionPersonal(){
 
-        const agente = 
-            {nombre: nombreCampo.value,
-            apellidos:apellidosCampo.value,
-            rango:rangoCampo.value,
-            activo:activoCampo.value
-            }
-        await store.updateInformacionAgenteActual(agente)
+        const agenteActualizar = computed(() => {
+            return {
+                nombre: nombreCampo.value ?? nombre.value,
+                apellidos: apellidosCampo.value ?? apellidos.value,
+                rango: rangoCampo.value ?? rango.value,
+                activo: activoCampo.value ?? activo.value
+        }})
+        await store.updateInformacionAgenteActual(agenteActualizar.value)
 
     }
+
+    async function actualizarPassword(){
+        await store.updatePasswordAgenteActual({password:password.value, newPassword:newPassword.value, confirmPassword:confirmPassword.value})
+    }
+
     onBeforeMount(getInformacionAgenteActual)
 
 </script>
@@ -105,17 +117,17 @@ import AgenteCard from '@/components/AgenteCard.vue';
                     
                     <fieldset class="w-[75%] p-5 border border-gray-300 bg-primary/10 fieldset rounded-box shadow-lg">
                         <label class="label text-primary">Contraseña Actual</label>
-                        <input type="password" class="input bg-primary/20 border-primary/40" placeholder="Introduce tu contraseña actual">
+                        <input type="password" v-model="password" class="input bg-primary/20 border-primary/40" placeholder="Introduce tu contraseña actual">
 
                         <label class="label text-primary">Contraseña Nueva</label>
-                        <input type="password" class="input bg-primary/20 border-primary/40" placeholder="Introduce una nueva contraseña">
+                        <input type="password" v-model="newPassword" class="input bg-primary/20 border-primary/40" placeholder="Introduce una nueva contraseña">
 
                         <label class="label text-primary">Confirmar Contraseña</label>
-                        <input type="password" class="input bg-primary/20 border-primary/40" placeholder="Confirme la contraseña nueva">
+                        <input type="password" v-model="confirmPassword" class="input bg-primary/20 border-primary/40" placeholder="Confirme la contraseña nueva">
                         
                         <div class="flex gap-3 justify-self-end">
                             <button type="button" class="btn btn-ghost">Cancelar</button>
-                            <button type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
+                            <button @click="actualizarPassword" type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
                         </div>
                     </fieldset>
                 </template>

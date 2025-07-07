@@ -4,7 +4,7 @@
     import Card from '@/components/Card.vue';
     import Stat from '@/components/Stat.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
-    import { router } from '@/main';
+    import { router } from '@/router/router';
     function redirectToOperaciones(){
         router.replace({name: 'operaciones'})
     }
@@ -20,9 +20,9 @@
                      <h1 class="text-4xl font-bold tracking-tighter card-title">Bienvenido a CyberPulse Labs</h1>
                         <p class="pt-3 text-lg leading-tight tracking-tighter ">Gestiona tus operaciones de manera <span class="font-semibold text-primary">eficiente</span> y gestiona tus equipos con otros agentes</p>
                         <div class="grid grid-cols-3 gap-5">
-                            <Stat class="col-start-1" v-bind:number="0" v-bind:hover="true" v-bind:title="'Agentes Activos'"></Stat>
-                            <Stat class="col-start-2" v-bind:number="0" v-bind:hover="true" v-bind:title="'Equipos Formados'"></Stat>
-                            <Stat class="col-start-3" v-bind:number="0" v-bind:hover="true" v-bind:title="'Operaciones Completadas'"></Stat>                
+                            <Stat class="col-start-1" v-bind:number="'0'" v-bind:hover="true" v-bind:title="'Agentes Activos'"></Stat>
+                            <Stat class="col-start-2" v-bind:number="'0'" v-bind:hover="true" v-bind:title="'Equipos Formados'"></Stat>
+                            <Stat class="col-start-3" v-bind:number="'0'" v-bind:hover="true" v-bind:title="'Operaciones Completadas'"></Stat>                
                         </div>
                 </template>
             </Card>
