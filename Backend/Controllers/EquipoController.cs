@@ -44,7 +44,7 @@ namespace SmartwayFinal.Controllers
         // PUT: api/Equipo/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutEquipo(string id, Equipo equipo)
+        public async Task<IActionResult> PutEquipo(int id, Equipo equipo)
         {
             if (id != equipo.Id)
             {
@@ -99,7 +99,7 @@ namespace SmartwayFinal.Controllers
             return NoContent();
         }
 
-        private bool EquipoExists(string id)
+        private bool EquipoExists(int id)
         {
             return _context.Equipos.Any(e => e.Id == id);
         }

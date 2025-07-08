@@ -1,13 +1,27 @@
 <script setup>
     import { ref} from 'vue';
     import { useAuthStore } from '@/stores/auth';
+    import SuccesfullModal from '@/components/SuccesfullModal.vue';
+    import FailedModal from '@/components/FailedModal.vue';
     
+    //Objeto reactivo para cambiar entre Login y Registro
     const activeLogin = ref(true)
+
+    //Objetos reactivos para el inicio de sesión
     const id = ref('')
+    const passwordLogin = ref('')
+    
+    //Objetos reactivos para el registro
     const nombre=ref('')
     const apellidos=ref('')
-    const passwordLogin = ref('')
     const passwordRegister = ref('')
+
+    //Objetos reactivos para mostrar modals
+    const failedLoginModal = ref(false)
+    const succesfullRegisterModal = ref(false)
+    const failedRegisterModal = ref(false)
+
+    //Store para la autenticación del usuario
     const auth = useAuthStore();
 
     function clickLogin() {
@@ -15,12 +29,16 @@
     }
 
 
-    function submitLogin() {
-        auth.login(id.value, passwordLogin.value);
+    async function submitLogin() {
+        const response = await auth.login(id.value, passwordLogin.value);
+        if (response == false) failedLoginModal.value = true;
     }
 
-    function submitRegister() {
-        auth.register(nombre.value, apellidos.value, passwordRegister.value);        
+    async function submitRegister() {
+        const response = await auth.register(nombre.value, apellidos.value, passwordRegister.value);
+        if (response == true) succesfullRegisterModal.value = true
+        else failedRegisterModal.value = true;
+
     }
 
 
@@ -85,17 +103,48 @@
                 <button @click="submitRegister" type="button" class="btn btn-primary">Registrarse</button>
                 <dialog></dialog>
             </div>
-
-
         </div>
       
      </div>
 
 </div>
 
+    
+        <SuccesfullModal v-show="succesfullRegisterModal" v-model="succesfullRegisterModal">
+            <template v-slot:title>
+                Se ha registrado al agente correctamente
+            </template>
+
+            <template v-slot:body>
+                Su identificador de agente es el número {{ auth.lastIdRegistered }}
+            </template>
+        </SuccesfullModal>
+
+        <FailedModal v-show="failedRegisterModal" v-model="failedRegisterModal">
+            <template v-slot:title>
+                Ha ocurrido un error durante el registro
+            </template>
+
+            <template v-slot:body>
+                Por favor, inténtelo de nuevo.
+            </template>
+        </FailedModal>
+
+        <FailedModal v-show="failedLoginModal" v-model="failedLoginModal">
+            <template v-slot:title>
+                Inicio de sesión fallido
+            </template>
+            
+            <template v-slot:body>
+                Por favor, revise los campos e inténtelo de nuevo.
+            </template>
+        </FailedModal>
+
 
     </main>
 
 
+
+    
 
 </template>

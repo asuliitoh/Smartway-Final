@@ -7,6 +7,7 @@ import { useRoute } from "vue-router";
 export const useAuthStore = defineStore('auth', ()  => {
 
     const user = ref(Number(localStorage.getItem('user')));
+    const lastIdRegistered = ref(null);
     const token = ref(localStorage.getItem('token'));
     const route = useRoute()
     
@@ -39,9 +40,12 @@ export const useAuthStore = defineStore('auth', ()  => {
             
             try {
                 const response = await axiosInstance.post("/Agentes/registro", {nombre:nombre, apellidos:apellidos ,password:password});
-                console.log("El registro se ha llevado correctamente: " + response.data)
+                console.log("El registro se ha completado")
+                this.lastIdRegistered = response.data.id;
+                return true;
             }catch(error){
                 console.error("Se ha producido un error en el registro")
+                return false;
             }
                
 
@@ -57,10 +61,12 @@ export const useAuthStore = defineStore('auth', ()  => {
             localStorage.setItem('token', token.value);
             axiosInstance.defaults.headers.common.Authorization = `Bearer ${this.token}`;
             router.replace({name: 'home'});
+            return true;
             
         }catch(error){
             if (error.response.status === 401) console.error("La contraseña introducida no es correcta")
-            else if (error.response.status === 404) console.error("El identificador introducido no pertenece a ningún usuario")                
+            else if (error.response.status === 404) console.error("El identificador introducido no pertenece a ningún usuario")
+            return false;
         }
         }
 
@@ -87,5 +93,5 @@ export const useAuthStore = defineStore('auth', ()  => {
             return JSON.parse(jsonPayload);
         }
     
-    return {user,token,init,login,register,logout,parseJwt}
+    return {user,lastIdRegistered,token,init,login,register,logout,parseJwt}
 })

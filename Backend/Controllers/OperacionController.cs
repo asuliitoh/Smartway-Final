@@ -44,7 +44,7 @@ namespace SmartwayFinal.Controllers
         // PUT: api/Operacion/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
-        public async Task<IActionResult> PutOperacion(string id, Operacion operacion)
+        public async Task<IActionResult> PutOperacion(int id, Operacion operacion)
         {
             if (id != operacion.Id)
             {
@@ -99,7 +99,7 @@ namespace SmartwayFinal.Controllers
             return NoContent();
         }
 
-        private bool OperacionExists(string id)
+        private bool OperacionExists(int id)
         {
             return _context.Operaciones.Any(e => e.Id == id);
         }

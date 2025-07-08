@@ -62,7 +62,8 @@ export const useAgenteStore = defineStore('agenteStore', {
                     this.nombre=response.data.nombre;
                     this.apellidos=response.data.apellidos;
                     this.rango=response.data.rango;
-                    this.activo=response.data.activo;          
+                    this.activo=response.data.activo;   
+                    return {nombre:this.nombre, apellidos:this.apellidos, rango:this.rango, activo:this.activo}       
                 
                 }catch(error){
                     if (error.response.status === 400) console.error("No se han introducido datos válidos")
@@ -78,11 +79,13 @@ export const useAgenteStore = defineStore('agenteStore', {
                     const peticion = {id:this.id, password:data.password, newPassword:data.newPassword, confirmPassword:data.confirmPassword}
                     console.log(peticion)
                     const response =await axiosInstance.post(`/Agentes/${this.id}/password`, peticion)
+                    return true;
                 }catch(error){
 
                     if (error.response.status === 400) console.error("No se han introducido datos válidos")
                     else if (error.response.status === 404) console.error("El agente no existe")
                     else if (error.response.status === 401) console.error("La contraseña actual no es correcta, o la confirmación de la contraseña no coincide con la nueva contraseña")      
+                    return false;
                 }
                 
             }

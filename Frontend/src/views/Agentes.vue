@@ -5,7 +5,9 @@
     import { useAgenteStore } from '@/stores/agente-store';
     import { onBeforeMount } from 'vue';
     import { ref, computed} from 'vue';
-import AgenteCard from '@/components/AgenteCard.vue';
+    import SuccesfullModal from '@/components/SuccesfullModal.vue';
+    import FailedModal from '@/components/FailedModal.vue';
+    import AgenteCard from '@/components/AgenteCard.vue';
     
     //Atributos del agente
     const store = useAgenteStore()
@@ -25,6 +27,10 @@ import AgenteCard from '@/components/AgenteCard.vue';
     const password = ref(null)
     const newPassword = ref(null)
     const confirmPassword = ref(null)
+
+    //Objetos reactivos utilizados para mostrar modals
+    const succesfullPassword = ref(false)
+    const failedPassword = ref(false)
 
     async function getInformacionAgenteActual() {
         const response = await store.getInformacionAgenteActual();
@@ -54,13 +60,31 @@ import AgenteCard from '@/components/AgenteCard.vue';
                 rango: rangoCampo.value ?? rango.value,
                 activo: activoCampo.value ?? activo.value
         }})
-        await store.updateInformacionAgenteActual(agenteActualizar.value)
+        const response = await store.updateInformacionAgenteActual(agenteActualizar.value)
+        if (response != null) {
+            nombre.value = response.nombre;
+            apellidos.value = response.apellidos;
+            rango.value = response.rango;
+            activo.value = response.activo;
+            nombreCampo.value = '';
+            apellidosCampo.value = '';
+            rangoCampo.value = '';
+            activoCampo.value = '';
+        }
+
 
     }
 
     async function actualizarPassword(){
-        await store.updatePasswordAgenteActual({password:password.value, newPassword:newPassword.value, confirmPassword:confirmPassword.value})
-    }
+        const response = await store.updatePasswordAgenteActual({password:password.value, newPassword:newPassword.value, confirmPassword:confirmPassword.value})
+        password.value='';
+        newPassword.value='';
+        confirmPassword.value='';
+
+        if (response == true) succesfullPassword.value = true
+        else failedPassword.value = true
+
+    }   
 
     onBeforeMount(getInformacionAgenteActual)
 
@@ -149,8 +173,26 @@ import AgenteCard from '@/components/AgenteCard.vue';
 
                 </template>
             </Card>
+            </div> 
+            
+            
+            <SuccesfullModal v-show="succesfullPassword" v-model="succesfullPassword">
+                <template v-slot:title>
+                    <h2>Se ha cambiado la contraseña correctamente</h2>
+                </template>
+            </SuccesfullModal>
 
-            </div>            
+            <FailedModal v-show="failedPassword" v-model="failedPassword">
+                <template v-slot:title>
+                    <h2>No se ha podido cambiar la contraseña</h2>
+                </template>
+
+                <template v-slot:body>
+                    <p> Por favor, revise los campos y vuelva a intentarlo.</p>
+                </template>
+
+            </FailedModal>
+            
     </LayoutSection>
 
 </template>

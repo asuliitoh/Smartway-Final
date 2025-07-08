@@ -29,7 +29,7 @@ namespace SmartwayFinal.Controllers
         // GET: api/Agentes/5
         [HttpGet("{id}")]
         [Authorize]
-        public async Task<ActionResult<AgenteDTO>> GetAgente(string Id)
+        public async Task<ActionResult<AgenteDTO>> GetAgente(int Id)
         {
             var agente = await _context.Agentes.FindAsync(Id);
 
@@ -49,7 +49,7 @@ namespace SmartwayFinal.Controllers
 
             else if (!String.Equals(agente.Password, login.Password)) return Unauthorized();
 
-            string token = _jwt.GenerateToken(agente.Nombre!, agente.Apellidos!, agente.Id!);
+            string token = _jwt.GenerateToken(agente.Nombre!, agente.Apellidos!, agente.Id);
 
             return NewLoginResponse(agente, token);
         }
@@ -60,7 +60,7 @@ namespace SmartwayFinal.Controllers
         [Authorize]
         public async Task<ActionResult<AgenteDTO>> UpdateAgente(string id, AgenteDTO update)
         {
-            if (!string.Equals(id, update.Id)) return BadRequest();
+            if (! (update.Id.ToString() == id)) return BadRequest();
             var agente = await _context.Agentes.FindAsync(update.Id);
             if (agente == null) return NotFound();
 
@@ -171,7 +171,7 @@ namespace SmartwayFinal.Controllers
 
         */
 
-        private bool AgenteExists(string id)
+        private bool AgenteExists(int id)
         {
             return _context.Agentes.Any(e => e.Id == id);
         }
@@ -190,7 +190,7 @@ namespace SmartwayFinal.Controllers
         {
             return new LoginResponse
             {
-                Id = agente.Id!,
+                Id = agente.Id,
                 Nombre = agente.Nombre,
                 Apellidos = agente.Apellidos,
                 Token = token

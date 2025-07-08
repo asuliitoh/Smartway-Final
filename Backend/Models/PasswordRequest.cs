@@ -3,7 +3,7 @@ namespace SmartwayFinal.Models;
 public class PasswordRequest
 {
 
-    public string? Id { get; set; }
+    public int Id { get; set; }
     
     public string? Password { get; set; }
     public string? NewPassword { get; set; }

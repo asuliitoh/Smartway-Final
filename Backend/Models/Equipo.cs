@@ -2,7 +2,7 @@ namespace SmartwayFinal.Models;
 
 public class Equipo
 {
-    public required string Id { get; set; }
+    public required int Id { get; set; }
     public string? Nombre { get; set; }
     public string? Especialidad { get; set; }
 
