@@ -10,13 +10,13 @@
     <dialog class="modal modal-open">
     
         <div class="modal-box text-center">
-            <header>
+            <div>
                 <slot name="header"></slot>
-            </header>
+            </div>
 
-            <body class="p-5">
+            <div class="p-5">
                 <slot name="body"></slot>
-            </body>
+            </div>
 
             <div class="modal-action">
                 <slot name="actions"></slot>  

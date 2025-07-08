@@ -49,7 +49,7 @@ namespace SmartwayFinal.Controllers
 
             else if (!String.Equals(agente.Password, login.Password)) return Unauthorized();
 
-            string token = _jwt.GenerateToken(agente.Nombre!, agente.Apellidos!, agente.Id);
+            string token = _jwt.GenerateToken(agente);
 
             return NewLoginResponse(agente, token);
         }
@@ -68,7 +68,7 @@ namespace SmartwayFinal.Controllers
             agente.Apellidos = update.Apellidos;
             agente.Rango = update.Rango;
             agente.Activo = update.Activo;
-            agente.EquipoId = update.EquipoId;
+            //agente.EquipoId = update.EquipoId;
 
             _context.Entry(agente).State = EntityState.Modified;
 
@@ -206,7 +206,7 @@ namespace SmartwayFinal.Controllers
                 Apellidos = agente.Apellidos,
                 Rango = agente.Rango,
                 Activo = agente.Activo,
-                EquipoId = agente.EquipoId
+                //EquipoId = agente.EquipoId
             };
         }
     }

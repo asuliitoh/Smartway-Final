@@ -7,18 +7,6 @@ function logout(){
     auth.logout()
 }
 
-function redirectToOperaciones(){
-    router.replace({name: 'operaciones'})
-}
-
-function redirectToEquipos(){
-    router.replace({name: 'equipos'})
-}
-
-function redirectToAgentes(){
-    router.replace({name: 'agentes'})
-}
-
 function redirectToHome(){
     router.replace({name: 'home'})
 }

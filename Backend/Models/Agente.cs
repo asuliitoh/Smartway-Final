@@ -9,6 +9,7 @@ public class Agente
     public string? Password { get; set; }
     public string? Rango { get; set; }
     public bool Activo { get; set; }
+    public List<int>? OwnerEquiposId { get; set; }
 
-    public string? EquipoId { get; set; }
+    public List<int>? MemberEquiposId { get; set; }
 }

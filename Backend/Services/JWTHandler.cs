@@ -19,13 +19,14 @@ public class JWTHandler
     }
     
     
-    public string GenerateToken(string name, string surname, int id)
+    public string GenerateToken(Agente agente)
     {
         var tokenHandler = new JwtSecurityTokenHandler();
-        var claims = new[]
+        var claims = new List<Claim>
         {
-             new Claim(ClaimTypes.Name, $"{name} {surname}"),
-            new Claim(ClaimTypes.NameIdentifier, id.ToString())
+            new(ClaimTypes.Name, $"{agente.Nombre} {agente.Apellidos}"),
+            new(ClaimTypes.NameIdentifier, agente.Id.ToString()),
+            
         };
 
         var tokenDescriptor = new SecurityTokenDescriptor

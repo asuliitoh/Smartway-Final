@@ -8,6 +8,7 @@
     import SuccesfullModal from '@/components/SuccesfullModal.vue';
     import FailedModal from '@/components/FailedModal.vue';
     import AgenteCard from '@/components/AgenteCard.vue';
+import NewOperation from '@/components/NewOperation.vue';
     
     //Atributos del agente
     const store = useAgenteStore()
@@ -31,6 +32,8 @@
     //Objetos reactivos utilizados para mostrar modals
     const succesfullPassword = ref(false)
     const failedPassword = ref(false)
+    const failedUpdate = ref(false)
+    const succesfullUpdate = ref(false)
 
     async function getInformacionAgenteActual() {
         const response = await store.getInformacionAgenteActual();
@@ -62,6 +65,7 @@
         }})
         const response = await store.updateInformacionAgenteActual(agenteActualizar.value)
         if (response != null) {
+            succesfullUpdate.value = true;
             nombre.value = response.nombre;
             apellidos.value = response.apellidos;
             rango.value = response.rango;
@@ -71,6 +75,8 @@
             rangoCampo.value = '';
             activoCampo.value = '';
         }
+
+        else failedUpdate.value = true
 
 
     }
@@ -192,6 +198,22 @@
                 </template>
 
             </FailedModal>
+            
+            <SuccesfullModal v-show="succesfullUpdate" v-model="succesfullUpdate">
+                <template v-slot:title>
+                    <h2>Se ha actualizado la información personal correctamente</h2>
+                </template>
+            </SuccesfullModal>
+
+            <SuccesfullModal v-show="failedUpdate" v-model="failedUpdate">
+                <template v-slot:title>
+                    <h2>Ha ocurrido un error durante la actualización de la información personal</h2>
+                </template>
+
+                <template v-slot:body>
+                    <p>Por favor, inténtelo de nuevo.</p>
+                </template>
+            </SuccesfullModal>
             
     </LayoutSection>
 

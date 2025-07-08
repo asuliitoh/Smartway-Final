@@ -2,45 +2,98 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using SmartwayFinal.Models;
+using System.Security.Claims;
+using SmartwayFinal.Controllers;
 
 namespace SmartwayFinal.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class OperacionController : ControllerBase
+    public class OperacionController(Context context) : ControllerBase
     {
-        private readonly Context _context;
+        private readonly Context _context = context;
 
-        public OperacionController(Context context)
-        {
-            _context = context;
-        }
-
-        // GET: api/Operacion
+      
+        // GET: Operacion/
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Operacion>>> GetOperaciones()
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Operacion>>> GetOperationsByUser()
         {
-            return await _context.Operaciones.ToListAsync();
+            //Cogemos el ID del token incluido en la cabecera Authorization
+            var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdToken == null) return Forbid();
+            int userId = int.Parse(userIdToken!.Value);
+            
+            //Se intenta recuperar el agente asociado a dicha ID. 
+            var agente = await _context.Agentes.AsNoTracking().FirstOrDefaultAsync(a => userId == a.Id);
+            
+            //Si no tiene asociado ninguna entidad Agente, se devuelve código de estado 403
+            if (agente == null) return Forbid();
+            
+            //Se recuperan todos los equipos del agente 
+            var equiposId = new HashSet<int>();
+            if (agente.OwnerEquiposId != null) equiposId.UnionWith(agente.OwnerEquiposId);
+            if (agente.MemberEquiposId != null) equiposId.UnionWith(agente.MemberEquiposId);
+            var equipos = await _context.Equipos.AsNoTracking().Where(e => equiposId.Contains(e.Id)).Select(e => e.OperacionesId).ToListAsync();
+            
+            //Se recuperan todas las operaciones de todos los equipos del agente
+            var operacionesIds = equipos.SelectMany(ids => ids).ToList();
+            var operaciones = await _context.Operaciones.AsNoTracking().Where(op => operacionesIds.Contains(op.Id)).ToListAsync();
+            return operaciones;
         }
 
-        // GET: api/Operacion/5
+           // GET: Operacion/id
         [HttpGet("{id}")]
-        public async Task<ActionResult<Operacion>> GetOperacion(long id)
+        [Authorize]
+        public async Task<ActionResult<Operacion>> GetOperationByUser(int id)
         {
-            var operacion = await _context.Operaciones.FindAsync(id);
+            //Cogemos el ID del token incluido en la cabecera Authorization
+            var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdToken == null) return Forbid();
+            int userId = int.Parse(userIdToken!.Value);
 
-            if (operacion == null)
+            //Se intenta recuperar el agente asociado a dicha ID. 
+            var agente = await _context.Agentes.AsNoTracking().FirstOrDefaultAsync(a => userId == a.Id);
+            
+            //Si no tiene asociado ninguna entidad Agente, se devuelve código de estado 403
+            if (agente == null) return Forbid();
+            
+            //Se recuperan todos los equipos del agente 
+            var equiposId = new HashSet<int>();
+            if (agente.OwnerEquiposId != null) equiposId.UnionWith(agente.OwnerEquiposId);
+            if (agente.MemberEquiposId != null) equiposId.UnionWith(agente.MemberEquiposId);
+            bool permitido = await _context.Equipos.AsNoTracking().Where(e => equiposId.Contains(e.Id)).AnyAsync(e => e.OperacionesId.Contains(id));
+            if (!permitido) return Forbid();
+            return await _context.Operaciones.FindAsync(id);
+            
+        }
+
+        // POST: api/Operacion
+        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+        [HttpPost]
+        [Authorize]
+        public async Task<ActionResult<Operacion>> PostOperacion(OperacionDTO operacionDTO)
+        {
+            var operacion = new Operacion
             {
-                return NotFound();
-            }
+                Nombre = operacionDTO.Nombre,
+                Estado = operacionDTO.Estado,
+                FechaInicio = operacionDTO.FechaInicio,
+                FechaFinal = operacionDTO.FechaFinal
+            };
+
+            _context.Operaciones.Add(operacion);
+            await _context.SaveChangesAsync();
 
             return operacion;
         }
 
+        /*
         // PUT: api/Operacion/5
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
@@ -71,7 +124,10 @@ namespace SmartwayFinal.Controllers
 
             return NoContent();
         }
+        */
 
+
+        /*
         // POST: api/Operacion
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
@@ -82,6 +138,7 @@ namespace SmartwayFinal.Controllers
 
             return CreatedAtAction("GetOperacion", new { id = operacion.Id }, operacion);
         }
+        */
 
         // DELETE: api/Operacion/5
         [HttpDelete("{id}")]

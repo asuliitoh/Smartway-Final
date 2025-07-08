@@ -24,13 +24,13 @@ import Search from '@/components/Search.vue';
                     </template>
                 </Card>
 
-                <Card class="row-start-3">
+                <Card class="row-start-3 overflow-auto">
                     <template v-slot:title>
                         <h2 class="w-full text-center text-primary"> Equipos propios</h2>
                     </template>
 
                     <template v-slot:body>
-                        <table class="table overflow-x-auto table-pin-rows">
+                        <table class="table table-pin-rows">
                              <thead>
                                  <th>Id</th>
                                  <th>Nombre</th>
@@ -54,6 +54,30 @@ import Search from '@/components/Search.vue';
                                     <td>Ejemplo</td>
                                     <td>Ejemplo</td>
                                 </tr> 
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr> 
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr> 
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr> 
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr> 
                             </tbody>
                         </table>
                     </template>
@@ -65,14 +89,14 @@ import Search from '@/components/Search.vue';
 
                 </Card>
 
-                <Card class="col-start-2 row-start-3">
+                <Card class="col-start-2 row-start-3 overflow-auto">
                     <template v-slot:title>
                         <h2 class="w-full text-center text-primary"> Equipos en los que participas</h2>
                        
                     </template>
 
                     <template v-slot:body>
-                         <table class="table overflow-x-auto table-pin-rows">
+                         <table class="table table-pin-rows">
                              <thead>
                                  <th>Id</th>
                                  <th>Nombre</th>
@@ -93,6 +117,42 @@ import Search from '@/components/Search.vue';
                                 </tr>
 
                                  <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Ejemplo</td>
+                                </tr>
+
+                                <tr class="transition duration-300 hover:bg-primary/10">
                                     <th>1</th>
                                     <td>Ejemplo</td>
                                     <td>Ejemplo</td>

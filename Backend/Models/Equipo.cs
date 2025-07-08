@@ -6,8 +6,8 @@ public class Equipo
     public string? Nombre { get; set; }
     public string? Especialidad { get; set; }
 
-    public ICollection<String>? OperacionesId { get; set; }
+    public ICollection<int>? OperacionesId { get; set; }
     
-    public ICollection<String>? AgentesId { get; set; }
+    public ICollection<int>? AgentesId { get; set; }
 
 }

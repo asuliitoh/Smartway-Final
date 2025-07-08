@@ -1,8 +1,11 @@
 <script setup>
     import GeneralStatsOperations from '@/components/GeneralStatsOperations.vue';
     import Card from '@/components/Card.vue';
-import LayoutSection from '@/layouts/LayoutSection.vue';
-import Search from '@/components/Search.vue';
+    import LayoutSection from '@/layouts/LayoutSection.vue';
+    import Search from '@/components/Search.vue';
+    import NewOperation from '@/components/NewOperation.vue';
+    import { ref } from 'vue';
+    const newOperationModal = ref(false)
 </script>
 
 <template>
@@ -20,17 +23,16 @@ import Search from '@/components/Search.vue';
                         </div>
                     </template>
                     <template v-slot:body>
-                        
                         <GeneralStatsOperations></GeneralStatsOperations>
                     </template>
 
 
                 </Card>
 
-                <Card class="col-span-2 col-start-1 row-start-3">
+                <Card class="col-span-2 col-start-1 row-start-3 overflow-auto">
                     <template v-slot:body>
                         <h2 class="self-center card-title text-primary">Tabla de Operaciones</h2>
-                        <table class="table overflow-x-auto table-pin-rows">
+                        <table class="table table-pin-rows">
                              <thead>
                                  <th>Id</th>
                                  <th>Nombre</th>
@@ -71,12 +73,84 @@ import Search from '@/components/Search.vue';
                                     <td>14/07/25</td>
                                 </tr>
 
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Planificada</td>
+                                    <td>03/07/25</td>
+                                    <td>14/07/25</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Planificada</td>
+                                    <td>03/07/25</td>
+                                    <td>14/07/25</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Planificada</td>
+                                    <td>03/07/25</td>
+                                    <td>14/07/25</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Planificada</td>
+                                    <td>03/07/25</td>
+                                    <td>14/07/25</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Planificada</td>
+                                    <td>03/07/25</td>
+                                    <td>14/07/25</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Planificada</td>
+                                    <td>03/07/25</td>
+                                    <td>14/07/25</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Planificada</td>
+                                    <td>03/07/25</td>
+                                    <td>14/07/25</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Planificada</td>
+                                    <td>03/07/25</td>
+                                    <td>14/07/25</td>
+                                </tr>
+
+                                 <tr class="transition duration-300 hover:bg-primary/10">
+                                    <th>1</th>
+                                    <td>Ejemplo</td>
+                                    <td>Planificada</td>
+                                    <td>03/07/25</td>
+                                    <td>14/07/25</td>
+                                </tr>
+
                             </tbody>
                         </table>
                     </template>
                 </Card>
 
-              <Card class="col-start-3 row-start-2 cursor-pointer">
+              <Card @click="newOperationModal = true" class="col-start-3 row-start-2 cursor-pointer">
                 <template v-slot:title>
                     <img src="./icons/crear.png" alt="Crear Nueva Operación" class="w-fit h-fit">
                     <h2 class="text-lg text-primary">Crear Nueva Operación</h2>
@@ -96,41 +170,54 @@ import Search from '@/components/Search.vue';
                 </template>
 
                 <template v-slot:body>
-                    <div class="join join-vertical">
-                        <p class="join-item">Seleccione el filtro que desee y pulse <span class="font-bold text-primary">Aplicar</span>
+                    <div class>
+                        <p>Seleccione el filtro que desee y pulse <span class="font-bold text-primary">Aplicar</span>
                         para filtrar la tabla de operaciones.</p>
                     </div>
-                    
-                        <select class="w-full pl-1 text-xs join-item rounded-box bg-primary/10">
-                            <option selected>Por Estado</option>
-                            <option>Planificada</option>
-                            <option>Activa</option>
-                            <option>Completada</option>
-                        </select>
 
-                        <select class="w-full pl-1 text-xs join-item rounded-box bg-primary/10">
-                            <option selected>Por Nombre</option>
-                            <option>Orden Ascendente</option>
-                            <option>Orden Descendente</option>
-                        </select>
+                    <div class="grid h-full grid-rows-3">
 
-                        <checkbox class="w-full pl-2 text-xs join-item rounded-box bg-primary/10">
-                           Por Fecha Final
-                        </checkbox>
+                        <div>
+                            <label class="text-xs label text-primary">Estado de la operación</label>
+                            <select class="w-full pl-1 text-xs border rounded-sm join-item bg-primary/10 border-primary/50">
+                                <option selected>Todos los Estados</option>
+                                <option>Planificada</option>
+                                <option>Activa</option>
+                                <option>Completada</option>
+                            </select>
+                        </div>
+                        
+                        <div>
+                            <label class="text-xs label text-primary">Periodo de Tiempo</label>
+                            <select class="w-full pl-1 text-xs border rounded-sm join-item bg-primary/10 border-primary/50">
+                                <option selected>Sin Periodo Concreto</option>
+                                <option>Última Semana</option>
+                                <option>Último Mes</option>
+                                <option>Periodo Personalizado</option>
+                            </select>
+                        </div>
 
-                        <checkbox class="w-full pl-2 text-xs join-item rounded-box bg-primary/10">
-                           Por Equipo
-                        </checkbox>
+                        <div>
+                            <label class="text-xs label text-primary">Equipo Asignado</label>
+                            <input type="search" class="w-full pl-1 text-xs border rounded-sm h-fit join-item bg-primary/10 border-primary/50" placeholder="Introduce el ID del equipo"/>
+                        </div>
+                        
 
+                    </div>
+
+                        
                 </template>
 
                 <template v-slot:actions>
+                     <button type="button" class="btn">Reiniciar</button>
                     <button type="button" class="btn btn-primary">Aplicar</button>
                 </template>
 
               </Card>
-
             </div>
+        <NewOperation v-show="newOperationModal" v-model="newOperationModal"></NewOperation>
     </LayoutSection>
+
+
 
 </template>
