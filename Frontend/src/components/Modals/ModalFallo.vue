@@ -1,7 +1,7 @@
 <script setup>
-import Modal from './Modal.vue';
 
-const visible = defineModel(false)
+    import Modal from './Modal.vue';
+    const visible = defineModel(false)
 
 </script>
 
@@ -12,7 +12,7 @@ const visible = defineModel(false)
                 <img src="./icons/cross.png" alt="Icono Fallo" class="w-40 h-40 text-center">
                 <div class="text-primary font-bold text-xl"><slot name="title"></slot></div>
             </div>
-            
+
         </template>
 
         <template v-slot:body>
@@ -20,11 +20,7 @@ const visible = defineModel(false)
         </template>
 
         <template v-slot:actions>
-           
-                <form method="dialog">
-                    <button @click="visible = false" type="button" class="btn btn-primary">Cerrar</button>
-                </form>
-
+            <button @click="visible = false" type="button" class="btn btn-primary">Cerrar</button>
         </template>
 
     </Modal>

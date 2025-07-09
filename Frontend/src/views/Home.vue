@@ -1,8 +1,8 @@
 <script setup>
-    import GeneralStatsEquipos from '@/components/GeneralStatsEquipos.vue';
-    import GeneralStatsOperations from '@/components/GeneralStatsOperations.vue';
-    import Card from '@/components/Card.vue';
-    import Stat from '@/components/Stat.vue';
+    import EstadisticasEquipo from '@/components/Estadisticas/EstadisticasEquipo.vue';
+    import EstadisticasOperaciones from '@/components/Estadisticas/EstadisticasOperaciones.vue';
+    import Card from '@/components/Cards/Card.vue';
+    import Stat from '@/components/Estadisticas/Stat.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import { router } from '@/router/router';
     function redirectToOperaciones(){
@@ -43,7 +43,7 @@
                     <template v-slot:body>
                         <h1 class="text-4xl font-bold tracking-tighter card-title">Gestiona tus equipos</h1>
                         <p class="pt-3 text-lg leading-tight tracking-tighter">Organiza y supervisa equipos de trabajo, sus miembros agentes y operaciones activas.</p>
-                        <GeneralStatsEquipos v-bind:hover="true"></GeneralStatsEquipos>
+                        <EstadisticasEquipo v-bind:hover="true"></EstadisticasEquipo>
                     </template>
 
                     <template v-slot:actions>
@@ -57,7 +57,7 @@
                     <template v-slot:body>
                         <h1 class="text-4xl font-bold tracking-tighter card-title">Gestiona tus operaciones</h1>
                         <p class="pt-3 text-lg leading-tight tracking-tighter ">Gestiona todas las operaciones y controla aquellas operaciones en curso.</p>
-                        <GeneralStatsOperations v-bind:hover="true"></GeneralStatsOperations>
+                        <EstadisticasOperaciones v-bind:hover="true"></EstadisticasOperaciones>
                     </template>
 
                     <template v-slot:actions>

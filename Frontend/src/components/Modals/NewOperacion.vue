@@ -15,10 +15,6 @@
     const fechaInicio = ref(null)
     const fechaFinal = ref(null)
 
-    function getAllOperaciones(){
-        operacionesStore.getAllOperaciones();
-    }
-
     function newOperacion(){
         if ((nombre.value != null) && (estado.value != null) && (fechaInicio.value != null) && (fechaFinal.value != null)){
         operacionesStore.newOperacion({nombre:nombre.value,
@@ -27,6 +23,14 @@
             fechafinal:fechaFinal.value    
         })
         }
+    }
+
+    function clear(){
+        nombre.value = null;
+        estado.value = "Ninguno";
+        fechaInicio.value = null;
+        fechaFinal.value = null;
+        visible.value = false;
     }
 
 </script>
@@ -78,7 +82,7 @@
         </template>
 
           <template v-slot:actions>
-            <button @click="visible = false" type="button" class="btn">Cancelar</button>
+            <button @click="clear" type="button" class="btn">Cancelar</button>
             <button @click="newOperacion" type="button" class="btn btn-primary">Crear</button>
         </template>
         

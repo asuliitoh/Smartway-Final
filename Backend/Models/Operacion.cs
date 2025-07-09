@@ -1,3 +1,5 @@
+using System.Text.Json.Serialization;
+
 namespace SmartwayFinal.Models;
 
 public class Operacion
@@ -6,6 +8,7 @@ public class Operacion
 
     public string? Nombre { get; set; }
 
+    [JsonConverter(typeof(JsonStringEnumConverter))]
     public EstadoOperacion Estado { get; set; }
 
     public DateTime FechaInicio { get; set; }

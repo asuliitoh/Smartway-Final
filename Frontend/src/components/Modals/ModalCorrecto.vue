@@ -1,5 +1,6 @@
 <script setup>
-import Modal from './Modal.vue';
+    
+    import Modal from './Modal.vue';
 
 const visible = defineModel(false)
 
@@ -20,11 +21,7 @@ const visible = defineModel(false)
         </template>
 
         <template v-slot:actions>
-           
-                <form method="dialog">
-                    <button @click="visible = false" type="button" class="btn btn-primary">Cerrar</button>
-                </form>
-
+            <button @click="visible = false" type="button" class="btn btn-primary">Cerrar</button>
         </template>
 
     </Modal>

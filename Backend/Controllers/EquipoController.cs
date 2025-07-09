@@ -1,7 +1,9 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Security.Claims;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -9,41 +11,48 @@ using SmartwayFinal.Models;
 
 namespace SmartwayFinal.Controllers
 {
-    [Route("api/[controller]")]
+    [Route("[controller]")]
     [ApiController]
-    public class EquipoController : ControllerBase
+    public class EquipoController(Context context) : ControllerBase
     {
-        private readonly Context _context;
+        private readonly Context _context = context;
 
-        public EquipoController(Context context)
-        {
-            _context = context;
-        }
-
-        // GET: api/Equipo
+        // GET: Equipo
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<Equipo>>> GetEquipos()
+        [Authorize]
+        public async Task<ActionResult<IEnumerable<Equipo>>> GetEquiposByUser()
         {
-            return await _context.Equipos.ToListAsync();
+            //Cogemos el ID del token incluido en la cabecera Authorization
+            var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdToken == null) return Forbid();
+            int userId = int.Parse(userIdToken!.Value);
+            var equipos = await _context.Equipos.AsNoTracking().Where(e => e.OwnerId == userId || (e.MemberId != null && e.MemberId.Contains(userId))).ToListAsync();
+            return equipos;
         }
 
-        // GET: api/Equipo/5
+        // GET: Equipo/5
         [HttpGet("{id}")]
-        public async Task<ActionResult<Equipo>> GetEquipo(long id)
+        [Authorize]
+        public async Task<ActionResult<Equipo>> GetEquipo(int id)
         {
+            
             var equipo = await _context.Equipos.FindAsync(id);
+            if (equipo == null) return NotFound();
 
-            if (equipo == null)
-            {
-                return NotFound();
-            }
+            //Cogemos el ID del token incluido en la cabecera Authorization
+            var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdToken == null) return Forbid();
+            int userId = int.Parse(userIdToken!.Value);
+
+            if (equipo.OwnerId != userId && (equipo.MemberId != null) && (!equipo.MemberId.Contains(userId))) return Forbid();
 
             return equipo;
         }
 
-        // PUT: api/Equipo/5
+        // PUT: Equipo
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<IActionResult> PutEquipo(int id, Equipo equipo)
         {
             if (id != equipo.Id)
@@ -75,17 +84,26 @@ namespace SmartwayFinal.Controllers
         // POST: api/Equipo
         // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
-        public async Task<ActionResult<Equipo>> PostEquipo(Equipo equipo)
+        [Authorize]
+        public async Task<ActionResult<Equipo>> PostEquipo(EquipoDTO equipoDTO)
         {
+            var equipo = new Equipo
+            {
+                Nombre = equipoDTO.Nombre,
+                Especialidad = equipoDTO.Especialidad,
+                OwnerId = equipoDTO.OwnerId
+
+            };
+
             _context.Equipos.Add(equipo);
             await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetEquipo", new { id = equipo.Id }, equipo);
+            return equipo;
         }
 
         // DELETE: api/Equipo/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteEquipo(long id)
+        [Authorize]
+        public async Task<IActionResult> DeleteEquipo(int id)
         {
             var equipo = await _context.Equipos.FindAsync(id);
             if (equipo == null)
@@ -93,6 +111,14 @@ namespace SmartwayFinal.Controllers
                 return NotFound();
             }
 
+            //Cogemos el ID del token incluido en la cabecera Authorization
+            var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdToken == null) return Forbid();
+            int userId = int.Parse(userIdToken!.Value);
+
+            //Si el ID del Agente actual no es igual al ID del dueño del equipo, no puede borrar el equipo y se devuelve 403.
+            if (userId != equipo.OwnerId) return Forbid();
+            
             _context.Equipos.Remove(equipo);
             await _context.SaveChangesAsync();
 

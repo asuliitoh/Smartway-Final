@@ -1,8 +1,8 @@
 <script setup>
     import { ref} from 'vue';
-    import { useAuthStore } from '@/stores/auth';
-    import SuccesfullModal from '@/components/SuccesfullModal.vue';
-    import FailedModal from '@/components/FailedModal.vue';
+    import { useAuthStore } from '@/stores/auth-store';
+    import ModalCorrecto from '@/components/Modals/ModalCorrecto.vue';
+    import ModalFallo from '@/components/Modals/ModalFallo.vue';
     
     //Objeto reactivo para cambiar entre Login y Registro
     const activeLogin = ref(true)
@@ -110,7 +110,7 @@
 </div>
 
     
-        <SuccesfullModal v-show="succesfullRegisterModal" v-model="succesfullRegisterModal">
+        <ModalCorrecto v-show="succesfullRegisterModal" v-model="succesfullRegisterModal">
             <template v-slot:title>
                 Se ha registrado al agente correctamente
             </template>
@@ -118,9 +118,9 @@
             <template v-slot:body>
                 Su identificador de agente es el número {{ auth.lastIdRegistered }}
             </template>
-        </SuccesfullModal>
+        </ModalCorrecto>
 
-        <FailedModal v-show="failedRegisterModal" v-model="failedRegisterModal">
+        <ModalFallo v-show="failedRegisterModal" v-model="failedRegisterModal">
             <template v-slot:title>
                 Ha ocurrido un error durante el registro
             </template>
@@ -128,9 +128,9 @@
             <template v-slot:body>
                 Por favor, inténtelo de nuevo.
             </template>
-        </FailedModal>
+        </ModalFallo>
 
-        <FailedModal v-show="failedLoginModal" v-model="failedLoginModal">
+        <ModalFallo v-show="failedLoginModal" v-model="failedLoginModal">
             <template v-slot:title>
                 Inicio de sesión fallido
             </template>
@@ -138,7 +138,7 @@
             <template v-slot:body>
                 Por favor, revise los campos e inténtelo de nuevo.
             </template>
-        </FailedModal>
+        </ModalFallo>
 
 
     </main>

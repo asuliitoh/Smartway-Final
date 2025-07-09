@@ -1,15 +1,14 @@
 <script setup>
-    import Card from '@/components/Card.vue';
+    import Card from '@/components/Cards/Card.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import Search from '@/components/Search.vue';
     import { useAgenteStore } from '@/stores/agente-store';
     import { onBeforeMount } from 'vue';
     import { ref, computed} from 'vue';
-    import SuccesfullModal from '@/components/SuccesfullModal.vue';
-    import FailedModal from '@/components/FailedModal.vue';
-    import AgenteCard from '@/components/AgenteCard.vue';
-import NewOperation from '@/components/NewOperation.vue';
-    
+    import ModalFallo from '@/components/Modals/ModalFallo.vue';
+    import ModalCorrecto from '@/components/Modals/ModalCorrecto.vue';
+    import AgenteCard from '@/components/Cards/AgenteCard.vue';
+
     //Atributos del agente
     const store = useAgenteStore()
     const nombre = ref('')
@@ -17,6 +16,7 @@ import NewOperation from '@/components/NewOperation.vue';
     const rango = ref('')
     const activo = ref('')
     const agenteBuscado = ref(null)
+    const seHaBuscado = ref(false)
 
     //Objetos reactivos utilizados para la actualización de los atributos del agente
     const nombreCampo = ref(null)
@@ -49,8 +49,8 @@ import NewOperation from '@/components/NewOperation.vue';
     }
 
     function setAgenteBuscado(agente){
-        console.log(agente)
-        agenteBuscado.value=agente
+        seHaBuscado.value = true;
+        agenteBuscado.value=agente;
     }
 
 
@@ -175,20 +175,20 @@ import NewOperation from '@/components/NewOperation.vue';
                         <Search @searched="(agente) => {setAgenteBuscado(agente)}" class="w-[75%] self-center row-start-1 col-span-full" v-bind:function="buscarAgente" v-bind:placeholder="'Buscar Agente'"></Search>
                     </div>
                     
-                   <AgenteCard v-if="agenteBuscado" v-bind:agente-buscado="agenteBuscado" class="mt-10"></AgenteCard>
-
+                    <AgenteCard v-if="agenteBuscado" v-bind:agente-buscado="agenteBuscado" class="mt-10"></AgenteCard>
+                    <p v-else-if="seHaBuscado" class="pt-2 text-xs text-primary">No se ha encontrado ningún agente con dicho identificador.</p>
                 </template>
             </Card>
             </div> 
             
             
-            <SuccesfullModal v-show="succesfullPassword" v-model="succesfullPassword">
+            <ModalCorrecto v-show="succesfullPassword" v-model="succesfullPassword">
                 <template v-slot:title>
                     <h2>Se ha cambiado la contraseña correctamente</h2>
                 </template>
-            </SuccesfullModal>
+            </ModalCorrecto>
 
-            <FailedModal v-show="failedPassword" v-model="failedPassword">
+            <ModalFallo v-show="failedPassword" v-model="failedPassword">
                 <template v-slot:title>
                     <h2>No se ha podido cambiar la contraseña</h2>
                 </template>
@@ -197,15 +197,15 @@ import NewOperation from '@/components/NewOperation.vue';
                     <p> Por favor, revise los campos y vuelva a intentarlo.</p>
                 </template>
 
-            </FailedModal>
+            </ModalFallo>
             
-            <SuccesfullModal v-show="succesfullUpdate" v-model="succesfullUpdate">
+            <ModalCorrecto v-show="succesfullUpdate" v-model="succesfullUpdate">
                 <template v-slot:title>
                     <h2>Se ha actualizado la información personal correctamente</h2>
                 </template>
-            </SuccesfullModal>
+            </ModalCorrecto>
 
-            <SuccesfullModal v-show="failedUpdate" v-model="failedUpdate">
+            <ModalCorrecto v-show="failedUpdate" v-model="failedUpdate">
                 <template v-slot:title>
                     <h2>Ha ocurrido un error durante la actualización de la información personal</h2>
                 </template>
@@ -213,7 +213,7 @@ import NewOperation from '@/components/NewOperation.vue';
                 <template v-slot:body>
                     <p>Por favor, inténtelo de nuevo.</p>
                 </template>
-            </SuccesfullModal>
+            </ModalCorrecto>
             
     </LayoutSection>
 

@@ -1,11 +1,23 @@
 <script setup>
-    import GeneralStatsOperations from '@/components/GeneralStatsOperations.vue';
-    import Card from '@/components/Card.vue';
+    import EstadisticasOperaciones from '@/components/Estadisticas/EstadisticasOperaciones.vue';
+    import Card from '@/components/Cards/Card.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import Search from '@/components/Search.vue';
-    import NewOperation from '@/components/NewOperation.vue';
+    import NewOperation from '@/components/Modals/NewOperacion.vue';
     import { ref } from 'vue';
+    import TablaOperaciones from '@/components/Tablas/TablaOperaciones.vue';
+    import { useOperacionesStore } from '@/stores/operaciones-store';
+    import { onBeforeMount } from 'vue';
     const newOperationModal = ref(false)
+    const operacionSeleccionada = ref(null)
+    const operacionesStore = useOperacionesStore()
+
+    function getOperaciones(){
+        operacionesStore.getAllOperaciones()
+    }
+
+    onBeforeMount(getOperaciones)
+
 </script>
 
 <template>
@@ -23,7 +35,7 @@
                         </div>
                     </template>
                     <template v-slot:body>
-                        <GeneralStatsOperations></GeneralStatsOperations>
+                        <EstadisticasOperaciones></EstadisticasOperaciones>
                     </template>
 
 
@@ -32,122 +44,14 @@
                 <Card class="col-span-2 col-start-1 row-start-3 overflow-auto">
                     <template v-slot:body>
                         <h2 class="self-center card-title text-primary">Tabla de Operaciones</h2>
-                        <table class="table table-pin-rows">
-                             <thead>
-                                 <th>Id</th>
-                                 <th>Nombre</th>
-                                 <th>Estado</th>
-                                 <th>Fecha Inicio</th>
-                                 <th>Fecha Fin</th>
-                            </thead>
-                            <tbody>
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                                 <tr class="transition duration-300 hover:bg-primary/10">
-                                    <th>1</th>
-                                    <td>Ejemplo</td>
-                                    <td>Planificada</td>
-                                    <td>03/07/25</td>
-                                    <td>14/07/25</td>
-                                </tr>
-
-                            </tbody>
-                        </table>
+                        <TablaOperaciones v-model="operacionSeleccionada" :operaciones="operacionesStore.operaciones"></TablaOperaciones>
                     </template>
+
+                    <template v-slot:actions>
+                        <button type="button" class="btn">Editar Operación</button>
+                        <button type="button" class="btn btn-primary">Eliminar Operación</button>
+                    </template>
+
                 </Card>
 
               <Card @click="newOperationModal = true" class="col-start-3 row-start-2 cursor-pointer">
