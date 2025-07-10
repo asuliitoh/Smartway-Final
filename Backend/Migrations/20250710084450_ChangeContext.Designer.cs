@@ -2,6 +2,7 @@
 using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using SmartwayFinal.Models;
 
@@ -10,12 +11,29 @@ using SmartwayFinal.Models;
 namespace SmartwayFinal.Migrations
 {
     [DbContext(typeof(Context))]
-    partial class TodoContextModelSnapshot : ModelSnapshot
+    [Migration("20250710084450_ChangeContext")]
+    partial class ChangeContext
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        /// <inheritdoc />
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder.HasAnnotation("ProductVersion", "9.0.6");
+
+            modelBuilder.Entity("AgenteEquipo", b =>
+                {
+                    b.Property<int>("MiembroEquiposId")
+                        .HasColumnType("INTEGER");
+
+                    b.Property<int>("MiembrosId")
+                        .HasColumnType("INTEGER");
+
+                    b.HasKey("MiembroEquiposId", "MiembrosId");
+
+                    b.HasIndex("MiembrosId");
+
+                    b.ToTable("AgenteEquipo");
+                });
 
             modelBuilder.Entity("SmartwayFinal.Models.Agente", b =>
                 {
@@ -41,21 +59,6 @@ namespace SmartwayFinal.Migrations
                     b.HasKey("Id");
 
                     b.ToTable("Agentes");
-                });
-
-            modelBuilder.Entity("SmartwayFinal.Models.AgenteEquipo", b =>
-                {
-                    b.Property<int>("AgenteId")
-                        .HasColumnType("INTEGER");
-
-                    b.Property<int>("EquipoId")
-                        .HasColumnType("INTEGER");
-
-                    b.HasKey("AgenteId", "EquipoId");
-
-                    b.HasIndex("EquipoId");
-
-                    b.ToTable("AgenteEquipos");
                 });
 
             modelBuilder.Entity("SmartwayFinal.Models.Equipo", b =>
@@ -111,23 +114,19 @@ namespace SmartwayFinal.Migrations
                     b.ToTable("Operaciones");
                 });
 
-            modelBuilder.Entity("SmartwayFinal.Models.AgenteEquipo", b =>
+            modelBuilder.Entity("AgenteEquipo", b =>
                 {
-                    b.HasOne("SmartwayFinal.Models.Agente", "Agente")
+                    b.HasOne("SmartwayFinal.Models.Equipo", null)
                         .WithMany()
-                        .HasForeignKey("AgenteId")
+                        .HasForeignKey("MiembroEquiposId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
 
-                    b.HasOne("SmartwayFinal.Models.Equipo", "Equipo")
+                    b.HasOne("SmartwayFinal.Models.Agente", null)
                         .WithMany()
-                        .HasForeignKey("EquipoId")
+                        .HasForeignKey("MiembrosId")
                         .OnDelete(DeleteBehavior.Cascade)
                         .IsRequired();
-
-                    b.Navigation("Agente");
-
-                    b.Navigation("Equipo");
                 });
 
             modelBuilder.Entity("SmartwayFinal.Models.Equipo", b =>

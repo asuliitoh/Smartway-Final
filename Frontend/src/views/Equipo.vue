@@ -15,6 +15,8 @@
                     <p class="text-primary">Información del Equipo</p>
                 </div>
 
+                
+
             </template>
 
             <template v-slot:body>

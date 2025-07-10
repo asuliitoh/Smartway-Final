@@ -7,22 +7,26 @@ export const useOperacionesStore = defineStore('operaciones-store', ()  => {
 
     const operaciones = reactive(new Map())
 
-    async function setOperaciones(response){
+    function setOperaciones(response){
         for (let i = 0 ; i < response.data.length ; i++){
                 operaciones.set(response.data[i].id, response.data[i]);
             }
+            
     }
 
     async function getAllOperaciones() {
         await axiosInstance.get('Operacion').then((response) => {
             setOperaciones(response);
+            console.log(response)
+            console.log(operaciones)
         });
     }
 
     async function newOperacion(data){
-         console.log(data)
+    
          await axiosInstance.post('Operacion', data).then((response) => {
-            console.log(response);
+            console.log(response.data);
+            operaciones.set(response.data.id, response.data)
         });
     }
 

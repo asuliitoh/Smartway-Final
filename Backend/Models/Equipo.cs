@@ -6,10 +6,16 @@ public class Equipo
     public string? Nombre { get; set; }
     public string? Especialidad { get; set; }
 
-    public ICollection<int>? OperacionesId { get; set; }
+    //Navegación
+    public ICollection<Operacion>? Operaciones { get; set; }
     
-    public int? OwnerId { get; set; }
+    //Clave ajena
+    public int OwnerId { get; set; }
 
-    public ICollection<int>? MemberId { get; set; }
+    //Navegación
+    public Agente Owner { get; set; } = null!;
+
+    //Navegación
+    public ICollection<Agente> Miembros { get; set; } = [];
 
 }

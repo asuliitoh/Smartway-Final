@@ -18,7 +18,7 @@ namespace SmartwayFinal.Controllers
     {
         private readonly Context _context = context;
 
-      
+
         // GET: Operacion/
         [HttpGet]
         [Authorize]
@@ -28,26 +28,16 @@ namespace SmartwayFinal.Controllers
             var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdToken == null) return Forbid();
             int userId = int.Parse(userIdToken!.Value);
-            
-            //Se intenta recuperar el agente asociado a dicha ID. 
-            var agente = await _context.Agentes.AsNoTracking().FirstOrDefaultAsync(a => userId == a.Id);
-            
-            //Si no tiene asociado ninguna entidad Agente, se devuelve código de estado 403
-            if (agente == null) return Forbid();
-            
-            //Se recuperan todos los equipos del agente 
-            var equiposId = new HashSet<int>();
-            if (agente.OwnerEquiposId != null) equiposId.UnionWith(agente.OwnerEquiposId);
-            if (agente.MemberEquiposId != null) equiposId.UnionWith(agente.MemberEquiposId);
-            var equipos = await _context.Equipos.AsNoTracking().Where(e => equiposId.Contains(e.Id)).Select(e => e.OperacionesId).ToListAsync();
-            
-            //Se recuperan todas las operaciones de todos los equipos del agente
-            var operacionesIds = equipos.SelectMany(ids => ids).ToList();
-            var operaciones = await _context.Operaciones.AsNoTracking().Where(op => operacionesIds.Contains(op.Id)).ToListAsync();
+
+            var operaciones = await _context.Operaciones.AsNoTracking()
+            .Where(o => o.CreadorId == userId ||
+             (o.EquipoId != null &&
+             (o.Equipo.OwnerId ==userId || _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId && agenteEquipo.EquipoId == o.EquipoId))))
+             .ToListAsync();
             return operaciones;
         }
 
-           // GET: Operacion/id
+        // GET: Operacion/id
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<Operacion>> GetOperationByUser(int id)
@@ -56,20 +46,12 @@ namespace SmartwayFinal.Controllers
             var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdToken == null) return Forbid();
             int userId = int.Parse(userIdToken!.Value);
-
-            //Se intenta recuperar el agente asociado a dicha ID. 
-            var agente = await _context.Agentes.AsNoTracking().FirstOrDefaultAsync(a => userId == a.Id);
-            
-            //Si no tiene asociado ninguna entidad Agente, se devuelve código de estado 403
-            if (agente == null) return Forbid();
-            
-            //Se recuperan todos los equipos del agente 
-            var equiposId = new HashSet<int>();
-            if (agente.OwnerEquiposId != null) equiposId.UnionWith(agente.OwnerEquiposId);
-            if (agente.MemberEquiposId != null) equiposId.UnionWith(agente.MemberEquiposId);
-            bool permitido = await _context.Equipos.AsNoTracking().Where(e => equiposId.Contains(e.Id)).AnyAsync(e => e.OperacionesId.Contains(id));
+            var operacion = await _context.Operaciones.FindAsync(id);
+            if (operacion == null) return NotFound();
+            bool permitido = operacion.CreadorId == userId || operacion.EquipoId != null && (operacion.Equipo.OwnerId == userId || _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId && agenteEquipo.EquipoId == operacion.EquipoId));
             if (!permitido) return Forbid();
-            return await _context.Operaciones.FindAsync(id);
+            return operacion;
+            
             
         }
 

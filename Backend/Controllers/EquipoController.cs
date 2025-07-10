@@ -26,7 +26,9 @@ namespace SmartwayFinal.Controllers
             var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdToken == null) return Forbid();
             int userId = int.Parse(userIdToken!.Value);
-            var equipos = await _context.Equipos.AsNoTracking().Where(e => e.OwnerId == userId || (e.MemberId != null && e.MemberId.Contains(userId))).ToListAsync();
+            var equipos = await _context.Equipos.AsNoTracking().Where(e => e.OwnerId == userId
+            || _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId && agenteEquipo.EquipoId == e.Id))
+            .ToListAsync();
             return equipos;
         }
 
@@ -43,8 +45,8 @@ namespace SmartwayFinal.Controllers
             var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdToken == null) return Forbid();
             int userId = int.Parse(userIdToken!.Value);
-
-            if (equipo.OwnerId != userId && (equipo.MemberId != null) && (!equipo.MemberId.Contains(userId))) return Forbid();
+            bool permitido = equipo.OwnerId == userId || _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId && agenteEquipo.EquipoId == id);
+            if (!permitido) return Forbid();
 
             return equipo;
         }

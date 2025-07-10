@@ -15,6 +15,14 @@ public class Operacion
 
     public DateTime FechaFinal { get; set; }
 
-    
+    //Clave ajena
+    public int? EquipoId { get; set; }
+
+    //Clave ajena
+    public int? CreadorId { get; set; }
+
+    //Navegación
+    public Equipo Equipo { get; set; } = null!;
+
 
 }
