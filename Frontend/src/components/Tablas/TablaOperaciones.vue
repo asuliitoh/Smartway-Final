@@ -16,13 +16,13 @@
 
 <template>
 
-    <table class="table table-pin-rows">
+    <table class="table bg-primary/20 table-pin-rows">
         <thead>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Estado</th>
-            <th>Fecha Inicio</th>
-            <th>Fecha Fin</th>
+            <th class="font-bold text-primary">Id</th>
+            <th class="font-semibold text-primary">Nombre</th>
+            <th class="font-semibold text-primary">Estado</th>
+            <th class="font-semibold text-primary">Fecha Inicio</th>
+            <th class="font-semibold text-primary">Fecha Fin</th>
         </thead>
         <tbody>
             <template v-for="[id, value] in props.operaciones">

@@ -11,36 +11,41 @@
 
     const equiposStore = useEquiposStore()
     const newEquipoModal = ref(false);
-    const equipoPropioSeleccionado = ref(null)
+    const equipoSeleccionado = ref(null)
+    const solicitudSeleccionada = ref(null)
 
-
-    function editarEquipo(){
-        router.replace( {name: 'equipo', params: {equipoId:equipoPropioSeleccionado.value}})
+    function redirectToEquipo(){
+        if (equipoSeleccionado.value) router.replace( {name: 'equipo', params: {equipoId:equipoSeleccionado.value}})
     }
 
     function crearNuevoEquipo(){
         newEquipoModal.value=true
     }
 
-    function getAllEquipos(){
-        equiposStore.getAllEquipos()
+    function isSeleccionada(id){
+        return (solicitudSeleccionada && solicitudSeleccionada.value == id)
     }
 
-    function getAllSolicitudes(){
-        equiposStore.getSolicitudes()
+    function rechazarSolicitud(){
+        equiposStore.rechazarSolicitud(solicitudSeleccionada.value)
     }
 
-    onBeforeMount(getAllEquipos)
-    onBeforeMount(getAllSolicitudes)
+    function aceptarSolicitud(){
+        equiposStore.aceptarSolicitud(solicitudSeleccionada.value)
+    }
+
+    function abandonarEquipo(){
+        equiposStore.abandonarEquipo(equipoSeleccionado.value)
+    }
 </script>
 
 <template>
     <LayoutSection>
-          <div class="h-full w-full grid grid-rows-[auto_auto_1fr] grid-cols-2 gap-5">
+          <div class="h-full w-full grid grid-rows-[auto_1fr] grid-cols-2 gap-5">
          
-                <Search class="w-full row-start-1 col-span-full" v-bind:placeholder="'Buscar Equipo'"></Search>
+                
 
-                <Card class="col-start-1 row-start-2">
+                <Card class="col-start-1 row-start-1">
                     <template v-slot:title>
                         <div class="flex flex-row items-center justify-center w-full">
                             <img src="./icons/postcard.png" alt="Resumen General">
@@ -53,7 +58,7 @@
                     </template>
                 </Card>
 
-                <Card class="row-start-2 col-start-2 h-[100%]">
+                <Card class="row-start-1 col-start-2 h-[100%]">
                     <template v-slot:title>
                         <div class="flex flex-row items-center justify-center w-full">
                             <h2 class="text-primary ">Solicitudes pendientes</h2>
@@ -66,14 +71,14 @@
                              Seleccione un equipo y pulse <span class="font-semibold text-primary">Aceptar</span> o  <span class="font-semibold text-primary">Rechazar</span>.</p>
 
                              <div class="overflow-auto max-h-[10rem]">
-                                 <table class="table table-pin-rows">
+                                 <table class="table bg-primary/20 table-pin-rows">
                                     <thead>
                                         <th>Id</th>
                                         <td>Nombre</td>  
                                     </thead>
 
                                 <template v-for="[id, value] in equiposStore.solicitudes">
-                                    <tr>
+                                    <tr @click="solicitudSeleccionada = value.equipoId" class="hover:bg-primary/10" :class = "{'bg-primary/20': isSeleccionada(value.equipoId)}">
                                         <th>{{ value.equipoId }}</th>
                                         <td>{{ value.nombre }}</td>
                                     </tr>
@@ -85,37 +90,42 @@
                         </div>
                     </template>
 
+                    <template v-slot:actions>
+                        <button v-if="solicitudSeleccionada" @click="rechazarSolicitud" type="button" class="btn">Rechazar</button>
+                        <button v-if="solicitudSeleccionada" @click="aceptarSolicitud" type="button" class="btn btn-primary">Aceptar</button>
+                    </template>
+
                 </Card>
 
-                <Card class="row-start-3 overflow-auto h-[100%]">
+                <Card class="row-start-2 overflow-auto h-[100%]">
                     <template v-slot:title>
                         <h2 class="w-full text-center text-primary"> Equipos propios</h2>
                     </template>
 
                     <template v-slot:body>
-                        <TablaEquipos v-model="equipoPropioSeleccionado" :equipos="equiposStore.equiposPropios"></TablaEquipos>
+                        <TablaEquipos v-model="equipoSeleccionado" :equipos="equiposStore.equiposPropios"></TablaEquipos>
                     </template>
 
                     <template v-slot:actions>
-                        <button @click="editarEquipo" type="button" class="btn">Editar Equipo</button>
+                        <button @click="redirectToEquipo" type="button" class="btn">Editar Equipo</button>
                         <button @click="crearNuevoEquipo" type="button" class="btn btn-primary">Crear Nuevo Equipo</button>
                     </template>
 
                 </Card>
 
-                <Card class="col-start-2 row-start-3 overflow-auto">
+                <Card class="col-start-2 row-start-2 overflow-auto">
                     <template v-slot:title>
                         <h2 class="w-full text-center text-primary"> Equipos en los que participas</h2>
                        
                     </template>
 
                     <template v-slot:body>
-                        <TablaEquipos :equipos="equiposStore.equiposMiembro"></TablaEquipos>
+                        <TablaEquipos v-model="equipoSeleccionado" :equipos="equiposStore.equiposMiembro"></TablaEquipos>
                     </template>
 
                     <template v-slot:actions>
-                        <button type="button" class="btn">Editar Equipo</button>
-                        <button type="button" class="btn btn-primary">Abandonar Equipo</button>
+                        <button type="button" class="btn">Ver Equipo</button>
+                        <button @click="abandonarEquipo" type="button" class="btn btn-primary">Abandonar Equipo</button>
                     </template>
 
                 </Card>

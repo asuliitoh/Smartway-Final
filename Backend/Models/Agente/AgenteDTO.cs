@@ -8,5 +8,4 @@ public class AgenteDTO
     public string? Apellidos { get; set; }
     public string? Rango { get; set; }
     public bool Activo { get; set; }
-    public string? EquipoId { get; set; }
 }

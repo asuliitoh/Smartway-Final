@@ -1,15 +1,43 @@
 import { defineStore } from "pinia";
 import { axiosInstance } from "@/api/axios";
-import { ref, reactive } from "vue";
+import { ref, computed , reactive } from "vue";
 
 
 export const useOperacionesStore = defineStore('operaciones-store', ()  => {
 
     const operaciones = reactive(new Map())
+    const numeroOperacionesPlanificadas = computed(() => {
+        var i = 0;
+        operaciones.forEach((value, key) => {
+            if (value.estado === "PLANIFICADO") i=i+1;
+        })
+        return i;
+    })
+
+    const numeroOperacionesActivas = computed(() => {
+        var i = 0;
+        operaciones.forEach((value, key) => {
+            if (value.estado === "ACTIVO") i=i+1;
+        })
+        return i;
+    })
+
+    
+    const numeroOperacionesCompletadas = computed(() => {
+        var i = 0;
+        operaciones.forEach((value, key) => {
+            if (value.estado === "COMPLETADO") i=i+1;
+        })
+        return i;
+    })
+
+
+    function clear(){
+        operaciones.clear()
+    }
 
     function setOperaciones(response){
         for (let i = 0 ; i < response.data.length ; i++){
-                console.log(response.data[i])
                 operaciones.set(response.data[i].id, response.data[i]);
             }
             
@@ -17,10 +45,7 @@ export const useOperacionesStore = defineStore('operaciones-store', ()  => {
 
     async function getAllOperaciones() {
         await axiosInstance.get('Operacion').then((response) => {
-            setOperaciones(response);
-            
-            console.log(response)
-            
+            setOperaciones(response);      
         });
     }
 
@@ -36,6 +61,7 @@ export const useOperacionesStore = defineStore('operaciones-store', ()  => {
     }
  
     
-    return {operaciones, getAllOperaciones, newOperacion, deleteOperacion}
+    return {operaciones, numeroOperacionesActivas, numeroOperacionesPlanificadas,
+        numeroOperacionesCompletadas, getAllOperaciones, newOperacion, deleteOperacion, clear}
 
 })

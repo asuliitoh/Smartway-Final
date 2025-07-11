@@ -5,9 +5,19 @@
     import Stat from '@/components/Estadisticas/Stat.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import { router } from '@/router/router';
+    
     function redirectToOperaciones(){
         router.replace({name: 'operaciones'})
     }
+
+    function redirectToEquipos(){
+        router.replace({name: 'equipos'})
+    }
+
+    function redirectToAgentes(){
+        router.replace({name: 'agentes'})
+    }
+
 </script>
 
 <template>
@@ -18,7 +28,8 @@
             <Card class="col-start-1 row-start-1">
                 <template v-slot:body>
                      <h1 class="text-4xl font-bold tracking-tighter card-title">Bienvenido a CyberPulse Labs</h1>
-                        <p class="pt-3 text-lg leading-tight tracking-tighter ">Gestiona tus operaciones de manera <span class="font-semibold text-primary">eficiente</span> y gestiona tus equipos con otros agentes</p>
+                        <p class="pt-3 text-lg font-semibold leading-tight tracking-tighter text-primary ">Gestiona tus operaciones de manera
+                        eficiente y gestiona tus equipos con otros agentes</p>
                         <div class="grid grid-cols-3 gap-5">
                             <Stat class="col-start-1" v-bind:number="'0'" v-bind:hover="true" v-bind:title="'Agentes Activos'"></Stat>
                             <Stat class="col-start-2" v-bind:number="'0'" v-bind:hover="true" v-bind:title="'Equipos Formados'"></Stat>
@@ -27,42 +38,32 @@
                 </template>
             </Card>
             
-                <Card class="col-start-1 row-start-2">
+                <Card @click="redirectToAgentes" class="col-start-1 row-start-2">
                     <template v-slot:body>
                         <h1 class="text-4xl font-bold tracking-tighter card-title">Gestionar agentes</h1>
-                        <p class="pt-3 text-lg leading-tight tracking-tighter">Actualiza periódicamente tu información profesional y credenciales para reflejar con precisión tu trayectoria, reforzar tu credibilidad y abrir nuevas oportunidades de negocio.</p>
-                    </template>
-
-                    <template v-slot:actions>
-                        <button class="btn">Buscar Agente</button>
-                        <button class="btn btn-primary">Editar perfil de agente</button>
+                        <p class="pt-3 text-lg leading-tight tracking-tighter"><span class="font-semibold text-primary">Actualiza periódicamente</span>
+                        tu información profesional y credenciales para <span class="font-semibold text-primary">reflejar con precisión</span>
+                        tu trayectoria, <span class="font-semibold text-primary">reforzar tu credibilidad</span>
+                        y <span class="font-semibold text-primary">abrir oportunidades de negocio</span>.</p>
                     </template>
                 </Card>
 
-                <Card class="col-start-2 row-start-1">
+                <Card @click="redirectToEquipos" class="col-start-2 row-start-1">
                     <template v-slot:body>
                         <h1 class="text-4xl font-bold tracking-tighter card-title">Gestiona tus equipos</h1>
-                        <p class="pt-3 text-lg leading-tight tracking-tighter">Organiza y supervisa equipos de trabajo, sus miembros agentes y operaciones activas.</p>
+                        <p class="pt-3 text-lg leading-tight tracking-tighter"><span class="font-semibold text-primary">Organiza</span>
+                        y <span class="font-semibold text-primary">supervisa</span> equipos de trabajo, sus miembros agentes y operaciones activas.</p>
                         <EstadisticasEquipo v-bind:hover="true"></EstadisticasEquipo>
-                    </template>
-
-                    <template v-slot:actions>
-                        <button class="btn">Ver Equipos</button>
-                        <button class="btn btn-primary">Gestionar Equipos</button>
                     </template>
                     
                 </Card>
 
-                <Card>
+                <Card @click="redirectToOperaciones">
                     <template v-slot:body>
                         <h1 class="text-4xl font-bold tracking-tighter card-title">Gestiona tus operaciones</h1>
-                        <p class="pt-3 text-lg leading-tight tracking-tighter ">Gestiona todas las operaciones y controla aquellas operaciones en curso.</p>
+                        <p class="pt-3 text-lg leading-tight tracking-tighter"> <span class="font-semibold text-primary">Gestiona</span> 
+                        todas las operaciones y <span class="font-semibold text-primary">controla</span> aquellas operaciones en curso.</p>
                         <EstadisticasOperaciones v-bind:hover="true"></EstadisticasOperaciones>
-                    </template>
-
-                    <template v-slot:actions>
-                        <button @click="redirectToOperaciones" class="btn">Ver Operaciones</button>
-                        <button class="btn btn-primary">Crear Nueva Operación</button>
                     </template>
                 </Card>
 

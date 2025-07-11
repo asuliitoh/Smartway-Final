@@ -5,14 +5,40 @@ import {createPinia } from 'pinia'
 import App from './App.vue'
 import { useAuthStore } from './stores/auth-store'
 import { router } from './router/router'
+import { useOperacionesStore } from './stores/operaciones-store'
+import { useEquiposStore } from './stores/equipos-store'
+import { ref } from 'vue'
+import { useAgenteStore } from './stores/agente-store'
 const app = createApp(App);
+const loaded = ref(false)
 const pinia = createPinia();
 
+
 router.beforeEach((to) => {
-  const auth = useAuthStore(pinia); 
-  const isAuthenticated = ((auth.user !== null) && (auth.token !== null))
+  const auth = useAuthStore(pinia);
+  const operaciones = useOperacionesStore();
+  const equipo = useEquiposStore(); 
+
   auth.init();
-  if (to.name !== 'login' && !isAuthenticated) router.replace({name: 'login'});
+  const isAuthenticated = ((auth.user !== null) && (auth.token !== null))
+
+  if (!isAuthenticated){
+    equipo.clear();
+    operaciones.clear();
+    loaded.value = false;
+    if (to.name !== 'login') router.replace({name: 'login'});
+  }
+
+  else if(isAuthenticated && !loaded.value) {
+    equipo.init()
+    const agente = useAgenteStore();
+    agente.getInformacionAgenteActual();
+    operaciones.getAllOperaciones();
+    equipo.getAllEquipos();
+    equipo.getSolicitudes();
+    loaded.value = true;
+
+  }
 })
 
 app.use(pinia);

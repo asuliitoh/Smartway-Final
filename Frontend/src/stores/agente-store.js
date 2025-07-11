@@ -1,23 +1,25 @@
 import { defineStore } from "pinia";
 import { axiosInstance } from "@/api/axios";
 
-export const useAgenteStore = defineStore('agenteStore', {
-    state: () => ({
-        id: (localStorage.getItem('user')),
-        nombre: null,
-        apellidos: null,
-        rango: null,
-        activo: null,
-        loaded: false
-    }),
-
-    actions: {
+export const useAgenteStore = defineStore('agenteStore', () => 
+    
+    {
+    
+        const id = (localStorage.getItem('user'));
+        const nombre = null;
+        const apellidos= null;
+        const rango = null;
+        const activo = null;
+        const loaded = false;
+    
         
-        setAgenteActual(id){
+       function setAgenteActual(id){
             this.id = id;
-        },
+        }
 
-        async getInformacionAgenteActual(){
+
+        async function getInformacionAgenteActual(){
+            
             if (!this.loaded){
                 try {
                     const response =  await axiosInstance.get(`/Agentes/${this.id}`);  
@@ -33,10 +35,11 @@ export const useAgenteStore = defineStore('agenteStore', {
                 }
                 
             }
+            
             return {nombre: this.nombre, apellidos:this.apellidos, rango:this.rango, activo:this.activo}
-        },
+        };
 
-        async getInformacionAgente(id){
+        async function getInformacionAgente(id){
 
             try {
                 const response = await axiosInstance.get(`/Agentes/${id}`);
@@ -50,9 +53,9 @@ export const useAgenteStore = defineStore('agenteStore', {
                 console.error("El agente no existe")
             }
             
-        },
+        };
 
-        async updateInformacionAgenteActual(data){
+        async function updateInformacionAgenteActual(data){
             if (this.loaded){
                 try {
                     const agente = {id:this.id, nombre:data.nombre, apellidos:data.apellidos, rango:data.rango, activo:data.activo}
@@ -71,9 +74,9 @@ export const useAgenteStore = defineStore('agenteStore', {
                 }
                 
             }
-        },
+        };
 
-        async updatePasswordAgenteActual(data){
+        async function updatePasswordAgenteActual(data){
             if (this.loaded){
                 try {
                     const peticion = {id:this.id, password:data.password, newPassword:data.newPassword, confirmPassword:data.confirmPassword}
@@ -89,7 +92,9 @@ export const useAgenteStore = defineStore('agenteStore', {
                 }
                 
             }
-        }
-
+    
     }
+    return {id, nombre, apellidos, rango, activo, loaded,
+        setAgenteActual, getInformacionAgente, getInformacionAgenteActual,
+        updateInformacionAgenteActual, updatePasswordAgenteActual}
 })

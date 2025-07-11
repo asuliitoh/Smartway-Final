@@ -21,8 +21,8 @@
         if (operacionSeleccionada.value != null) operacionesStore.deleteOperacion(operacionSeleccionada.value)
     }
 
-    function editarOperacion(){
-        router.replace({name: 'operacion', params:{operacionId:operacionSeleccionada.value}})
+    function redirectToOperacion(){
+        if (operacionSeleccionada.value) router.replace({name: 'operacion', params:{operacionId:operacionSeleccionada.value}})
     }
 
     onBeforeMount(getOperaciones)
@@ -32,11 +32,9 @@
 <template>
     
     <LayoutSection>
-        <div class="h-full w-full grid grid-rows-[auto_auto_1fr] grid-cols-3 gap-5">
-                
-                <Search class="w-full row-start-1 col-span-full" v-bind:placeholder="'Buscar Operación'"></Search>
-
-                <Card class="col-span-2 col-start-1 row-start-2">
+        <div class="h-full w-full grid grid-rows-[auto_1fr] grid-cols-3 gap-5">
+               
+                <Card class="col-span-2 col-start-1 row-start-1">
                     <template v-slot:title>
                         <div class="flex flex-row items-center justify-center w-full text-center">
                             <img src="./icons/postcard.png" alt="Resumen General">
@@ -50,32 +48,32 @@
 
                 </Card>
 
-                <Card class="col-span-2 col-start-1 row-start-3 overflow-auto">
+                <Card class="col-span-2 col-start-1 row-start-2 overflow-auto">
                     <template v-slot:body>
                         <h2 class="self-center card-title text-primary">Tabla de Operaciones</h2>
                         <TablaOperaciones v-model="operacionSeleccionada" :operaciones="operacionesStore.operaciones"></TablaOperaciones>
                     </template>
 
                     <template v-slot:actions>
-                        <button @click="editarOperacion" type="button" class="btn">Editar Operación</button>
+                        <button @click="redirectToOperacion" type="button" class="btn">Ver Operación</button>
                         <button @click="deleteOperacion" type="button" class="btn btn-primary">Eliminar Operación</button>
                     </template>
 
                 </Card>
 
-              <Card @click="newOperationModal = true" class="col-start-3 row-start-2 cursor-pointer">
+              <Card @click="newOperationModal = true" class="col-start-3 row-start-1 cursor-pointer">
                 <template v-slot:title>
                     <img src="./icons/crear.png" alt="Crear Nueva Operación" class="w-fit h-fit">
                     <h2 class="text-lg text-primary">Crear Nueva Operación</h2>
                 </template>
 
                 <template v-slot:body>
-                    <p>Pulsa esta tarjeta para empezar a crear tu nueva operación;
+                    <p>Pulsa esta tarjeta para empezar a crear tu <span class="font-semibold text-primary">nueva operación</span>;
                     al hacer clic se abrirá el formulario donde podrás introducir todos los detalles.</p>
                 </template>
               </Card>
 
-              <Card class="col-start-3 row-start-3">
+              <Card class="col-start-3 row-start-2">
 
                 <template v-slot:title>
                     <img src="./icons/filtro.png" alt="Filtrar Operaciones" class="w-fit h-fit">

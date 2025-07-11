@@ -68,7 +68,7 @@ namespace SmartwayFinal.Controllers
             agente.Apellidos = update.Apellidos;
             agente.Rango = update.Rango;
             agente.Activo = update.Activo;
-            //agente.EquipoId = update.EquipoId;
+
 
             _context.Entry(agente).State = EntityState.Modified;
 

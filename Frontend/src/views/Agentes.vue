@@ -3,7 +3,7 @@
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import Search from '@/components/Search.vue';
     import { useAgenteStore } from '@/stores/agente-store';
-    import { onBeforeMount } from 'vue';
+    import {onMounted } from 'vue';
     import { ref, computed} from 'vue';
     import ModalFallo from '@/components/Modals/ModalFallo.vue';
     import ModalCorrecto from '@/components/Modals/ModalCorrecto.vue';
@@ -81,6 +81,13 @@
 
     }
 
+    async function cancelarActualizacion(){
+        nombreCampo.value = '';
+        apellidosCampo.value = '';
+        rangoCampo.value = '';
+        activoCampo.value = '';
+    }
+
     async function actualizarPassword(){
         const response = await store.updatePasswordAgenteActual({password:password.value, newPassword:newPassword.value, confirmPassword:confirmPassword.value})
         password.value='';
@@ -92,7 +99,7 @@
 
     }   
 
-    onBeforeMount(getInformacionAgenteActual)
+    onMounted(getInformacionAgenteActual)
 
 </script>
 
@@ -130,7 +137,7 @@
                                 <input disabled type="text" class="input disabled:bg-primary/20 disabled:border-primary/40" v-model="activoCampo" :placeholder="activo">
                             
                             <div class="flex gap-3 justify-self-end">
-                                <button type="button" class="btn btn-ghost">Cancelar</button>
+                                <button @click="cancelarActualizacion" type="button" class="btn btn-ghost">Cancelar</button>
                                 <button  @click="actualizarInformacionPersonal" type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
                             </div>
                     </fieldset>

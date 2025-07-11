@@ -69,7 +69,7 @@ namespace SmartwayFinal.Controllers
         }
 
         [HttpPut("Rechazar")]
-         [Authorize]
+        [Authorize]
         public async Task<IActionResult> RechazarSolicitud(SolicitudPendiente agenteEquipoDTO)
         {
 
@@ -127,6 +127,7 @@ namespace SmartwayFinal.Controllers
             return NoContent();
         }
 
+        
         private bool AgenteEquipoExists(int AgenteId, int EquipoId)
         {
             return _context.AgenteEquipos.Any(e => e.AgenteId == AgenteId && e.EquipoId == EquipoId);

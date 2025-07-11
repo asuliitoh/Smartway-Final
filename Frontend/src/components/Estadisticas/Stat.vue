@@ -2,7 +2,7 @@
 import { ref } from 'vue';
 
 const props = defineProps({
-    number: String,
+    number: Number,
     title: String,
     hover: Boolean
 })

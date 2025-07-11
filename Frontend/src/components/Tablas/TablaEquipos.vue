@@ -17,11 +17,11 @@
 
 <template>
    
-    <table class="table table-pin-rows">
+    <table class="table bg-primary/20 table-pin-rows">
         <thead>
-            <th>Id</th>
-            <th>Nombre</th>
-            <th>Especialidad</th>     
+            <th class="font-bold text-primary">Id</th>
+            <th class="font-semibold text-primary">Nombre</th>
+            <th class="font-semibold text-primary">Especialidad</th>     
         </thead>
         <tbody>
             <template v-for="[id, value] in props.equipos">
