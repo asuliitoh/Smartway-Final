@@ -110,7 +110,7 @@
 </div>
 
     
-        <ModalCorrecto v-show="succesfullRegisterModal" v-model="succesfullRegisterModal">
+        <ModalCorrecto v-if="succesfullRegisterModal" v-model="succesfullRegisterModal">
             <template v-slot:title>
                 Se ha registrado al agente correctamente
             </template>
@@ -120,7 +120,7 @@
             </template>
         </ModalCorrecto>
 
-        <ModalFallo v-show="failedRegisterModal" v-model="failedRegisterModal">
+        <ModalFallo v-if="failedRegisterModal" v-model="failedRegisterModal">
             <template v-slot:title>
                 Ha ocurrido un error durante el registro
             </template>
@@ -130,7 +130,7 @@
             </template>
         </ModalFallo>
 
-        <ModalFallo v-show="failedLoginModal" v-model="failedLoginModal">
+        <ModalFallo v-if="failedLoginModal" v-model="failedLoginModal">
             <template v-slot:title>
                 Inicio de sesión fallido
             </template>

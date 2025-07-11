@@ -182,13 +182,13 @@
             </div> 
             
             
-            <ModalCorrecto v-show="succesfullPassword" v-model="succesfullPassword">
+            <ModalCorrecto v-if="succesfullPassword" v-model="succesfullPassword">
                 <template v-slot:title>
                     <h2>Se ha cambiado la contraseña correctamente</h2>
                 </template>
             </ModalCorrecto>
 
-            <ModalFallo v-show="failedPassword" v-model="failedPassword">
+            <ModalFallo v-if="failedPassword" v-model="failedPassword">
                 <template v-slot:title>
                     <h2>No se ha podido cambiar la contraseña</h2>
                 </template>
@@ -199,13 +199,13 @@
 
             </ModalFallo>
             
-            <ModalCorrecto v-show="succesfullUpdate" v-model="succesfullUpdate">
+            <ModalCorrecto v-if="succesfullUpdate" v-model="succesfullUpdate">
                 <template v-slot:title>
                     <h2>Se ha actualizado la información personal correctamente</h2>
                 </template>
             </ModalCorrecto>
 
-            <ModalCorrecto v-show="failedUpdate" v-model="failedUpdate">
+            <ModalCorrecto v-if="failedUpdate" v-model="failedUpdate">
                 <template v-slot:title>
                     <h2>Ha ocurrido un error durante la actualización de la información personal</h2>
                 </template>

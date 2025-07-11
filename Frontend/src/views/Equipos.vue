@@ -5,20 +5,14 @@
     import Search from '@/components/Search.vue';
     import NewEquipo from '@/components/Modals/NewEquipo.vue';
     import { onBeforeMount, ref } from 'vue';
-    import { useEquiposStore } from '@/stores/equipos-store';
-    import DisolverEquipo from '@/components/Modals/DisolverEquipo.vue';
+    import { useEquiposStore } from '@/stores/equipos-store';   
     import TablaEquipos from '@/components/Tablas/TablaEquipos.vue';
     import { router } from '@/router/router';
 
     const equiposStore = useEquiposStore()
     const newEquipoModal = ref(false);
-    const disolverEquipoModal = ref(false);
     const equipoPropioSeleccionado = ref(null)
 
-    function disolverEquipo(){
-        console.log(equipoPropioSeleccionado.value)
-        if (equipoPropioSeleccionado.value != null) disolverEquipoModal.value = true;
-    }
 
     function editarEquipo(){
         router.replace( {name: 'equipo', params: {equipoId:equipoPropioSeleccionado.value}})
@@ -32,8 +26,12 @@
         equiposStore.getAllEquipos()
     }
 
+    function getAllSolicitudes(){
+        equiposStore.getSolicitudes()
+    }
 
     onBeforeMount(getAllEquipos)
+    onBeforeMount(getAllSolicitudes)
 </script>
 
 <template>
@@ -44,7 +42,7 @@
 
                 <Card class="col-start-1 row-start-2">
                     <template v-slot:title>
-                        <div class="flex flex-row justify-center items-center w-full">
+                        <div class="flex flex-row items-center justify-center w-full">
                             <img src="./icons/postcard.png" alt="Resumen General">
                             <h2 class="text-primary">Resumen General</h2>
                         </div>
@@ -57,22 +55,30 @@
 
                 <Card class="row-start-2 col-start-2 h-[100%]">
                     <template v-slot:title>
-                        <div class="flex flex-row justify-center items-center w-full">
-                            <h2 class="text-primary ">Equipos posibles a los que unirse</h2>
+                        <div class="flex flex-row items-center justify-center w-full">
+                            <h2 class="text-primary ">Solicitudes pendientes</h2>
                         </div>
                     </template>
 
                     <template v-slot:body>
-                        <div class="flex flex-row w-full">
-                            <p class="max-w-[50%]">Esta sección muestra los equipos disponibles a los que puedes solicitar unirte.
-                             Revisa las opciones y elige el equipo que mejor se ajuste a tus intereses y perfil.</p>
+                        <div class="grid w-full h-full grid-cols-2 gap-5">
+                            <p>A continuación se muestran las solicitudes recibidas para unirse a un equipo.
+                             Seleccione un equipo y pulse <span class="font-semibold text-primary">Aceptar</span> o  <span class="font-semibold text-primary">Rechazar</span>.</p>
 
-                             <div class="overflow-auto max-w-[50%]">
+                             <div class="overflow-auto max-h-[10rem]">
                                  <table class="table table-pin-rows">
                                     <thead>
                                         <th>Id</th>
                                         <td>Nombre</td>  
                                     </thead>
+
+                                <template v-for="[id, value] in equiposStore.solicitudes">
+                                    <tr>
+                                        <th>{{ value.equipoId }}</th>
+                                        <td>{{ value.nombre }}</td>
+                                    </tr>
+                                </template>
+
                                 </table>
                              </div>
 
@@ -93,7 +99,6 @@
                     <template v-slot:actions>
                         <button @click="editarEquipo" type="button" class="btn">Editar Equipo</button>
                         <button @click="crearNuevoEquipo" type="button" class="btn btn-primary">Crear Nuevo Equipo</button>
-                        <button @click="disolverEquipo" type="button" class="btn btn-primary">Disolver Equipo</button>
                     </template>
 
                 </Card>
@@ -115,8 +120,8 @@
 
                 </Card>
 
-                <NewEquipo v-show="newEquipoModal" v-model="newEquipoModal"></NewEquipo>
-                <DisolverEquipo v-show="disolverEquipoModal" v-model="disolverEquipoModal" :seleccionado="equipoPropioSeleccionado" ></DisolverEquipo>
+                <NewEquipo v-if="newEquipoModal" v-model="newEquipoModal"></NewEquipo>
+                
 
              </div>
   

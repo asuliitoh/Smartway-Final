@@ -27,7 +27,8 @@ namespace SmartwayFinal.Controllers
             if (userIdToken == null) return Forbid();
             int userId = int.Parse(userIdToken!.Value);
             var equipos = await _context.Equipos.AsNoTracking().Where(e => e.OwnerId == userId
-            || _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId && agenteEquipo.EquipoId == e.Id))
+            || (_context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId
+            && (agenteEquipo.EquipoId == e.Id && agenteEquipo.Estado == EstadoSolicitud.ACEPTADA))))
             .ToListAsync();
             return equipos;
         }
@@ -45,7 +46,9 @@ namespace SmartwayFinal.Controllers
             var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
             if (userIdToken == null) return Forbid();
             int userId = int.Parse(userIdToken!.Value);
-            bool permitido = equipo.OwnerId == userId || _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId && agenteEquipo.EquipoId == id);
+            bool permitido = equipo.OwnerId == userId ||
+             _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId &&
+              agenteEquipo.EquipoId == id && agenteEquipo.Estado == EstadoSolicitud.ACEPTADA);
             if (!permitido) return Forbid();
 
             return equipo;
@@ -89,12 +92,14 @@ namespace SmartwayFinal.Controllers
         [Authorize]
         public async Task<ActionResult<Equipo>> PostEquipo(EquipoDTO equipoDTO)
         {
+            var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdToken == null) return Forbid();
+            int userId = int.Parse(userIdToken!.Value);
             var equipo = new Equipo
             {
                 Nombre = equipoDTO.Nombre,
                 Especialidad = equipoDTO.Especialidad,
-                OwnerId = equipoDTO.OwnerId
-
+                OwnerId = userId
             };
 
             _context.Equipos.Add(equipo);

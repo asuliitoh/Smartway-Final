@@ -17,20 +17,19 @@
 <template>
 
     <table class="table table-pin-rows">
-                             <thead>
-                                 <th>Id</th>
-                                 <th>Nombre</th>
-                                 <th>Estado</th>
-                                 <th>Fecha Inicio</th>
-                                 <th>Fecha Fin</th>
-                            </thead>
-                            <tbody>
-                                 
-                                <template v-for="[id, value] in props.operaciones">
-                                    <EntradaOperacion @click="setSelected(id)" :id="id" :nombre="value.nombre" :estado="value.estado" :fechaInicio="value.fechaInicio" :fechaFin="value.fechaFin" :seleccionado="isSeleccionado(id)" ></EntradaOperacion>
-                                </template>
+        <thead>
+            <th>Id</th>
+            <th>Nombre</th>
+            <th>Estado</th>
+            <th>Fecha Inicio</th>
+            <th>Fecha Fin</th>
+        </thead>
+        <tbody>
+            <template v-for="[id, value] in props.operaciones">
+                <EntradaOperacion @click="setSelected(id)" :id="id" :nombre="value.nombre" :estado="value.estado" :fechaInicio="value.fechaInicio.substr(0,10)" :fechaFin="value.fechaFinal.substr(0,10)" :seleccionado="isSeleccionado(id)" ></EntradaOperacion>
+            </template>
 
-                            </tbody>
-                        </table>
+        </tbody>
+    </table>
 
 </template>

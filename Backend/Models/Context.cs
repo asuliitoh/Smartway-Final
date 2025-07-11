@@ -30,7 +30,8 @@ public class Context(DbContextOptions<Context> options) : DbContext(options)
                 .HasForeignKey(agenteEquipo => agenteEquipo.AgenteId)
 
             );
-                
+
+    
         modelBuilder.Entity<Equipo>()
             .HasOne(e => e.Owner)
             .WithMany(a => a.OwnerEquipos)

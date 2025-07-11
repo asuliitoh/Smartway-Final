@@ -61,12 +61,17 @@ namespace SmartwayFinal.Controllers
         [Authorize]
         public async Task<ActionResult<Operacion>> PostOperacion(OperacionDTO operacionDTO)
         {
+            var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdToken == null) return Forbid();
+            int userId = int.Parse(userIdToken!.Value);
             var operacion = new Operacion
             {
                 Nombre = operacionDTO.Nombre,
                 Estado = operacionDTO.Estado,
                 FechaInicio = operacionDTO.FechaInicio,
-                FechaFinal = operacionDTO.FechaFinal
+                FechaFinal = operacionDTO.FechaFinal,
+                CreadorId = userId
+
             };
 
             _context.Operaciones.Add(operacion);
@@ -124,17 +129,18 @@ namespace SmartwayFinal.Controllers
 
         // DELETE: api/Operacion/5
         [HttpDelete("{id}")]
-        public async Task<IActionResult> DeleteOperacion(long id)
+        [Authorize]
+        public async Task<IActionResult> DeleteOperacion(int id)
         {
             var operacion = await _context.Operaciones.FindAsync(id);
-            if (operacion == null)
-            {
-                return NotFound();
-            }
-
+            var userIdToken = User.FindFirst(ClaimTypes.NameIdentifier);
+            if (userIdToken == null) return Forbid();
+            int userId = int.Parse(userIdToken!.Value);
+            if (operacion == null) return NotFound();
+            bool permitido = (operacion.EquipoId == null && operacion.CreadorId == userId) || (operacion.EquipoId != null && operacion.Equipo.OwnerId == userId);
+            if (!permitido) return Forbid();
             _context.Operaciones.Remove(operacion);
             await _context.SaveChangesAsync();
-
             return NoContent();
         }
 

@@ -8,12 +8,21 @@
     import TablaOperaciones from '@/components/Tablas/TablaOperaciones.vue';
     import { useOperacionesStore } from '@/stores/operaciones-store';
     import { onBeforeMount } from 'vue';
+    import { router } from '@/router/router';
     const newOperationModal = ref(false)
     const operacionSeleccionada = ref(null)
     const operacionesStore = useOperacionesStore()
 
     function getOperaciones(){
         operacionesStore.getAllOperaciones()
+    }
+
+    function deleteOperacion(){
+        if (operacionSeleccionada.value != null) operacionesStore.deleteOperacion(operacionSeleccionada.value)
+    }
+
+    function editarOperacion(){
+        router.replace({name: 'operacion', params:{operacionId:operacionSeleccionada.value}})
     }
 
     onBeforeMount(getOperaciones)
@@ -48,8 +57,8 @@
                     </template>
 
                     <template v-slot:actions>
-                        <button type="button" class="btn">Editar Operación</button>
-                        <button type="button" class="btn btn-primary">Eliminar Operación</button>
+                        <button @click="editarOperacion" type="button" class="btn">Editar Operación</button>
+                        <button @click="deleteOperacion" type="button" class="btn btn-primary">Eliminar Operación</button>
                     </template>
 
                 </Card>
@@ -119,7 +128,7 @@
 
               </Card>
             </div>
-        <NewOperation v-show="newOperationModal" v-model="newOperationModal"></NewOperation>
+        <NewOperation v-if="newOperationModal" v-model="newOperationModal"></NewOperation>
     </LayoutSection>
 
 

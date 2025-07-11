@@ -7,10 +7,10 @@
 
 <template>
 
-    <dialog class="modal modal-open">
+    <div class="max-w-none modal modal-open">
     
-        <div class="modal-box text-center">
-            <div>
+        <div class="text-center modal-box">
+            <div class="max-w-none">
                 <slot name="header"></slot>
             </div>
 
@@ -24,9 +24,11 @@
             
         </div>
 
-  </dialog>
+  </div>
 
 
 </template>
+
+
 
     
