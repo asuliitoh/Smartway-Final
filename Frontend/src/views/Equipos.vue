@@ -37,6 +37,14 @@
     function abandonarEquipo(){
         equiposStore.abandonarEquipo(equipoSeleccionado.value)
     }
+
+    function getEquiposYSolcitudes(){
+        equiposStore.getAllEquipos();
+        equiposStore.getSolicitudes();
+    }
+
+    onBeforeMount(getEquiposYSolcitudes);
+
 </script>
 
 <template>

@@ -9,6 +9,7 @@ import { useOperacionesStore } from './stores/operaciones-store'
 import { useEquiposStore } from './stores/equipos-store'
 import { ref } from 'vue'
 import { useAgenteStore } from './stores/agente-store'
+import { useEstadisticasStore } from './stores/estadisticas-store'
 const app = createApp(App);
 const loaded = ref(false)
 const pinia = createPinia();
@@ -31,13 +32,7 @@ router.beforeEach((to) => {
 
   else if(isAuthenticated && !loaded.value) {
     equipo.init()
-    const agente = useAgenteStore();
-    agente.getInformacionAgenteActual();
-    operaciones.getAllOperaciones();
-    equipo.getAllEquipos();
-    equipo.getSolicitudes();
     loaded.value = true;
-
   }
 })
 

@@ -11,9 +11,15 @@ using SmartwayFinal.Models;
 
 namespace SmartwayFinal.Controllers
 {
+    //Esta interfaz es declarada para la inserción de dependencias de EquipoController a EstadisticasController.
+     public interface IEquipoService
+    {
+        int GetEquiposFormados();
+    } 
+
     [Route("[controller]")]
     [ApiController]
-    public class EquipoController(Context context) : ControllerBase
+    public class EquipoController(Context context) : ControllerBase, IEquipoService
     {
         private readonly Context _context = context;
 
@@ -154,6 +160,12 @@ namespace SmartwayFinal.Controllers
             await _context.SaveChangesAsync();
 
             return NoContent();
+        }
+
+        [NonAction] 
+        public int GetEquiposFormados()
+        {
+            return _context.Equipos.AsNoTracking().Count();
         }
 
         private bool EquipoExists(int id)

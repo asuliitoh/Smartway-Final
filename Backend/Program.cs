@@ -5,12 +5,18 @@ using SmartwayFinal.Models;
 using SmartwayFinal.Services;
 using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.IdentityModel.Tokens;
+using SmartwayFinal.Controllers;
+
 
 
 
 var builder = WebApplication.CreateBuilder(args);
 var nameVue = "VueApp";
-// Add services to the container.
+
+//Inserción de Dependencias
+builder.Services.AddScoped<IAgenteService, AgentesController>();
+builder.Services.AddScoped<IEquipoService, EquipoController>();
+builder.Services.AddScoped<IOperacionService, OperacionController>();
 
 builder.Services.AddControllers();
 builder.Services.AddDbContext<Context>(opt =>

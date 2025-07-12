@@ -5,7 +5,11 @@
     import Stat from '@/components/Estadisticas/Stat.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import { router } from '@/router/router';
-    
+    import { useEstadisticasStore } from '@/stores/estadisticas-store';
+import { onBeforeMount } from 'vue';
+
+    const estadisticasStore = useEstadisticasStore();
+
     function redirectToOperaciones(){
         router.replace({name: 'operaciones'})
     }
@@ -17,6 +21,12 @@
     function redirectToAgentes(){
         router.replace({name: 'agentes'})
     }
+
+    function getEstadisticas(){
+        estadisticasStore.getEstadisticas();
+    }
+
+    onBeforeMount(getEstadisticas)
 
 </script>
 
@@ -31,9 +41,9 @@
                         <p class="pt-3 text-lg font-semibold leading-tight tracking-tighter text-primary ">Gestiona tus operaciones de manera
                         eficiente y gestiona tus equipos con otros agentes</p>
                         <div class="grid grid-cols-3 gap-5">
-                            <Stat class="col-start-1" v-bind:number="'0'" v-bind:hover="true" v-bind:title="'Agentes Activos'"></Stat>
-                            <Stat class="col-start-2" v-bind:number="'0'" v-bind:hover="true" v-bind:title="'Equipos Formados'"></Stat>
-                            <Stat class="col-start-3" v-bind:number="'0'" v-bind:hover="true" v-bind:title="'Operaciones Completadas'"></Stat>                
+                            <Stat class="col-start-1" v-bind:number="estadisticasStore.agentesRegistrados" v-bind:hover="true" v-bind:title="'Agentes Activos'"></Stat>
+                            <Stat class="col-start-2" v-bind:number="estadisticasStore.equiposFormados" v-bind:hover="true" v-bind:title="'Equipos Formados'"></Stat>
+                            <Stat class="col-start-3" v-bind:number="estadisticasStore.operacionesCompletadas" v-bind:hover="true" v-bind:title="'Operaciones Completadas'"></Stat>                
                         </div>
                 </template>
             </Card>

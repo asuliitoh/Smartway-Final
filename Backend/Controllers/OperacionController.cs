@@ -9,17 +9,23 @@ using Microsoft.EntityFrameworkCore;
 using SmartwayFinal.Models;
 using System.Security.Claims;
 using SmartwayFinal.Controllers;
+using NuGet.Protocol.Plugins;
 
 namespace SmartwayFinal.Controllers
 {
+
+    //Esta interfaz es declarada para la inserción de dependencias de OperacionController a EstadisticasController.
+    public interface IOperacionService
+    {
+        int GetOperacionesCompletadas();
+    }
+
     [Route("[controller]")]
     [ApiController]
-    public class OperacionController(Context context) : ControllerBase
+    public class OperacionController(Context context) : ControllerBase, IOperacionService
     {
         private readonly Context _context = context;
 
-
-        // GET: Operacion/
         [HttpGet]
         [Authorize]
         public async Task<ActionResult<IEnumerable<Operacion>>> GetOperationsByUser()
@@ -32,12 +38,11 @@ namespace SmartwayFinal.Controllers
             var operaciones = await _context.Operaciones.AsNoTracking()
             .Where(o => o.CreadorId == userId ||
              (o.EquipoId != null &&
-             (o.Equipo.OwnerId ==userId || _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId && agenteEquipo.EquipoId == o.EquipoId))))
+             (o.Equipo.OwnerId == userId || _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId && agenteEquipo.EquipoId == o.EquipoId))))
              .ToListAsync();
             return operaciones;
         }
 
-        // GET: Operacion/id
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<Operacion>> GetOperationByUser(int id)
@@ -51,12 +56,10 @@ namespace SmartwayFinal.Controllers
             bool permitido = operacion.CreadorId == userId || operacion.EquipoId != null && (operacion.Equipo.OwnerId == userId || _context.AgenteEquipos.Any(agenteEquipo => agenteEquipo.AgenteId == userId && agenteEquipo.EquipoId == operacion.EquipoId));
             if (!permitido) return Forbid();
             return operacion;
-            
-            
+
+
         }
 
-        // POST: api/Operacion
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost]
         [Authorize]
         public async Task<ActionResult<Operacion>> PostOperacion(OperacionDTO operacionDTO)
@@ -80,54 +83,6 @@ namespace SmartwayFinal.Controllers
             return operacion;
         }
 
-        /*
-        // PUT: api/Operacion/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPut("{id}")]
-        public async Task<IActionResult> PutOperacion(int id, Operacion operacion)
-        {
-            if (id != operacion.Id)
-            {
-                return BadRequest();
-            }
-
-            _context.Entry(operacion).State = EntityState.Modified;
-
-            try
-            {
-                await _context.SaveChangesAsync();
-            }
-            catch (DbUpdateConcurrencyException)
-            {
-                if (!OperacionExists(id))
-                {
-                    return NotFound();
-                }
-                else
-                {
-                    throw;
-                }
-            }
-
-            return NoContent();
-        }
-        */
-
-
-        /*
-        // POST: api/Operacion
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<Operacion>> PostOperacion(Operacion operacion)
-        {
-            _context.Operaciones.Add(operacion);
-            await _context.SaveChangesAsync();
-
-            return CreatedAtAction("GetOperacion", new { id = operacion.Id }, operacion);
-        }
-        */
-
-        // DELETE: api/Operacion/5
         [HttpDelete("{id}")]
         [Authorize]
         public async Task<IActionResult> DeleteOperacion(int id)
@@ -144,9 +99,11 @@ namespace SmartwayFinal.Controllers
             return NoContent();
         }
 
-        private bool OperacionExists(int id)
+        [NonAction] 
+        public int GetOperacionesCompletadas()
         {
-            return _context.Operaciones.Any(e => e.Id == id);
+            return _context.Operaciones.AsNoTracking().Where(o => o.Estado == EstadoOperacion.COMPLETADO).Count();
         }
+
     }
 }

@@ -11,22 +11,25 @@ using SmartwayFinal.Services;
 
 namespace SmartwayFinal.Controllers
 {
+    //Esta interfaz es declarada para la inserción de dependencias de AgentesController a EstadisticasController.
+    public interface IAgenteService
+    {
+        int GetAgentesRegistrados();
+    } 
+
     [Route("[controller]")]
     [ApiController]
-    public class AgentesController(Context context, JWTHandler jwt) : ControllerBase
+    public class AgentesController(Context context, JWTHandler jwt) : ControllerBase, IAgenteService
     {
         private readonly Context _context = context;
         private readonly JWTHandler _jwt = jwt;
 
-
-        // GET: api/Agentes
         [HttpGet]
         public async Task<ActionResult<IEnumerable<Agente>>> GetAgentes()
         {
             return await _context.Agentes.ToListAsync();
         }
 
-        // GET: api/Agentes/5
         [HttpGet("{id}")]
         [Authorize]
         public async Task<ActionResult<AgenteDTO>> GetAgente(int Id)
@@ -38,8 +41,6 @@ namespace SmartwayFinal.Controllers
             return NewAgenteDTO(agente);
         }
         
-
-        // GET: api/Agentes/login
         [HttpPost("login")]
         public async Task<ActionResult<LoginResponse>> Login(LoginRequest login)
         {
@@ -54,8 +55,6 @@ namespace SmartwayFinal.Controllers
             return NewLoginResponse(agente, token);
         }
 
-        // PUT: api/Agentes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPut("{id}")]
         [Authorize]
         public async Task<ActionResult<AgenteDTO>> UpdateAgente(string id, AgenteDTO update)
@@ -82,9 +81,7 @@ namespace SmartwayFinal.Controllers
             
         }
 
-        
-        // PUT: api/Agentes/5
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
+
         [HttpPost("{id}/password")]
         [Authorize]
         public async Task<ActionResult<AgenteDTO>> UpdatePasswordAgente(string id, PasswordRequest update)
@@ -110,31 +107,6 @@ namespace SmartwayFinal.Controllers
             
         }
 
-
-        /*                
-        // POST: api/Agentes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
-        [HttpPost]
-        public async Task<ActionResult<RegistroResponse>> PostAgente(RegistroResponse agenteRegistroDTO)
-        {
-
-            var agente = new Agente
-            {
-                Nombre = agenteRegistroDTO.Nombre,
-                Apellidos = agenteRegistroDTO.Apellidos,
-               
-            };
-
-            _context.Agentes.Add(agente);
-            await _context.SaveChangesAsync();
-
-            return NewRegistroResponse(agente);
-        }
-
-        */
-
-        // POST: api/Agentes
-        // To protect from overposting attacks, see https://go.microsoft.com/fwlink/?linkid=2123754
         [HttpPost("registro")]
         public async Task<ActionResult<RegistroResponse>> Register(RegistroRequest registro)
         {
@@ -152,28 +124,10 @@ namespace SmartwayFinal.Controllers
             return NewRegistroResponse(agente);
         }
 
-        /*
-            // DELETE: api/Agentes/5
-            [HttpDelete("{id}")]
-            public async Task<IActionResult> DeleteAgente(long id)
-            {
-                var agente = await _context.Agentes.FindAsync(id);
-                if (agente == null)
-                {
-                    return NotFound();
-                }
-
-                _context.Agentes.Remove(agente);
-                await _context.SaveChangesAsync();
-
-                return NoContent();
-            }
-
-        */
-
-        private bool AgenteExists(int id)
+        [NonAction] 
+        public int GetAgentesRegistrados()
         {
-            return _context.Agentes.Any(e => e.Id == id);
+            return _context.Agentes.AsNoTracking().Count();
         }
 
         private static RegistroResponse NewRegistroResponse(Agente agente)
