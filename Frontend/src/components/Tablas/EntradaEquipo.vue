@@ -1,5 +1,9 @@
+<!--EntradaEquipo es utilizado para representar un equipo como entrada de una tabla-->
 <script setup>
 
+/**
+ * Identificador, Nombre, Especialidad del Equipo y una propiedad booleana seleccionada.
+ */
 const props = defineProps({
     id: Number,
     nombre: String,

@@ -1,6 +1,9 @@
-
+<!--Card es utilizado para definir las secciones que tiene cada página de la plataforma -->
 <script setup>
-    import { ref } from 'vue';
+    
+    /**
+     * Propiedad para indicar si la Card es horizontal o vertical.
+     */
     const props = defineProps({
         horizontal: Boolean
     })
@@ -21,7 +24,7 @@
         <div class="justify-end card-actions">
             <slot name="actions"></slot>
         </div>
-                
+
     </section>
 
 </template>

@@ -1,14 +1,32 @@
+<!--TablaOperación utilizado para representar una serie de operación en una tabla-->
 <script setup>
+
     import EntradaOperacion from './EntradaOperacion.vue';
+    
+    /**
+     * Model que guarda la operación actual seleccionada.
+     */
     const selected = defineModel({default:null}) 
+
+    /**
+     * Operaciones a representar.
+     */
     const props = defineProps(['operaciones'])
 
     
+    /**
+     * Función que devuelve true si una operación concreta ha sido seleccionda (falso en caso contrario).
+     * @param id Identificador de la operación.
+     */
    function isSeleccionado(id){
         if ((selected.value != null) && selected.value== id) return true;
         else false;
    }
 
+   /**
+    * Función que asigna una operación como seleccionada.
+    * @param id Identificador de la operación.
+    */
    function setSelected(id){
         selected.value = id;
    }

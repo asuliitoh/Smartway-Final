@@ -1,28 +1,52 @@
+<!--NewEquipo es un Modal que permite al agente actual crear un nuevo equipo, dado un nombre y especialidad-->
 <script setup>
+    
     import Modal from './Modal.vue';
     import { ref } from 'vue';
     import { useEquiposStore } from '@/stores/equipos-store';
-    //Objeto reactivo para mostrar u ocultar el modal
+    
+    /**
+     * Model que define si el Modal es visible o no.
+     */
     const visible = defineModel(false)
     
-    //Stores utilizados para la creación del equipo
+    /**
+     * Stores utilizados para la creación del equipo.
+     */
     const equiposStore = useEquiposStore()
 
-    //Objetos reactivos utilizados para el formulario
+    /**
+     * Objeto reactiva que almacena el nombre del equipo especificado por el agente.
+     */
     const nombre = ref(null)
+
+    /**
+     * Objeto reactiva que almacena la especialidad del equipo especificado por el agente.
+     */
     const especialidad = ref(null)
 
-
+    /**
+     * Función utilizada para crear el nuevo equipo dado el nombre y la especialidad.
+     * Se llama al pulsar el botón Crear.
+     */
     async function newEquipo(){
         if ((nombre.value != null) && (especialidad.value != null)){
-        await equiposStore.newEquipo({
-            nombre:nombre.value,
-            especialidad:especialidad.value
-        }).then(visible.value = false)
         
+            try{
+
+                await equiposStore.newEquipo({nombre:nombre.value,especialidad:especialidad.value})
+                visible.value = false;
+                
+            }catch(error){
+                console.error(error)
+            }
         }
     }
 
+    /**
+     * Función utilizada para restaurar los objetos reactivos utilizados para la creación del equipo, y para cerrar el Modal.
+     * Se llama al pulsar el botón Cancelar.
+     */
     function clear(){
         nombre.value = null;
         especialidad.value = null;

@@ -1,25 +1,66 @@
+<!--Operación muestra los detalles de una operación, permite modificar su información, asignar un equipo y eliminar la propia operación-->
 <script setup>
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import Card from '@/components/Cards/Card.vue';
     import { onBeforeMount, ref } from 'vue';
     import { useOperacionesStore } from '@/stores/operaciones-store';
     import { useEquiposStore } from '@/stores/equipos-store';
-import EliminarOperacion from '@/components/Modals/EliminarOperacion.vue';
-import AsignarEquipo from '@/components/Modals/AsignarEquipo.vue';
+    import EliminarOperacion from '@/components/Modals/EliminarOperacion.vue';
+    import AsignarEquipo from '@/components/Modals/AsignarEquipo.vue';
 
-    const props = defineProps(["operacionId"])
-    const operacion = ref(null);
+    /**
+     * Store de Operaciones, utilizado para recuperar y actualizar la información de la operación, asignarle un equipo y eliminar la operación.
+     */
     const operacionesStore = useOperacionesStore();
+
+    /**
+     * Store de Equipos, utilizado para recuperar la información del equipo asignado a la operación.
+     */
     const equipoStore = useEquiposStore();
-    const modoEdicion = ref(false)
+
+    /**
+     * Identificador de la operación a mostrar.
+     */
+    const props = defineProps(["operacionId"])
+
+    /**
+     * Objeto reactivo que almacena la operación concreta.
+     */
+    const operacion = ref(null);
+
+    /**
+     * Objeto reactivo que almacena el equipo asignado a la operación.
+     */
     const equipoOperacion = ref(null)
 
+    /**
+     * Booleano reactivo que activa/desactiva el modo edición de la información de la operación.
+     */
+    const modoEdicion = ref(false)
+    
+    /**
+     * Objeto reactivo que almacena el nombre de la operación introducido por el agente.
+     */
     const nombreCampo = ref(null);
+
+    /**
+     * Objeto reactivo que almacena el estado de la operación introducido por el agente.
+     */
     const estadoCampo = ref(null);
+
+    /**
+     * Booleano reactivo utilizado para mostrar/ocultar un modal para eliminar una operación.
+     */
     const eliminarOperacionModal = ref(false);
+
+    /**
+     * Booleano reactivo utilizado para mostrar/ocultar un modal para asignar un equipo.
+     */
     const asignarEquipoModal = ref(false);
 
-
+    /**
+     * Función utilizada para obtener la información de la operación concreta.
+     */
     async function getInformacionOperacion(){
         operacion.value =  await operacionesStore.getOperacion(props.operacionId);
         estadoCampo.value = operacion.value.estado;
@@ -27,26 +68,38 @@ import AsignarEquipo from '@/components/Modals/AsignarEquipo.vue';
 
     }
 
+    /**
+     * Función utilizada para activar el modo edición de la información de la operación.
+     */
     function cambiarModoEdicion(){
         modoEdicion.value = true;
     }
 
+    /**
+     * Función utilizado para cancelar la actualización de la información de la operación.
+     * Restaura los objetos reactivos utilizados y desactiva el modo de edición.
+     */
     function cancelarActualizacion(){
         nombreCampo.value = '';
         estadoCampo.value = operacion.value.estado;    
         modoEdicion.value = false;
     }
 
+    /**
+     * Función utilizada para mostrar el Modal de eliminar operación.
+     */
     function eliminarOperacion(){
         eliminarOperacionModal.value = true;
     }
 
+    /**
+     * Función utilizada para mostrar el Modal de asignar equipo.
+     */
     function asignarEquipo(){
         asignarEquipoModal.value = true;
     }
 
     onBeforeMount(getInformacionOperacion)
-
 
 </script>
 
@@ -56,32 +109,32 @@ import AsignarEquipo from '@/components/Modals/AsignarEquipo.vue';
     <div class="h-full w-full grid grid-cols-[70%_30%] grid-rows-[auto_auto_auto] gap-5">
         <Card class="col-start-1 row-span-full">
             <template v-slot:title>
-                <p class="pl-5 pt-5 text-xl text-primary">Información de la Operación</p>
+                <p class="pt-5 pl-5 text-xl text-primary">Información de la Operación</p>
             </template>
 
             <template v-slot:body>
 
-                <div class="flex flex-col rounded-box shadow-lg border border-gray-200 p-5 gap-2">
-                    <label class="label font-bold text-primary/60 text-xs">Identificador de la operación</label>
+                <div class="flex flex-col gap-2 p-5 border border-gray-200 shadow-lg rounded-box">
+                    <label class="text-xs font-bold label text-primary/60">Identificador de la operación</label>
                     <p v-if="operacion" class="w-full font-semibold"> {{ operacion.id }} </p>
                 </div>
                   
-                <div class="flex flex-col rounded-box shadow-lg border border-gray-200 p-5 gap-2">
-                    <label class="label font-bold text-primary/60 text-xs">Nombre de la operación</label>
+                <div class="flex flex-col gap-2 p-5 border border-gray-200 shadow-lg rounded-box">
+                    <label class="text-xs font-bold label text-primary/60">Nombre de la operación</label>
                     <input v-if="operacion" v-model="nombreCampo" :disabled="!modoEdicion" type="text" class="w-full bg-transparent border-0 disabled:focus:outline-none placeholder:text-black placeholder:font-medium" :placeholder="operacion.nombre">
                 </div>
 
-                <div class="flex flex-col rounded-box shadow-lg border border-gray-200 p-5 gap-2">
-                    <label class="label font-bold text-primary/60 text-xs">Estado de la operación</label>
-                    <select v-if="operacion" :disabled="!modoEdicion" v-model="estadoCampo" class="w-full pt-2 pb-2 text-sm text-black font-semibold border rounded-sm bg-transparent border-gray-300">
+                <div class="flex flex-col gap-2 p-5 border border-gray-200 shadow-lg rounded-box">
+                    <label class="text-xs font-bold label text-primary/60">Estado de la operación</label>
+                    <select v-if="operacion" :disabled="!modoEdicion" v-model="estadoCampo" class="w-full pt-2 pb-2 text-sm font-semibold text-black bg-transparent border border-gray-300 rounded-sm">
                         <option value="Planificado">Planificado</option>
                         <option value="Activo">Activo</option>
                         <option value="Completado">Completado</option>
                     </select>
                 </div>
 
-                <div class="flex flex-col rounded-box shadow-lg border border-gray-200 p-5 gap-2">
-                    <label class="label font-bold text-primary/60 text-xs">Equipo Asignado a la operación</label>                            
+                <div class="flex flex-col gap-2 p-5 border border-gray-200 shadow-lg rounded-box">
+                    <label class="text-xs font-bold label text-primary/60">Equipo Asignado a la operación</label>                            
                     <table v-if="equipoOperacion"  class="table bg-primary/20 table-xs table-pin-rows">
                         <thead>
                             <th>Id</th>
@@ -113,7 +166,7 @@ import AsignarEquipo from '@/components/Modals/AsignarEquipo.vue';
             </template>
             
             <template v-slot:body>
-                <p>Pulse sobre esta sección para asignar esta operación a un equipo. <span class="text-primary font-semibold">Solo puedes asignarlo a un equipo propio.</span></p>
+                <p>Pulse sobre esta sección para asignar esta operación a un equipo. <span class="font-semibold text-primary">Solo puedes asignarlo a un equipo propio.</span></p>
             </template>
 
         </Card>

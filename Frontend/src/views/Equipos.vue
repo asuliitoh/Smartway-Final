@@ -1,43 +1,81 @@
+<!--Equipos muestra estadísticas generales de los equipos, gestiona solicitudes pendientes, muestra los equipos del agente y permite crear nuevos equipos-->
 <script setup>
+
     import EstadisticasEquipo from '@/components/Estadisticas/EstadisticasEquipo.vue';
     import Card from '@/components/Cards/Card.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
-    import Search from '@/components/Search.vue';
     import NewEquipo from '@/components/Modals/NewEquipo.vue';
     import { onBeforeMount, ref } from 'vue';
     import { useEquiposStore } from '@/stores/equipos-store';   
     import TablaEquipos from '@/components/Tablas/TablaEquipos.vue';
     import { router } from '@/router/router';
 
-    const equiposStore = useEquiposStore()
+    /**
+     * Store de Equipos, utilizado para recuperar los equipos del agente actual, crear nuevos equipos y gestionar solicitudes pendientes.
+     */
+    const equiposStore = useEquiposStore();
+
+    /**
+     * Booleano reactivo utilizado para mostrar/ocultar un Modal para la creación de un nuevo equipo.
+     */
     const newEquipoModal = ref(false);
-    const equipoSeleccionado = ref(null)
-    const solicitudSeleccionada = ref(null)
 
+    /**
+     * Objeto reactivo que almacena el equipo seleccionado por el agente actual.
+     */
+    const equipoSeleccionado = ref(null);
+
+    /**
+     * Objeto reactivo que almacena la solicitud seleccionada por el agente actual.
+     */
+    const solicitudSeleccionada = ref(null);
+
+    /**
+     * Función utilizada para redireccionar a la vista del equipo seleccionado.
+     */
     function redirectToEquipo(){
-        if (equipoSeleccionado.value) router.replace( {name: 'equipo', params: {equipoId:equipoSeleccionado.value}})
+        if (equipoSeleccionado.value) router.replace( {name: 'equipo', params: {equipoId:equipoSeleccionado.value}});
     }
 
+    /**
+     * Función utilizada para crear un nuevo equipo.
+     */
     function crearNuevoEquipo(){
-        newEquipoModal.value=true
+        newEquipoModal.value=true;
     }
 
+    /**
+     * Función utilizada para comprobar si una solicitud está seleccionada o no.
+     * @param id Identificador de la solicitud.
+     */
     function isSeleccionada(id){
-        return (solicitudSeleccionada && solicitudSeleccionada.value == id)
+        return (solicitudSeleccionada && solicitudSeleccionada.value == id);
     }
 
-    function rechazarSolicitud(){
-        equiposStore.rechazarSolicitud(solicitudSeleccionada.value)
-    }
-
+     /**
+     * Función utilizada para aceptar la solicitud seleccionada.
+     */
     function aceptarSolicitud(){
-        equiposStore.aceptarSolicitud(solicitudSeleccionada.value)
+        equiposStore.aceptarSolicitud(solicitudSeleccionada.value);
     }
 
+    /**
+     * Función utilizada para rechazar la solicitud seleccionada.
+     */
+    function rechazarSolicitud(){
+        equiposStore.rechazarSolicitud(solicitudSeleccionada.value);
+    }
+
+    /**
+     * Función utilizada para abandonar el equipo seleccionado.
+     */
     function abandonarEquipo(){
-        equiposStore.abandonarEquipo(equipoSeleccionado.value)
+        equiposStore.abandonarEquipo(equipoSeleccionado.value);
     }
 
+    /**
+     * Función utilizada para obtener los equipos y solicitudes del agente.
+     */
     function getEquiposYSolcitudes(){
         equiposStore.getAllEquipos();
         equiposStore.getSolicitudes();

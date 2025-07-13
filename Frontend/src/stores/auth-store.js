@@ -4,13 +4,18 @@ import { axiosInstance } from "@/api/axios";
 import { router } from "@/router/router";
 import { ref } from "vue";
 import { useRoute } from "vue-router";
+
+/**
+ * Store encargado del registro e inicio de sesión de un agente.
+ */
 export const useAuthStore = defineStore('auth', ()  => {
 
-    const user = ref(Number(localStorage.getItem('user')));
-    const lastIdRegistered = ref(null);
-    const token = ref(localStorage.getItem('token'));
-    const route = useRoute()
+    const user = ref(Number(localStorage.getItem('user'))); //Identificador del agente.
+    const lastIdRegistered = ref(null); //Identificador del último agente registrado.
+    const token = ref(localStorage.getItem('token')); //Token del agente que ha iniciado sesión.
+    const route = useRoute() //Ruta.
     
+    //Función utilizada para inicializar la store.
     function init(){
             if (token.value == null) {
                 clear();
@@ -36,6 +41,7 @@ export const useAuthStore = defineStore('auth', ()  => {
             
         }
         
+    //Función utilizada para registrar a un agente dado su nombre, apellidos y contraseña.
     async function register(nombre, apellidos, password){
             
             try {
@@ -51,6 +57,7 @@ export const useAuthStore = defineStore('auth', ()  => {
 
         }
 
+    //Función utilizada para iniciar sesión dado un identificador y una contraseña.
     async function login(id, password) {
         try{
             const response = await axiosInstance.post("/Agentes/login", {id:id, password:password});
@@ -70,6 +77,7 @@ export const useAuthStore = defineStore('auth', ()  => {
         }
         }
 
+    //Función utilizada para restaurar el estado de la store al cerrar sesión.
     function clear(){
         user.value=null;
         token.value=null;
@@ -78,11 +86,13 @@ export const useAuthStore = defineStore('auth', ()  => {
         delete axiosInstance.defaults.headers.common.Authorization;
     }
 
+    //Función utilizada para cerrar sesión.
     function logout(){
             clear()
             if (!route.path.includes('login')) router.push({name: 'login'})
         }
-
+    
+    //Función utilizada para decodificar un token JWT.
     function parseJwt(token) {
             var base64Url = token.split('.')[1];
             var base64 = base64Url.replace(/-/g, '+').replace(/_/g, '/');

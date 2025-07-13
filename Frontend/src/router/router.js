@@ -7,19 +7,24 @@ import Equipo from '@/views/Equipo.vue'
 import Agentes from '@/views/Agentes.vue'
 import Operacion from '@/views/Operacion.vue'
 
-//TODO: Añadir lógica que rediriga a /login SOLO si el usuario no ha iniciado sesión.
+/**
+ * Rutas definidas de la plataforma.
+ */
 const routes = [
-  {path:'/', redirect:'/login'},
-  {path:'/login', name:'login', component:Login},
-  {path: '/home', name: 'home', component: Home},
-  {path: '/operaciones', name:'operaciones', component:Operaciones},
-  {path: '/equipos', name:'equipos', component:Equipos},
-  {path: '/equipos/:equipoId', name: 'equipo', component:Equipo, props: route => ({equipoId: Number(route.params.equipoId)})},
-  {path: '/agentes', name:'agentes', component:Agentes},
-  {path: '/operaciones/:operacionId', component:Operacion,  name: 'operacion', props: route => ({operacionId: Number(route.params.operacionId)})}
+  {path:'/', redirect:'/login'}, //Redirige a login por defecto
+  {path:'/login', name:'login', component:Login}, //Página Login
+  {path: '/home', name: 'home', component: Home}, //Página Home
+  {path: '/operaciones', name:'operaciones', component:Operaciones}, //Página Operaciones
+  {path: '/equipos', name:'equipos', component:Equipos}, //Página Equipos
+  {path: '/equipos/:equipoId', name: 'equipo', component:Equipo, props: route => ({equipoId: Number(route.params.equipoId)})}, //Página Equipo Seleccionado
+  {path: '/agentes', name:'agentes', component:Agentes}, //Página Agentes
+  {path: '/operaciones/:operacionId', component:Operacion,  name: 'operacion', props: route => ({operacionId: Number(route.params.operacionId)})} //Página Operación
 
 ]
 
+/**
+ * Instanciación del router.
+ */
 const router = createRouter({
   history:createWebHistory(),
   routes,

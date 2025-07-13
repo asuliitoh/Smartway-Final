@@ -1,5 +1,6 @@
+<!--LayoutSection es un componente utilizado como plantilla para definir todas las vistas.-->
 <script setup>
-import Header from '@/components/Header.vue';
+    import Header from '@/components/Header.vue';
 </script>
 
 <template>

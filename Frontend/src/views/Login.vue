@@ -1,49 +1,90 @@
+<!--Login permite al usuario el inicio de sesión o el registro-->
 <script setup>
     import { ref} from 'vue';
     import { useAuthStore } from '@/stores/auth-store';
     import ModalCorrecto from '@/components/Modals/ModalCorrecto.vue';
     import ModalFallo from '@/components/Modals/ModalFallo.vue';
     
-    //Objeto reactivo para cambiar entre Login y Registro
-    const activeLogin = ref(true)
+    /**
+     * Booleano reactivo para cambiar entre login y registro.
+     */
+    const activeLogin = ref(true);
 
-    //Objetos reactivos para el inicio de sesión
-    const id = ref('')
-    const passwordLogin = ref('')
+    /**
+     * Identificador del agente introducido en el login.
+     */
+    const id = ref('');
+
+    /**
+     * Contrsaeña del agente introducido en el login.
+     */
+    const passwordLogin = ref('');
     
-    //Objetos reactivos para el registro
-    const nombre=ref('')
-    const apellidos=ref('')
-    const passwordRegister = ref('')
+    /**
+     * Nombre del agente introducido en el registro.
+     */
+    const nombre=ref('');
 
-    //Objetos reactivos para mostrar modals
-    const failedLoginModal = ref(false)
-    const succesfullRegisterModal = ref(false)
-    const failedRegisterModal = ref(false)
+    /**
+     * Apellidos del agente introducido en el registro.
+     */
+    const apellidos=ref('');
 
-    //Store para la autenticación del usuario
+    /**
+     * Contraseña del agente introducido en el registro.
+     */
+    const passwordRegister = ref('');
+
+    /**
+     * Booleano reactivo utilizado para mostrar/ocultar un modal en caso de que el login haya fallado.
+     */
+    const failedLoginModal = ref(false);
+
+    /**
+     * Booleano reactivo utilizado para mostrar/ocultar un modal en caso de que el registro haya ocurrido con éxito.
+     */
+    const succesfullRegisterModal = ref(false);
+
+    /**
+     * Booleano reactivo utilizado para mostrar/ocultar un modal en caso de que el registro haya fallado.
+     */
+    const failedRegisterModal = ref(false);
+
+    /**
+     * Store para la autenticación del usuario.
+     */
     const auth = useAuthStore();
 
+    /**
+     * Función utilizada para cambiar al formulario de login.
+     */
     function clickLogin() {
-        activeLogin.value = true
+        activeLogin.value = true;
     }
 
+    /**
+     * Función utilizada para cambiar al formulario de registro.
+     */
+    function clickRegister() {
+        activeLogin.value = false;
+    }
 
+    /**
+     * Función utilizada para envíar los datos del formulario de login.
+     */
     async function submitLogin() {
         const response = await auth.login(id.value, passwordLogin.value);
         if (response == false) failedLoginModal.value = true;
     }
 
+    /**
+     * Función utilizada para envíar los datos del formulario de registro.
+     */
     async function submitRegister() {
         const response = await auth.register(nombre.value, apellidos.value, passwordRegister.value);
-        if (response == true) succesfullRegisterModal.value = true
+        if (response == true) succesfullRegisterModal.value = true;
         else failedRegisterModal.value = true;
 
-    }
-
-
-    function clickRegister() {
-        activeLogin.value = false
     }
 
 </script>

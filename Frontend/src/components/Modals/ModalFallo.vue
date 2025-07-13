@@ -1,6 +1,11 @@
+<!--Componente Modal personalizable con un icono de error y con un botón para cerrar el Modal.-->
 <script setup>
 
     import Modal from './Modal.vue';
+
+    /**
+     * Model que define si el Modal es visible o no.
+     */
     const visible = defineModel(false)
 
 </script>
@@ -8,9 +13,9 @@
 <template>
     <Modal>
         <template v-slot:header>
-            <div class=" text-center flex flex-col self-center items-center w-full">
+            <div class="flex flex-col items-center self-center w-full text-center ">
                 <img src="./icons/cross.png" alt="Icono Fallo" class="w-40 h-40 text-center">
-                <div class="text-primary font-bold text-xl"><slot name="title"></slot></div>
+                <div class="text-xl font-bold text-primary"><slot name="title"></slot></div>
             </div>
 
         </template>

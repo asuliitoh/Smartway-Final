@@ -1,23 +1,28 @@
 import { defineStore } from "pinia";
 import { axiosInstance } from "@/api/axios";
 
+/**
+ * Store que almacena la información del agente que actualmente ha iniciado sesión.
+ */
 export const useAgenteStore = defineStore('agenteStore', () => 
     
     {
-    
-        const id = (localStorage.getItem('user'));
-        const nombre = null;
-        const apellidos= null;
-        const rango = null;
-        const activo = null;
-        const loaded = false;
+        
+        const id = (localStorage.getItem('user')); //Identificador del agente.
+        const nombre = null; //Nombre del agente.
+        const apellidos= null; //Apellidos del agente.
+        const rango = null; //Rango del agente.
+        const activo = null; //Activo del agente.
+        const loaded = false; //True si la información se ha cargado, false en caso contrario.
     
         
-       function setAgenteActual(id){
+        //Función que asigna el identificador del agente actual.
+        function setAgenteActual(id){
             this.id = id;
         }
 
-
+        //Función que devuelve la información del agente actual.
+        //En caso de que loaded sea false, realiza una consulta GET a la API.
         async function getInformacionAgenteActual(){
             
             if (!this.loaded){
@@ -31,14 +36,14 @@ export const useAgenteStore = defineStore('agenteStore', () =>
                 }
 
                 catch(error){
-                    console.error("El agente no existe")
+                    console.error("El agente no existe");
                 }
                 
             }
-            
             return {nombre: this.nombre, apellidos:this.apellidos, rango:this.rango, activo:this.activo}
         };
 
+        //Función que devuelve la información de un agente dado un identificador.
         async function getInformacionAgente(id){
 
             try {
@@ -50,18 +55,17 @@ export const useAgenteStore = defineStore('agenteStore', () =>
                     activo:response.data.activo,
                 }
             }catch(error){
-                console.error("El agente no existe")
+                console.error("El agente no existe");
             }
             
         };
 
+        //Función que actualiza la información del agente actual.
         async function updateInformacionAgenteActual(data){
             if (this.loaded){
                 try {
-                    const agente = {id:this.id, nombre:data.nombre, apellidos:data.apellidos, rango:data.rango, activo:data.activo}
-                    console.log(data)
-                    const response = await axiosInstance.put(`/Agentes/${this.id}`, agente)    
-                    console.log(response.data)
+                    const agente = {id:this.id, nombre:data.nombre, apellidos:data.apellidos, rango:data.rango, activo:data.activo};
+                    const response = await axiosInstance.put(`/Agentes/${this.id}`, agente);
                     this.nombre=response.data.nombre;
                     this.apellidos=response.data.apellidos;
                     this.rango=response.data.rango;
@@ -69,25 +73,25 @@ export const useAgenteStore = defineStore('agenteStore', () =>
                     return {nombre:this.nombre, apellidos:this.apellidos, rango:this.rango, activo:this.activo}       
                 
                 }catch(error){
-                    if (error.response.status === 400) console.error("No se han introducido datos válidos")
-                    else if (error.response.status === 404) console.error("El agente no existe")                   
+                    if (error.response.status === 400) console.error("No se han introducido datos válidos");
+                    else if (error.response.status === 404) console.error("El agente no existe");
                 }
                 
             }
         };
 
+        //Función que actualiza la contraseña del agente actual.
         async function updatePasswordAgenteActual(data){
             if (this.loaded){
                 try {
-                    const peticion = {id:this.id, password:data.password, newPassword:data.newPassword, confirmPassword:data.confirmPassword}
-                    console.log(peticion)
-                    const response =await axiosInstance.post(`/Agentes/${this.id}/password`, peticion)
+                    const peticion = {id:this.id, password:data.password, newPassword:data.newPassword, confirmPassword:data.confirmPassword};
+                    await axiosInstance.post(`/Agentes/${this.id}/password`, peticion);
                     return true;
                 }catch(error){
 
-                    if (error.response.status === 400) console.error("No se han introducido datos válidos")
-                    else if (error.response.status === 404) console.error("El agente no existe")
-                    else if (error.response.status === 401) console.error("La contraseña actual no es correcta, o la confirmación de la contraseña no coincide con la nueva contraseña")      
+                    if (error.response.status === 400) console.error("No se han introducido datos válidos");
+                    else if (error.response.status === 404) console.error("El agente no existe");
+                    else if (error.response.status === 401) console.error("La contraseña actual no es correcta, o la confirmación de la contraseña no coincide con la nueva contraseña");
                     return false;
                 }
                 

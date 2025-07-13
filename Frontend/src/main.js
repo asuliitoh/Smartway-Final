@@ -32,6 +32,8 @@ router.beforeEach((to) => {
 
   else if(isAuthenticated && !loaded.value) {
     equipo.init()
+    operaciones.getAllOperaciones();
+    equipo.getAllEquipos();
     loaded.value = true;
   }
 })

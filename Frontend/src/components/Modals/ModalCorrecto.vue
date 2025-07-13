@@ -1,6 +1,11 @@
+<!--Componente Modal personalizable, con un icono de correcto y con un botón para cerrar el Modal-->
 <script setup>
     
     import Modal from './Modal.vue';
+
+    /**
+     * Model que define si el Modal es visible o no.
+     */
     const visible = defineModel(false)
 
 </script>

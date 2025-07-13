@@ -1,14 +1,30 @@
+<!--TablaEquipos es utilizad para representar una serie de equipos en una tabla-->
 <script setup>
+
    import EntradaEquipo from './EntradaEquipo.vue';
-   import { ref } from 'vue';
+   /**
+    *  Equipos a representar.
+    */
    const props = defineProps(['equipos'])
+
+   /**
+    * Model que define si el Modal es visible o no.
+    */
    const selected = defineModel({default:null})
 
+   /**
+    * Función que devuelve true si se ha seleccionado un equipo concreto (falso en caso contrario).
+    * @param id Identificador del equipo.
+    */
    function isSeleccionado(id){
         if ((selected.value != null) && selected.value== id) return true;
         else false;
    }
 
+   /**
+    * Función que asigna un equipo como equipo seleccionado.
+    * @param id 
+    */
    function setSelected(id){
         selected.value = id;
    }

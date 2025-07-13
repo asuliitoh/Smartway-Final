@@ -1,8 +1,9 @@
+<!--Operaciones permite al usuario ver sus operaciones, crear nuevas operaciones y aplicar filtros-->
 <script setup>
+
     import EstadisticasOperaciones from '@/components/Estadisticas/EstadisticasOperaciones.vue';
     import Card from '@/components/Cards/Card.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
-    import Search from '@/components/Search.vue';
     import NewOperation from '@/components/Modals/NewOperacion.vue';
     import { ref, computed } from 'vue';
     import TablaOperaciones from '@/components/Tablas/TablaOperaciones.vue';
@@ -10,22 +11,49 @@
     import { onBeforeMount } from 'vue';
     import { router } from '@/router/router';
     
-    const newOperationModal = ref(false)
-    const operacionSeleccionada = ref(null)
+    /**
+     * Store de Operaciones, utilizado para obtener las opreaciones, crear nuevas operaciones y aplicar filtros.
+     */
     const operacionesStore = useOperacionesStore()
 
+    /**
+     * Booleano reactivo utilizado para mostrar/ocultar un Modal para la creación de una nueva operación.
+     */
+    const newOperationModal = ref(false)
+
+    /**
+     * Objeto reactivo utilizado para almacenar la operación seleccionada por el agente.
+     */
+    const operacionSeleccionada = ref(null)
+    
+    /**
+     * Filtro actual de Estado.
+     */
     const filtroEstado = ref("ninguno");
+
+    /**
+     * Filtro actual de Periodo.
+     */
     const filtroPeriodo = ref("ninguno");
+
+    /**
+     * Filtro actual de Equipo.
+     */
+    const filtroEquipo = ref(null);
+
+    /**
+     * Fecha de inicio del periodo personalizado.
+     */
     const periodoPersonalizadoInicio = ref(null);
+    
+    /**
+     * Fecha final del periodo personalizado.
+     */
     const periodoPersonalizadoFinal = ref(null);
 
-    function formatDateDMY(date) {
-        const d = date.getDate().toString().padStart(2, '0');
-        const m = (date.getMonth() + 1).toString().padStart(2, '0');
-        const y = date.getFullYear();
-        return `${d}/${m}/${y}`;
-    }
-
+    /**
+     * Computed que devuelve un objeto {fechaInicio, fechaFinal} según el filtro de periodo elegido.
+     */
     const filtroPeriodoObjeto = computed (() => {
         const inicio = new Date();
         const final = new Date(inicio);
@@ -49,20 +77,20 @@
             else return null;
         }
     })
-    const filtroEquipo = ref(null);
+
     
+    /**
+     * Función utilizada para obtener las operaciones del agente actual.
+     */
     function getOperaciones(){
         operacionesStore.getAllOperaciones();
     }
 
+    /**
+     * Función utilizada para redirigir a la vista de la operación seleccionada.
+     */
     function redirectToOperacion(){
         if (operacionSeleccionada.value) router.replace({name: 'operacion', params:{operacionId:operacionSeleccionada.value}})
-    }
-
-    function reiniciarFiltros(){
-        filtroEstado.value = null;
-        filtroPeriodo.value = null;
-        filtroEquipo.value = null;
     }
 
     onBeforeMount(getOperaciones)

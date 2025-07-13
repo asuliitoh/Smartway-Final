@@ -1,12 +1,20 @@
+<!--Componente Header de la plataforma-->
 <script setup>
+
 import { useAuthStore } from '@/stores/auth-store';
 import { router } from '@/router/router';
 
+/**
+ * Función utilizada para cerrar la sesión del agente actual.
+ */
 function logout(){
     const auth = useAuthStore();
     auth.logout()
 }
 
+/**
+ * Función utilizada para redirigir a la página home.
+ */
 function redirectToHome(){
     router.replace({name: 'home'})
 }

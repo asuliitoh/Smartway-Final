@@ -1,17 +1,36 @@
+<!--EliminarOperación es un Modal permite al agente actual eliminar una operación en concreto.-->
 <script setup>
 
     import ModalAviso from './ModalAviso.vue';
     import { router } from '@/router/router';
     import { useOperacionesStore } from '@/stores/operaciones-store';
     
+    /**
+     * Store de Operaciones, utilizado para eliminar la operación.
+     */
     const operacionesStore = useOperacionesStore();
-    const visible = defineModel(false)
-    const props = defineProps(["seleccionado"])
+
+    /**
+     * Modal que define si el Modal es visible o no.
+     */
+    const visible = defineModel(false);
+
+    /**
+     * Identificador de la operación seleccionada.
+     */
+    const props = defineProps(["seleccionado"]);
     
+    /**
+     * Función utilizada para eliminar la operación seleccionada.
+     */
     async function eliminarOperacion(){
-        await operacionesStore.deleteOperacion(props.seleccionado);
-        visible.value=false;
-        router.replace({name: 'operaciones'})
+        try{
+            await operacionesStore.deleteOperacion(props.seleccionado);
+            visible.value=false;
+            router.replace({name: 'operaciones'});
+        }catch(error){
+            console.error(error);
+        }
     }
 
 </script>
@@ -31,6 +50,5 @@
             <button @click="visible = false" type="button" class="btn ">Cancelar</button>
             <button @click="eliminarOperacion" type="button" class="btn btn-primary">Aceptar</button>
         </template>
-
     </ModalAviso>
 </template>

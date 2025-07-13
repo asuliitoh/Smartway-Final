@@ -1,6 +1,10 @@
+<!--EntradaEquipo es utilizado para representar una operación como entrada de una tabla-->
 <script setup>
-
       
+/**
+ * Identificador, Nombre, Estado, Fecha de Inicio y Fecha de Fin de la operación, además de una 
+ * propiedad booleana seleccionada.
+ */
 const props = defineProps({
     id: Number,
     nombre: String,
@@ -9,7 +13,6 @@ const props = defineProps({
     fechaFin: String,
     seleccionado: Boolean
 })
-
 </script>
 
 <template>

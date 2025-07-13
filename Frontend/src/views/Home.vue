@@ -1,4 +1,6 @@
+<!--Home es la página principal tras el inicio de sesión. Muestra estadísticas globales y accesos rápidos a las secciones-->
 <script setup>
+   
     import EstadisticasEquipo from '@/components/Estadisticas/EstadisticasEquipo.vue';
     import EstadisticasOperaciones from '@/components/Estadisticas/EstadisticasOperaciones.vue';
     import Card from '@/components/Cards/Card.vue';
@@ -6,24 +8,39 @@
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import { router } from '@/router/router';
     import { useEstadisticasStore } from '@/stores/estadisticas-store';
-import { onBeforeMount } from 'vue';
+    import { onBeforeMount } from 'vue';
 
+    /**
+     * Store de estadísticas, utilizado para recuperar las estadísticas generales de la plataforma.
+     */
     const estadisticasStore = useEstadisticasStore();
 
+    /**
+     * Función utilizada para redirigir la vista a la sección Operaciones.
+     */
     function redirectToOperaciones(){
-        router.replace({name: 'operaciones'})
+        router.replace({name: 'operaciones'});
     }
 
+    /**
+     * Función utilizada para redirigir la vista a la sección Equipos.
+     */
     function redirectToEquipos(){
-        router.replace({name: 'equipos'})
+        router.replace({name: 'equipos'});
     }
 
+    /**
+     * Función utilizada para redirigir la vista a la sección Agentes.
+     */
     function redirectToAgentes(){
-        router.replace({name: 'agentes'})
+        router.replace({name: 'agentes'});
     }
 
+    /**
+     * Función utilizada para obtener las estadísticas generales de la plataforma.
+     */
     function getEstadisticas(){
-        estadisticasStore.getEstadisticas();
+        estadisticasStore.getEstadisticas();;
     }
 
     onBeforeMount(getEstadisticas)

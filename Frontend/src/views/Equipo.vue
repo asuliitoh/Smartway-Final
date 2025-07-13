@@ -1,9 +1,11 @@
+<!--Equipo muestra los detalles de un equipo concreto, permite editar su información, añadir nuevos agentes y la disolución del equipo-->
 <script setup>
+
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import Card from '@/components/Cards/Card.vue';
     import Search from '@/components/Search.vue';
     import DisolverEquipo from '@/components/Modals/DisolverEquipo.vue';
-    import {ref, reactive, onMounted} from 'vue';
+    import {ref, onMounted} from 'vue';
     import { useAgenteStore } from '@/stores/agente-store';
     import { useEquiposStore } from '@/stores/equipos-store';
     import AgenteCard from '@/components/Cards/AgenteCard.vue';
@@ -91,7 +93,6 @@
     async function getInformacionEquipo(){
         const response = await equipoStore.getEquipo(props.equipoId);
         equipo.value = response;
-        console.log(equipo.value)
     }
     
     /**

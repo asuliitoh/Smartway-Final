@@ -1,3 +1,4 @@
+<!--Componente Modal personalizable que incluye un icono de aviso-->
 <script setup>
     import Modal from './Modal.vue';
 </script>
@@ -22,7 +23,6 @@
         <template v-slot:actions>
             <slot name="actions"></slot>
         </template>
-
     </Modal>
 
 </template>

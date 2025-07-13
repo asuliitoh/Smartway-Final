@@ -1,4 +1,6 @@
+<!--Agentes permite al usuario gestionar su información personal, cambiar contraseña y buscar otros agentes registrados-->
 <script setup>
+    
     import Card from '@/components/Cards/Card.vue';
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import Search from '@/components/Search.vue';
@@ -9,32 +11,99 @@
     import ModalCorrecto from '@/components/Modals/ModalCorrecto.vue';
     import AgenteCard from '@/components/Cards/AgenteCard.vue';
 
-    //Atributos del agente
-    const store = useAgenteStore()
-    const nombre = ref('')
-    const apellidos = ref('')
-    const rango = ref('')
-    const activo = ref('')
-    const agenteBuscado = ref(null)
-    const seHaBuscado = ref(false)
+    /**
+     * Store de agentes, utilizado para recuperar la información del agente actual, de cualquier otro agente y para actualizar al agente.
+     */
+    const store = useAgenteStore();
 
-    //Objetos reactivos utilizados para la actualización de los atributos del agente
-    const nombreCampo = ref(null)
-    const apellidosCampo = ref(null)
-    const rangoCampo = ref(null)
-    const activoCampo = ref(null)
+    /**
+     * Nombre del agente actual.
+     */
+    const nombre = ref('');
 
-    //Objetos reactivos utilizados para el cambio de la contraseña
-    const password = ref(null)
-    const newPassword = ref(null)
-    const confirmPassword = ref(null)
+    /**
+     * Apellidos del agente actual.
+     */
+    const apellidos = ref('');
 
-    //Objetos reactivos utilizados para mostrar modals
-    const succesfullPassword = ref(false)
-    const failedPassword = ref(false)
-    const failedUpdate = ref(false)
-    const succesfullUpdate = ref(false)
+    /**
+     * Rango del agente actual.
+     */
+    const rango = ref('');
 
+    /**
+     * Atributo 'activo' del agente actual.
+     */
+    const activo = ref('');
+
+    /**
+     * Objeto reactivo que almacena el último agente buscado.
+     */
+    const agenteBuscado = ref(null);
+
+    /**
+     * Booleano utilizado para saber si se ha buscado a un agente o no al menos una vez.
+     */
+    const seHaBuscado = ref(false);
+
+    /**
+     * Objeto reactivo utilizado para la actualización del nombre del agente actual.
+     */
+    const nombreCampo = ref(null);
+
+    /**
+     * Objeto reactivo utilizado para la actualización de los apellidos del agente actual.
+     */
+    const apellidosCampo = ref(null);
+
+    /**
+     * Objeto reactivo utilizado para la actualización del rango del agente actual.
+     */
+    const rangoCampo = ref(null);
+    
+    /**
+     * Objeto reactivo utilizado para la actualización del atributo 'activo' del agente actual.
+     */
+    const activoCampo = ref(null);
+
+    /**
+     * Objeto reactivo utilizado para la actualización de la contraseña del agente actual. Almacena la contraseña actual introducida.
+     */
+    const password = ref(null);
+
+    /**
+     * Objeto reactivo utilizado para la actualización de la contraseña del agente actual. Almacena la nueva contraseña introducida.
+     */
+    const newPassword = ref(null);
+
+    /**
+     * Objeto reactivo utilizado para la actualización de la contraseña del agente actual. Almacena la confirmación de contraseña introducida.
+     */
+    const confirmPassword = ref(null);
+
+    /**
+     * Booleano reactivo para mostrar/ocultar un Modal al actualizar la contraseña correctamente.
+     */
+    const succesfullPassword = ref(false);
+
+    /**
+     * Booleano reactivo para mostrar/ocultar un Modal al fallar en la actualización de contraseña.
+     */
+    const failedPassword = ref(false);
+
+    /**
+     * Booleano reactivo para mostrar/ocultar un Modal al actualizarse correctamente la información personal..
+     */
+    const succesfullUpdate = ref(false);
+
+    /**
+     * Booleano reactivo para mostrar/ocultar un Modal al fallar en la actualización de información personal.
+     */
+    const failedUpdate = ref(false);
+
+    /**
+     * Función utilizada para cargar la información del agente actual.
+     */
     async function getInformacionAgenteActual() {
         const response = await store.getInformacionAgenteActual();
         nombre.value = response.nombre;
@@ -43,18 +112,28 @@
         activo.value = response.activo;
     }
 
+    /**
+     * Función utilizada para buscar un agente determinado.
+     * @param id Identificador del agente a buscar.
+     */
     async function buscarAgente(id){
         const agente= await store.getInformacionAgente(id);
         return agente;
     }
 
+    /**
+     * Función utilizada para almacenar el último agente buscado.
+     * @param agente Agente buscado.
+     */
     function setAgenteBuscado(agente){
         seHaBuscado.value = true;
         agenteBuscado.value=agente;
     }
 
-
-   async function actualizarInformacionPersonal(){
+    /**
+     * Función utilizada para actualizar la información personal del agente actual.
+     */
+    async function actualizarInformacionPersonal(){
 
         const agenteActualizar = computed(() => {
             return {
@@ -76,11 +155,14 @@
             activoCampo.value = '';
         }
 
-        else failedUpdate.value = true
+        else failedUpdate.value = true;
 
 
     }
 
+    /**
+     * Función utilizada para restaurar los objetos reactivos utilizados para la actualización de la información personal.
+     */
     async function cancelarActualizacion(){
         nombreCampo.value = '';
         apellidosCampo.value = '';
@@ -88,17 +170,18 @@
         activoCampo.value = '';
     }
 
+    /**
+     * Función utilizada para cambiar la contraseña del agente actual.
+     */
     async function actualizarPassword(){
-        const response = await store.updatePasswordAgenteActual({password:password.value, newPassword:newPassword.value, confirmPassword:confirmPassword.value})
+        const response = await store.updatePasswordAgenteActual({password:password.value, newPassword:newPassword.value, confirmPassword:confirmPassword.value});
         password.value='';
         newPassword.value='';
         confirmPassword.value='';
-
-        if (response == true) succesfullPassword.value = true
-        else failedPassword.value = true
+        if (response == true) succesfullPassword.value = true;
+        else failedPassword.value = true;
 
     }   
-
     onMounted(getInformacionAgenteActual)
 
 </script>

@@ -1,31 +1,60 @@
+<!--NewOperación es un Modal que permite al agente actual crear una nueva operación, dado un nombre, estado, fecha inicio y fecha final-->
 <script setup>
+
     import Modal from './Modal.vue';
     import { useOperacionesStore } from '@/stores/operaciones-store';
     import { ref } from 'vue';
     
-    //Objeto reactivo para mostrar u ocultar el modal
-    const visible = defineModel(false)
+    /**
+     * Model que define si el Modal es visible o no.
+     */
+    const visible = defineModel(false);
 
-    //Store utilizado para Operaciones
+    /**
+     * Store de Operaciones, utilizado para crear la nueva operación.
+     */
     const operacionesStore = useOperacionesStore();
     
-    //Objetos reactivos utilizados para el formulario
-    const nombre = ref(null)
-    const estado = ref("Ninguno")
-    const fechaInicio = ref(null)
-    const fechaFinal = ref(null)
+    /**
+     * Nombre de la operación especificada por el agente.
+     */
+    const nombre = ref(null);
 
-    function newOperacion(){
+    /**
+     * Estado de la operación especificada por el agente.
+     */
+    const estado = ref("Ninguno");
+    
+    /**
+     * Fecha de inicio de la operación especificada por el agente.
+     */
+    const fechaInicio = ref(null);
+
+    /**
+     * Fecha final de la operación especificada por el agente.
+     */
+    const fechaFinal = ref(null);
+
+    /**
+     * Función utilizada para crear la operación dada la información especificada por el agente.
+     * Se llama al pulsar el botón Crear.
+     */
+    async function newOperacion(){
         if ((nombre.value != null) && (estado.value != null) && (fechaInicio.value != null) && (fechaFinal.value != null)){
-        operacionesStore.newOperacion({nombre:nombre.value,
-            estado:estado.value,
-            fechainicio:fechaInicio.value,
-            fechafinal:fechaFinal.value    
-        })
-        visible.value=false;
+        
+            try{
+                await operacionesStore.newOperacion({nombre:nombre.value, sestado:estado.value, fechainicio:fechaInicio.value,fechafinal:fechaFinal.value})
+                visible.value=false;
+            }catch(error){
+                console.error(error)
+            }
         }
     }
 
+    /**
+     * Función utilizada para restaurar los objetos reactivos utilizados y para cerrar el Modal.
+     * Se llama al pulsar el botón Cancelar.
+     */
     function clear(){
         nombre.value = null;
         estado.value = "Ninguno";
