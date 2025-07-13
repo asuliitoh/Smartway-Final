@@ -9,6 +9,11 @@
     import AgenteCard from '@/components/Cards/AgenteCard.vue';
     
     /**
+     * Propiedades del componente. Router pasa equipoId mediante el path.
+     */
+    const props = defineProps(["equipoId"]);
+
+    /**
      * Stores de Equipos, utilizado para recuperar la información del equipo actual.
      */
     const equipoStore = useEquiposStore();
@@ -32,11 +37,6 @@
      * Booleano reactivo utilizado para mostrar el modal de disolver equipo.
      */
     const disolverEquipoModal = ref(false);
-
-    /**
-     * Propiedades del componente. Router pasa equipoId mediante el path.
-     */
-    const props = defineProps(["equipoId"]);
 
     /**
      * Objeto reactivo utilizado para almacenar la información del equipo actual.
@@ -161,13 +161,13 @@
                         <label class="label text-primary">Identificador del equipo</label>
                         <input disabled type="text" class="w-full input disabled:bg-primary/20 disabled:border-primary/40" :placeholder = "equipo.id">
 
-                        <label class="label text-primary">Nombre del Equipo</label>
+                        <label class="label text-primary">Nombre del equipo</label>
                         <input :disabled="!modoEdicion" v-model="nombreCampo" type="text" class="w-full input bg-primary/20 border-primary/40 disabled:bg-primary/20 disabled:border-primary/40" :placeholder="equipo.nombre">
 
-                        <label class="label text-primary">Especialidad del Equipo</label>
+                        <label class="label text-primary">Especialidad del equipo</label>
                         <input :disabled="!modoEdicion" v-model="especialidadCampo" type="text" class="w-full input bg-primary/20 border-primary/40 disabled:bg-primary/20 disabled:border-primary/40" :placeholder="equipo.especialidad">
 
-                        <label class="label text-primary">Miembros del Equipo</label>
+                        <label class="label text-primary">Miembros del equipo</label>
                         
                             <table class="table bg-primary/20 table-xs table-pin-rows">
                                     <thead>
@@ -185,7 +185,7 @@
                                 </template>
                                 </table>        
                     
-                        <label class="label text-primary">Operaciones del Equipo</label>            
+                        <label class="label text-primary">Operaciones del equipo</label>            
 
                             <table class="table bg-primary/20 table-xs table-pin-rows">
                                     <thead>
@@ -193,7 +193,7 @@
                                         <td>Nombre</td>
                                     </thead>
 
-                                <template v-for="operacion in equipo.operacion">
+                                <template v-for="operacion in equipo.operaciones">
                                     <tr class="hover:bg-primary/10">
                                         <th>{{ operacion.id }}</th>
                                         <td>{{ operacion.nombre }}</td>
@@ -258,7 +258,7 @@
             </template>
 
             <template v-slot:body>
-                <p>Una vez eliminada, toda la información asociada a esta operación se perderá definitivamente.
+                <p>Una vez eliminada, toda la información asociada a este equipo se perderá definitivamente.
                 <span class="font-semibold text-primary">Esta acción no se puede deshacer.</span></p>
         
             </template>

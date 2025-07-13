@@ -22,6 +22,7 @@
             fechainicio:fechaInicio.value,
             fechafinal:fechaFinal.value    
         })
+        visible.value=false;
         }
     }
 

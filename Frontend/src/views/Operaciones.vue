@@ -4,25 +4,65 @@
     import LayoutSection from '@/layouts/LayoutSection.vue';
     import Search from '@/components/Search.vue';
     import NewOperation from '@/components/Modals/NewOperacion.vue';
-    import { ref } from 'vue';
+    import { ref, computed } from 'vue';
     import TablaOperaciones from '@/components/Tablas/TablaOperaciones.vue';
     import { useOperacionesStore } from '@/stores/operaciones-store';
     import { onBeforeMount } from 'vue';
     import { router } from '@/router/router';
+    
     const newOperationModal = ref(false)
     const operacionSeleccionada = ref(null)
     const operacionesStore = useOperacionesStore()
 
-    function getOperaciones(){
-        operacionesStore.getAllOperaciones()
+    const filtroEstado = ref("ninguno");
+    const filtroPeriodo = ref("ninguno");
+    const periodoPersonalizadoInicio = ref(null);
+    const periodoPersonalizadoFinal = ref(null);
+
+    function formatDateDMY(date) {
+        const d = date.getDate().toString().padStart(2, '0');
+        const m = (date.getMonth() + 1).toString().padStart(2, '0');
+        const y = date.getFullYear();
+        return `${d}/${m}/${y}`;
     }
 
-    function deleteOperacion(){
-        if (operacionSeleccionada.value != null) operacionesStore.deleteOperacion(operacionSeleccionada.value)
+    const filtroPeriodoObjeto = computed (() => {
+        const inicio = new Date();
+        const final = new Date(inicio);
+    
+        if (filtroPeriodo.value === "semana") {
+            inicio.setDate(inicio.getDate() - 7);
+            return {inicio:inicio, final:final}
+        };
+        if (filtroPeriodo.value === "mes") {
+            inicio.setDate(inicio.getMonth() - 1);
+             return {inicio:inicio, final:final}
+        }
+        
+        if (filtroPeriodo.value === "personalizado") {
+
+            if(periodoPersonalizadoInicio.value && periodoPersonalizadoFinal.value) {
+
+                return {inicio: new Date(periodoPersonalizadoInicio.value), final: new Date(periodoPersonalizadoFinal.value) }
+            }
+
+            else return null;
+        }
+    })
+    const filtroEquipo = ref(null);
+    
+    function getOperaciones(){
+        operacionesStore.getAllOperaciones();
     }
 
     function redirectToOperacion(){
         if (operacionSeleccionada.value) router.replace({name: 'operacion', params:{operacionId:operacionSeleccionada.value}})
+    }
+
+    function reiniciarFiltros(){
+        filtroEstado.value = null;
+        filtroPeriodo.value = null;
+        filtroEquipo.value = null;
     }
 
     onBeforeMount(getOperaciones)
@@ -51,12 +91,11 @@
                 <Card class="col-span-2 col-start-1 row-start-2 overflow-auto">
                     <template v-slot:body>
                         <h2 class="self-center card-title text-primary">Tabla de Operaciones</h2>
-                        <TablaOperaciones v-model="operacionSeleccionada" :operaciones="operacionesStore.operaciones"></TablaOperaciones>
+                        <TablaOperaciones v-model="operacionSeleccionada" :operaciones="operacionesStore.operacionesFiltradas(filtroEstado, filtroPeriodoObjeto, filtroEquipo)"></TablaOperaciones>
                     </template>
 
                     <template v-slot:actions>
-                        <button @click="redirectToOperacion" type="button" class="btn">Ver Operación</button>
-                        <button @click="deleteOperacion" type="button" class="btn btn-primary">Eliminar Operación</button>
+                        <button v-if="operacionSeleccionada" @click="redirectToOperacion" type="button" class="btn btn-primary">Ver Operación</button>
                     </template>
 
                 </Card>
@@ -87,41 +126,40 @@
                     </div>
 
                     <div class="grid h-full grid-rows-3">
-
                         <div>
                             <label class="text-xs label text-primary">Estado de la operación</label>
-                            <select class="w-full pl-1 text-xs border rounded-sm join-item bg-primary/10 border-primary/50">
-                                <option selected>Todos los Estados</option>
-                                <option>Planificada</option>
-                                <option>Activa</option>
-                                <option>Completada</option>
+                            <select v-model="filtroEstado" class="w-full pl-1 text-xs border rounded-sm join-item bg-primary/10 border-primary/50">
+                                <option selected value="ninguno">Todos los Estados</option>
+                                <option value="Planificado">Planificada</option>
+                                <option value="Activo">Activa</option>
+                                <option value="Completado">Completada</option>
                             </select>
                         </div>
                         
                         <div>
                             <label class="text-xs label text-primary">Periodo de Tiempo</label>
-                            <select class="w-full pl-1 text-xs border rounded-sm join-item bg-primary/10 border-primary/50">
-                                <option selected>Sin Periodo Concreto</option>
-                                <option>Última Semana</option>
-                                <option>Último Mes</option>
-                                <option>Periodo Personalizado</option>
+                            <select v-model="filtroPeriodo" class="w-full pl-1 text-xs border rounded-sm join-item bg-primary/10 border-primary/50">
+                                <option selected value="ninguno">Sin Periodo Concreto</option>
+                                <option value="semana">Última Semana</option>
+                                <option value="mes">Último Mes</option>
+                                <option value="personalizado">Periodo Personalizado</option>
                             </select>
+                        </div>
+
+                        <div v-if="filtroPeriodo === 'personalizado'">
+                            <input type="date" v-model="periodoPersonalizadoInicio" class="w-full px-2 py-1 border rounded" />
+                            <input type="date" v-model="periodoPersonalizadoFinal"  class="w-full px-2 py-1 border rounded" />
                         </div>
 
                         <div>
                             <label class="text-xs label text-primary">Equipo Asignado</label>
-                            <input type="search" class="w-full pl-1 text-xs border rounded-sm h-fit join-item bg-primary/10 border-primary/50" placeholder="Introduce el ID del equipo"/>
+                            <input v-model="filtroEquipo" type="search" class="w-full pl-1 text-xs border rounded-sm h-fit join-item bg-primary/10 border-primary/50" placeholder="Introduce el ID del equipo"/>
                         </div>
                         
 
                     </div>
 
                         
-                </template>
-
-                <template v-slot:actions>
-                     <button type="button" class="btn">Reiniciar</button>
-                    <button type="button" class="btn btn-primary">Aplicar</button>
                 </template>
 
               </Card>

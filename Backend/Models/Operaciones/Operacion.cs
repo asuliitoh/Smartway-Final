@@ -1,4 +1,5 @@
 using System.Text.Json.Serialization;
+using SmartwayFinal.Services;
 
 namespace SmartwayFinal.Models;
 
@@ -8,11 +9,15 @@ public class Operacion
 
     public string? Nombre { get; set; }
 
-    [JsonConverter(typeof(JsonStringEnumConverter))]
+    [JsonConverter(typeof(EstadoOperacionJsonConverter))]
     public EstadoOperacion Estado { get; set; }
 
+
+
+    [JsonConverter(typeof(DateTimeJsonConverter))]
     public DateTime FechaInicio { get; set; }
 
+    [JsonConverter(typeof(DateTimeJsonConverter))]
     public DateTime FechaFinal { get; set; }
 
     //Clave ajena

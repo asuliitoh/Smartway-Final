@@ -2,20 +2,17 @@ using System.Text.Json.Serialization;
 using SmartwayFinal.Services;
 namespace SmartwayFinal.Models;
 
-public class OperacionDTO
+public class CrearOperacion
 {
-    public int Id { get; set; }
     public string? Nombre { get; set; }
 
     [JsonConverter(typeof(EstadoOperacionJsonConverter))]
     public EstadoOperacion Estado { get; set; }
 
-    [JsonConverter(typeof(DateTimeJsonConverter))]
     public DateTime FechaInicio { get; set; }
 
-    [JsonConverter(typeof(DateTimeJsonConverter))]
     public DateTime FechaFinal { get; set; }
 
-    public int? EquipoId { get; set; }
+    
 
 }
