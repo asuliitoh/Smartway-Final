@@ -147,30 +147,27 @@
 <template>
    <LayoutSection>
     
-    <div class="h-full w-full grid grid-cols-[70%_30%] grid-rows-[auto_auto_auto] gap-5">
-        <Card class="col-start-1 row-span-full">
+    <div class="h-full w-full grid grid-rows-[auto_auto_auto_auto] grid-cols-1 lg:grid-cols-[70%_30%] lg:grid-rows-[auto_auto_auto] gap-5">
+        <Card class="lg:col-start-1 lg:row-span-full">
             <template v-slot:title>
-                <div class="flex flex-row justify-center w-full">
-                    <p class="text-primary">Información del Equipo</p>
-                </div>
+                <h2 class="w-full text-center h2-section-card lg:text-left">Información del Equipo</h2>
             </template>
 
             <template v-slot:body>
-
-                <fieldset v-if="equipo" class="h-full p-5 border border-gray-300 shadow-lg bg-primary/10 fieldset rounded-box">
+                <fieldset v-if="equipo" class="w-full min-w-0 p-2 border border-gray-300 shadow-lg h-min bg-primary/10 rounded-box">
                            
-                        <label class="label text-primary">Identificador del equipo</label>
-                        <input disabled type="text" class="w-full input disabled:bg-primary/20 disabled:border-primary/40" :placeholder = "equipo.id">
+                        <label class="w-full text-xs text-left sm:text-sm text-primary">Identificador del equipo</label>
+                        <input disabled type="text" class="w-full min-w-0 input disabled:bg-primary/20 disabled:border-primary/40" :placeholder = "equipo.id">
 
-                        <label class="label text-primary">Nombre del equipo</label>
-                        <input :disabled="!modoEdicion" v-model="nombreCampo" type="text" class="w-full input bg-primary/20 border-primary/40 disabled:bg-primary/20 disabled:border-primary/40" :placeholder="equipo.nombre">
+                        <label class="w-full text-xs text-left sm:text-sm text-primary">Nombre del equipo</label>
+                        <input :disabled="!modoEdicion" v-model="nombreCampo" type="text" class="w-full min-w-0 input bg-primary/20 border-primary/40 disabled:bg-primary/20 disabled:border-primary/40" :placeholder="equipo.nombre">
 
-                        <label class="label text-primary">Especialidad del equipo</label>
-                        <input :disabled="!modoEdicion" v-model="especialidadCampo" type="text" class="w-full input bg-primary/20 border-primary/40 disabled:bg-primary/20 disabled:border-primary/40" :placeholder="equipo.especialidad">
+                        <label class="w-full text-xs text-left sm:text-sm text-primary">Especialidad del equipo</label>
+                        <input :disabled="!modoEdicion" v-model="especialidadCampo" type="text" class="w-full min-w-0 input bg-primary/20 border-primary/40 disabled:bg-primary/20 disabled:border-primary/40" :placeholder="equipo.especialidad">
 
-                        <label class="label text-primary">Miembros del equipo</label>
-                        
-                            <table class="table bg-primary/20 table-xs table-pin-rows">
+                        <label class="w-full min-w-0 text-xs text-left sm:text-sm text-primary">Miembros del equipo</label>
+                            <div class="overflow-auto">
+                            <table class="table min-w-0 overflow-auto bg-primary/20 table-xs sm:table-sm md:table-md table-pin-rows">
                                     <thead>
                                         <th>Id</th>
                                         <td>Nombre</td>
@@ -185,10 +182,10 @@
                                     </tr>
                                 </template>
                                 </table>        
-                    
-                        <label class="label text-primary">Operaciones del equipo</label>            
-
-                            <table class="table bg-primary/20 table-xs table-pin-rows">
+                            </div>
+                        <label class="w-full text-xs text-left sm:text-sm text-primary">Operaciones del equipo</label>            
+                             <div class="overflow-auto">
+                            <table class="table overflow-auto bg-primary/20 table-xs sm:table-sm md:table-md table-pin-rows">
                                     <thead>
                                         <th>Id</th>
                                         <td>Nombre</td>
@@ -201,6 +198,7 @@
                                     </tr>
                                 </template>
                                 </table>        
+                                </div>
                     </fieldset>
             </template>
 
@@ -211,11 +209,9 @@
 
         </Card>
 
-        <Card @click="cambiarModoEdicion" class="col-start-2 row-start-1">
+        <Card @click="cambiarModoEdicion" class="lg:col-start-2 lg:row-start-1">
             <template v-slot:title>
-                <div class="flex flex-row justify-center w-full">
-                    <p class="text-primary">Modificar Información</p>
-                </div>
+                <h2 class="w-full text-center h2-section-card">Modificar Información</h2>
             </template>
 
             <template v-slot:body>
@@ -224,17 +220,15 @@
 
         </Card>
 
-        <Card class="col-start-2 row-start-2">
+        <Card class="lg:col-start-2 lg:row-start-2">
             <template v-slot:title>
-                <div class="flex flex-row justify-center w-full">
-                    <p class="text-primary">Añadir Agente al Equipo</p>
-                </div>
+                 <h2 class="w-full text-center h2-section-card">Añadir Agente al Equipo</h2>
             </template>
 
             
             <template v-slot:body>
                 <div v-if="!agenteBuscado" class="flex flex-col gap-5">
-                    <p>Para añadir un agente, debe buscarlo a traves de su identificador. En el caso de que exista el agente asociado a dicho
+                    <p class="p-card">Para añadir un agente, debe buscarlo a traves de su identificador. En el caso de que exista el agente asociado a dicho
                     identificador, se mostrará su información general y podrá añadirlo mediante <span class="font-semibold text-primary">Añadir</span>.
                     </p>
                     <Search @searched="(agente) => {setAgenteBuscado(agente)}" v-bind:function="buscarAgente" v-bind:placeholder="'Buscar Agente'"></Search>
@@ -246,20 +240,18 @@
             </template>
 
             <template v-slot:actions>
-                <button v-if="agenteBuscado" @click="agenteBuscado = null" type="button" class="btn">Cancelar</button>
-                <button @click="enviarSolicitud" type="button" class="btn btn-primary">Añadir</button>
+                <button v-if="agenteBuscado" @click="agenteBuscado = null" type="button" class="btn-section-card">Cancelar</button>
+                <button @click="enviarSolicitud" type="button" class="btn-section-card btn-primary">Añadir</button>
             </template>
         </Card>
 
-        <Card @click="disolverEquipo" class="col-start-2 row-start-3">
+        <Card @click="disolverEquipo" class="lg:col-start-2 lg:row-start-3">
             <template v-slot:title>
-                 <div class="flex flex-row justify-center w-full">
-                    <p class="text-primary">Disolver Equipo</p>
-                </div>
+                 <h2 class="w-full text-center h2-section-card">Disolver Equipo</h2>
             </template>
 
             <template v-slot:body>
-                <p>Una vez eliminada, toda la información asociada a este equipo se perderá definitivamente.
+                <p class="p-card">Una vez eliminada, toda la información asociada a este equipo se perderá definitivamente.
                 <span class="font-semibold text-primary">Esta acción no se puede deshacer.</span></p>
         
             </template>

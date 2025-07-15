@@ -11,17 +11,17 @@
 
 <template>
 
-    <section class="p-3 transition-all duration-300 shadow-xl card shadow-primary/30 hover:shadow-primary/60 hover:scale-101 bg-base-200">
+    <section class="p-1 transition-all duration-300 shadow-xl sm:p-2 md:p-3 card shadow-primary/30 hover:shadow-primary/60 hover:scale-101 bg-base-200">
         
-        <div class="card-title">
+        <div id="title" class="card-title">
             <slot name="title"></slot>
         </div>
 
-        <div class="card-body" :class="{'flex-row': props.horizontal}">
+        <div id="body" class="card-body @container" :class="{'md:flex-row': props.horizontal}">
             <slot name="body"></slot>
         </div>
 
-        <div class="justify-end card-actions">
+        <div id="actions" class="justify-end card-actions">
             <slot name="actions"></slot>
         </div>
 

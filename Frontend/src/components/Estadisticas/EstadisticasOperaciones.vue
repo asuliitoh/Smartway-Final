@@ -13,10 +13,10 @@
 
 <template>
 
-     <div class="grid grid-cols-3 gap-5">
-       <Stat v-bind:number="operacionesStore.numeroOperacionesPlanificadas" v-bind:title="'Operaciones Planificadas'" class="col-start-1"></Stat>
-       <Stat v-bind:number="operacionesStore.numeroOperacionesActivas" v-bind:title="'Operaciones Activas'" class="col-start-2"></Stat>
-       <Stat v-bind:number="operacionesStore.numeroOperacionesCompletadas" v-bind:title="'Operaciones Completadas'" class="col-start-3"></Stat>
+     <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 xl:grid-cols-3 place-items-center xl:gap-10">
+       <Stat v-bind:number="operacionesStore.numeroOperacionesPlanificadas" v-bind:title="'Operaciones Planificadas'"></Stat>
+       <Stat v-bind:number="operacionesStore.numeroOperacionesActivas" v-bind:title="'Operaciones Activas'"></Stat>
+       <Stat v-bind:number="operacionesStore.numeroOperacionesCompletadas" v-bind:title="'Operaciones Completadas'"></Stat>
     </div>
 
 </template>

@@ -33,8 +33,8 @@
 </script>
 
 <template>
-
-    <table class="table bg-primary/20 table-pin-rows">
+    <div class="overflow-auto">
+    <table class="table overflow-auto table-xs sm:table-sm md:table-md bg-primary/20 table-pin-rows">
         <thead>
             <th class="font-bold text-primary">Id</th>
             <th class="font-semibold text-primary">Nombre</th>
@@ -46,8 +46,8 @@
             <template v-for="[id, value] in props.operaciones">
                 <EntradaOperacion @click="setSelected(id)" :id="id" :nombre="value.nombre" :estado="value.estado" :fechaInicio="value.fechaInicio" :fechaFin="value.fechaFinal" :seleccionado="isSeleccionado(id)" ></EntradaOperacion>
             </template>
-
         </tbody>
     </table>
+    </div>
 
 </template>

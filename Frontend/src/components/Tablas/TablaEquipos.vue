@@ -32,8 +32,8 @@
 </script>
 
 <template>
-   
-    <table class="table bg-primary/20 table-pin-rows">
+    <div class="overflow-auto">
+    <table class="table table-xs sm:table-sm md:table-md bg-primary/20 table-pin-rows">
         <thead>
             <th class="font-bold text-primary">Id</th>
             <th class="font-semibold text-primary">Nombre</th>
@@ -45,5 +45,6 @@
             </template>
         </tbody>
     </table>
+    </div>
 
 </template>

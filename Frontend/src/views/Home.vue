@@ -50,47 +50,57 @@
 <template>
 
     <LayoutSection>
-        <div class="h-full w-full grid grid-cols-2 gap-10 grid-rows-[1fr_1fr]">
+        <div class="h-full w-full grid grid-cols-1 lg:grid-cols-2 gap-10 grid-rows-[auto_auto_auto_auto] lg:grid-rows-[1fr_1fr]">
 
-            <Card class="col-start-1 row-start-1">
+            <Card class="w-full h-full row-start-1 md:col-start-1">
                 <template v-slot:body>
-                     <h1 class="text-4xl font-bold tracking-tighter card-title">Bienvenido a CyberPulse Labs</h1>
-                        <p class="pt-3 text-lg font-semibold leading-tight tracking-tighter text-primary ">Gestiona tus operaciones de manera
+                     <div class="shrink-0 h-full w-full grid lg:grid-rows-[auto_auto_auto] xl:grid-rows-[20%_20%_60%] gap-2">
+                        <h2 class="h2-home-card">Bienvenido a CyberPulse Labs</h2>
+                        <p class="p-card">Gestiona tus operaciones de manera
                         eficiente y gestiona tus equipos con otros agentes</p>
-                        <div class="grid grid-cols-3 gap-5">
-                            <Stat class="col-start-1" v-bind:number="estadisticasStore.agentesRegistrados" v-bind:hover="true" v-bind:title="'Agentes Activos'"></Stat>
-                            <Stat class="col-start-2" v-bind:number="estadisticasStore.equiposFormados" v-bind:hover="true" v-bind:title="'Equipos Formados'"></Stat>
-                            <Stat class="col-start-3" v-bind:number="estadisticasStore.operacionesCompletadas" v-bind:hover="true" v-bind:title="'Operaciones Completadas'"></Stat>                
+                        <div class="grid grid-cols-1 gap-5 sm:grid-cols-3 xl:grid-cols-3 place-items-center xl:gap-10">
+                            <Stat v-bind:number="estadisticasStore.agentesRegistrados" v-bind:hover="true" v-bind:title="'Agentes Activos'"></Stat>
+                            <Stat v-bind:number="estadisticasStore.equiposFormados" v-bind:hover="true" v-bind:title="'Equipos Formados'"></Stat>
+                            <Stat v-bind:number="estadisticasStore.operacionesCompletadas" v-bind:hover="true" v-bind:title="'Operaciones Completadas'"></Stat>                
+                        </div>
                         </div>
                 </template>
             </Card>
             
-                <Card @click="redirectToAgentes" class="col-start-1 row-start-2">
+                <Card @click="redirectToAgentes" class="w-full h-full row-start-2 lg:col-start-1">
+                    
                     <template v-slot:body>
-                        <h1 class="text-4xl font-bold tracking-tighter card-title">Gestionar agentes</h1>
-                        <p class="pt-3 text-lg leading-tight tracking-tighter"><span class="font-semibold text-primary">Actualiza periódicamente</span>
-                        tu información profesional y credenciales para <span class="font-semibold text-primary">reflejar con precisión</span>
-                        tu trayectoria, <span class="font-semibold text-primary">reforzar tu credibilidad</span>
-                        y <span class="font-semibold text-primary">abrir oportunidades de negocio</span>.</p>
+                        <div class="w-full h-full grid lg:grid-rows-[auto_auto_auto] xl:grid-rows-[20%_20%_60%] gap-2">
+                           <h2 class="h2-home-card">Gestionar agentes</h2>
+                            <p class="p-card"><span class="font-semibold text-primary">Actualiza periódicamente</span>
+                            tu información profesional y credenciales para <span class="font-semibold text-primary">reflejar con precisión</span>
+                            tu trayectoria, <span class="font-semibold text-primary">reforzar tu credibilidad</span>
+                            y <span class="font-semibold text-primary">abrir oportunidades de negocio</span>.</p>
+                        </div>
                     </template>
                 </Card>
 
-                <Card @click="redirectToEquipos" class="col-start-2 row-start-1">
+                <Card @click="redirectToEquipos" class="w-full h-full row-start-3 lg:row-start-1 lg:col-start-2">
                     <template v-slot:body>
-                        <h1 class="text-4xl font-bold tracking-tighter card-title">Gestiona tus equipos</h1>
-                        <p class="pt-3 text-lg leading-tight tracking-tighter"><span class="font-semibold text-primary">Organiza</span>
-                        y <span class="font-semibold text-primary">supervisa</span> equipos de trabajo, sus miembros agentes y operaciones activas.</p>
-                        <EstadisticasEquipo v-bind:hover="true"></EstadisticasEquipo>
+                        <div class="w-full h-full grid lg:grid-rows-[auto_auto_auto] xl:grid-rows-[20%_20%_60%] gap-2">
+                            <h2 class="h2-home-card">Gestiona tus equipos</h2>
+                           <p class="p-card"><span class="font-semibold text-primary">Organiza</span>
+                            y <span class="font-semibold text-primary">supervisa</span> equipos de trabajo, sus miembros agentes y operaciones activas.</p>
+                            <EstadisticasEquipo v-bind:hover="true"></EstadisticasEquipo>
+                        </div>
+                        
                     </template>
                     
                 </Card>
 
-                <Card @click="redirectToOperaciones">
+                <Card @click="redirectToOperaciones" class="w-full h-full row-start-4 lg:row-start-2 lg:col-start-2">
                     <template v-slot:body>
-                        <h1 class="text-4xl font-bold tracking-tighter card-title">Gestiona tus operaciones</h1>
-                        <p class="pt-3 text-lg leading-tight tracking-tighter"> <span class="font-semibold text-primary">Gestiona</span> 
-                        todas las operaciones y <span class="font-semibold text-primary">controla</span> aquellas operaciones en curso.</p>
-                        <EstadisticasOperaciones v-bind:hover="true"></EstadisticasOperaciones>
+                        <div class="w-full h-full grid lg:grid-rows-[auto_auto_auto] xl:grid-rows-[20%_20%_60%] gap-2">
+                            <h2 class="h2-home-card">Gestiona tus operaciones</h2>
+                            <p class="p-card"> <span class="font-semibold text-primary">Gestiona</span> 
+                            todas las operaciones y <span class="font-semibold text-primary">controla</span> aquellas operaciones en curso.</p>
+                            <EstadisticasOperaciones v-bind:hover="true"></EstadisticasOperaciones>
+                        </div>
                     </template>
                 </Card>
 

@@ -87,15 +87,15 @@
 
 <template>
     <LayoutSection>
-          <div class="h-full w-full grid grid-rows-[auto_1fr] grid-cols-2 gap-5">
+          <div class="h-full w-full grid grid-rows-[auto_auto_auto_auto] grid-cols-1 lg:grid-rows-[auto_1fr] lg:grid-cols-2 gap-5">
          
                 
 
-                <Card class="col-start-1 row-start-1">
+                <Card class="lg:col-start-1 lg:row-start-1">
                     <template v-slot:title>
                         <div class="flex flex-row items-center justify-center w-full">
-                            <img src="./icons/postcard.png" alt="Resumen General">
-                            <h2 class="text-primary">Resumen General</h2>
+                            <img src="./icons/postcard.png" class="img-section-card" alt="Resumen General">
+                            <h2 class="h2-section-card w-min md:w-auto">Resumen General</h2>
                         </div>
                     </template>
 
@@ -104,19 +104,17 @@
                     </template>
                 </Card>
 
-                <Card class="row-start-1 col-start-2 h-[100%]">
+                <Card class="lg:row-start-1 lg:col-start-2">
                     <template v-slot:title>
-                        <div class="flex flex-row items-center justify-center w-full">
-                            <h2 class="text-primary ">Solicitudes pendientes</h2>
-                        </div>
+                            <h2 class="w-full text-center h2-section-card">Solicitudes pendientes</h2>
                     </template>
 
                     <template v-slot:body>
-                        <div class="grid w-full h-full grid-cols-2 gap-5">
-                            <p>A continuación se muestran las solicitudes recibidas para unirse a un equipo.
+                        <div class="grid w-full h-full grid-cols-1 gap-5 overflow-auto lg:grid-cols-2">
+                            <p class="p-card">A continuación se muestran las solicitudes recibidas para unirse a un equipo.
                              Seleccione un equipo y pulse <span class="font-semibold text-primary">Aceptar</span> o  <span class="font-semibold text-primary">Rechazar</span>.</p>
 
-                             <div class="overflow-auto max-h-[10rem]">
+                             <div class="">
                                  <table class="table bg-primary/20 table-pin-rows">
                                     <thead>
                                         <th>Id</th>
@@ -137,15 +135,15 @@
                     </template>
 
                     <template v-slot:actions>
-                        <button v-if="solicitudSeleccionada" @click="rechazarSolicitud" type="button" class="btn">Rechazar</button>
-                        <button v-if="solicitudSeleccionada" @click="aceptarSolicitud" type="button" class="btn btn-primary">Aceptar</button>
+                        <button v-if="solicitudSeleccionada" @click="rechazarSolicitud" type="button" class="btn-section-card">Rechazar</button>
+                        <button v-if="solicitudSeleccionada" @click="aceptarSolicitud" type="button" class="btn-section-card btn-primary">Aceptar</button>
                     </template>
 
                 </Card>
 
-                <Card class="row-start-2 overflow-auto h-[100%]">
+                <Card class="lg:row-start-2">
                     <template v-slot:title>
-                        <h2 class="w-full text-center text-primary"> Equipos propios</h2>
+                        <h2 class="w-full text-center h2-section-card"> Equipos propios</h2>
                     </template>
 
                     <template v-slot:body>
@@ -153,15 +151,15 @@
                     </template>
 
                     <template v-slot:actions>
-                        <button @click="redirectToEquipo" type="button" class="btn">Editar Equipo</button>
-                        <button @click="crearNuevoEquipo" type="button" class="btn btn-primary">Crear Nuevo Equipo</button>
+                        <button @click="redirectToEquipo" type="button" class="btn-section-card">Editar Equipo</button>
+                        <button @click="crearNuevoEquipo" type="button" class="btn-section-card btn-primary">Crear Nuevo Equipo</button>
                     </template>
 
                 </Card>
 
-                <Card class="col-start-2 row-start-2 overflow-auto">
+                <Card class="lg:col-start-2 lg:row-start-2">
                     <template v-slot:title>
-                        <h2 class="w-full text-center text-primary"> Equipos en los que participas</h2>
+                        <h2 class="w-full text-center h2-section-card"> Equipos en los que participas</h2>
                        
                     </template>
 
@@ -170,8 +168,8 @@
                     </template>
 
                     <template v-slot:actions>
-                        <button type="button" class="btn">Ver Equipo</button>
-                        <button @click="abandonarEquipo" type="button" class="btn btn-primary">Abandonar Equipo</button>
+                        <button type="button" class="btn-section-card">Ver Equipo</button>
+                        <button @click="abandonarEquipo" type="button" class="btn-section-card btn-primary">Abandonar Equipo</button>
                     </template>
 
                 </Card>

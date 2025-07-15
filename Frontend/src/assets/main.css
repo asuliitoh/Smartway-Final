@@ -1,0 +1,24 @@
+@import "tailwindcss";
+@plugin "daisyui";
+
+@layer components {
+  .h2-home-card {
+    @apply text-lg font-bold tracking-tighter text-center sm:text-left sm:text-2xl lg:text-4xl;
+  }
+
+  .p-card{
+    @apply text-sm leading-tight tracking-tighter text-center sm:text-left sm:text-base lg:text-lg;
+  }
+
+  .h2-section-card{
+    @apply w-auto text-base tracking-tighter text-primary md:text-lg lg:text-xl;
+  }
+
+  .img-section-card{
+    @apply w-8 h-8 lg:w-14 lg:h-14;
+  }
+
+  .btn-section-card{
+    @apply btn btn-xs md:btn-md 
+  }
+}

@@ -189,79 +189,98 @@
 <template>
 
     <LayoutSection>
-        <div class="h-full w-full grid grid-rows-[50%_50%] grid-cols-[80%_20%] gap-5">
+        <div class="h-full w-full grid grid-cols-1 grid-rows-[auto_auto_auto] lg:grid-rows-[50%_50%] lg:grid-cols-[80%_20%] gap-5">
                 
-            <Card class="row-start-1" v-bind:horizontal="true">
+            <Card class="lg:row-start-1" v-bind:horizontal="true">
                 <template v-slot:body>
-                    <div class="w-[25%]">
-                                <h2 class="card-title text-primary">Información personal</h2>
-                                <p>Modifica tu información personal aqui.</p>  
+                    <div class="w-full md:w-1/3">
+                        <h2 class="font-semibold text-center md:text-left h2-section-card">Información personal</h2>
+                        <p class="p-card">Modifica tu información personal aqui.</p>  
                     </div>
 
-                    <fieldset class="w-[75%] p-5 border border-gray-300 bg-primary/10 fieldset rounded-box shadow-lg">
+                
+                   <fieldset class="grid w-full min-h-0 grid-cols-1 gap-5 p-5 border border-gray-300 shadow-lg h-min md:w-2/3 bg-primary/10 sm:grid-cols-2 rounded-box">
                                 
-                                <div class="flex flex-row w-full gap-5">
-                                    <div>
-                                        <label class="label text-primary">Nombre</label>
-                                        <input type="text" class="input bg-primary/20 border-primary/40" v-model="nombreCampo" :placeholder="nombre">
-                                    </div>
-                                    
-                                    <div>
-                                        <label class="label text-primary">Apellidos</label>
-                                        <input type="text" class="input bg-primary/20 border-primary/40" v-model="apellidosCampo" :placeholder="apellidos">
-                                    </div>
-
+                               
+                                <div class="flex flex-col">
+                                    <label class="w-full text-xs text-left sm:text-sm text-primary">Nombre</label>
+                                    <input type="text" class="w-full min-w-0 input bg-primary/20 border-primary/40" v-model="nombreCampo" :placeholder="nombre">
                                 </div>
                                 
-                                <label class="label text-primary">Rango</label>
-                                <input type="text" class="input bg-primary/20 border-primary/40" v-model="rangoCampo" :placeholder="rango">
+                                <div class="flex flex-col">
+                                    <label class="w-full text-xs text-left sm:text-sm text-primary">Apellidos</label>
+                                    <input type="text" class="w-full min-w-0 input bg-primary/20 border-primary/40" v-model="apellidosCampo" :placeholder="apellidos">
+                                </div>
 
-                                <label class="label text-primary">Activo</label>
-                                <input disabled type="text" class="input disabled:bg-primary/20 disabled:border-primary/40" v-model="activoCampo" :placeholder="activo">
+                               
+                                
+                                <div class="flex flex-col">
+                                    <label class="w-full text-xs text-left sm:text-sm text-primary">Rango</label>
+                                    <input type="text" class="w-full min-w-0 input bg-primary/20 border-primary/40" v-model="rangoCampo" :placeholder="rango">
+                                </div>
+                                
+                                <div class="flex flex-col">
+                                    <label class="w-full text-xs text-left sm:text-sm text-primary">Activo</label>
+                                    <input disabled type="text" class="w-full min-w-0 input disabled:bg-primary/20 disabled:border-primary/40" v-model="activoCampo" :placeholder="activo">
+                                </div>
+
+                                
                             
-                            <div class="flex gap-3 justify-self-end">
+                            <div class="flex flex-col justify-end gap-3 sm:col-span-2 sm:flex-row">
                                 <button @click="cancelarActualizacion" type="button" class="btn btn-ghost">Cancelar</button>
                                 <button  @click="actualizarInformacionPersonal" type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
-                            </div>
+                            </div>       
                     </fieldset>
                 </template>
             </Card>
 
-            <Card class="row-start-2" v-bind:horizontal="true">
+            <Card class="lg:row-start-2" v-bind:horizontal="true">
                 <template v-slot:body>
-                    <div class="w-[25%]"> 
-                        <h2 class="card-title text-primary">Cambiar contraseña</h2>
-                        <p>Introduce tu contraseña actual y la nueva contraseña que desea para actualizarla.</p>
-                        <div class="flex items-center justify-center"></div>
+                    <div class="w-full md:w-1/3"> 
+                        <h2 class="font-semibold text-center md:text-left h2-section-card">Cambiar contraseña</h2>
+                        <p class="p-card">Introduce tu contraseña actual y la nueva contraseña que desea para actualizarla.</p>
+                        
                     </div>
                     
-                    <fieldset class="w-[75%] p-5 border border-gray-300 bg-primary/10 fieldset rounded-box shadow-lg">
-                        <label class="label text-primary">Contraseña Actual</label>
-                        <input type="password" v-model="password" class="input bg-primary/20 border-primary/40" placeholder="Introduce tu contraseña actual">
-
-                        <label class="label text-primary">Contraseña Nueva</label>
-                        <input type="password" v-model="newPassword" class="input bg-primary/20 border-primary/40" placeholder="Introduce una nueva contraseña">
-
-                        <label class="label text-primary">Confirmar Contraseña</label>
-                        <input type="password" v-model="confirmPassword" class="input bg-primary/20 border-primary/40" placeholder="Confirme la contraseña nueva">
+                    <fieldset class="grid min-h-0 grid-cols-1 gap-5 p-5 border border-gray-300 shadow-lg md:w-2/3 h-fit bg-primary/10 rounded-box">
                         
-                        <div class="flex gap-3 justify-self-end">
-                            <button type="button" class="btn btn-ghost">Cancelar</button>
-                            <button @click="actualizarPassword" type="button" class="font-semibold btn text-primary hover:text-primary-content btn-primary btn-ghost">Aceptar</button>
+                        <div class="flex flex-col">
+                            <label class="w-full text-xs text-left sm:text-sm text-primary">Contraseña Actual</label>
+                            <input type="password" v-model="password" class="w-full input bg-primary/20 border-primary/40" placeholder="Introduce tu contraseña actual">
+                        </div>
+                        
+
+                        <div class="flex flex-col">
+                            <label class="w-full text-xs text-left sm:text-sm text-primary">Contraseña Nueva</label>
+                            <input type="password" v-model="newPassword" class="w-full input bg-primary/20 border-primary/40" placeholder="Introduce una nueva contraseña">    
+                        </div>
+
+                        
+
+                        <div class="flex flex-col">
+                            <label class="w-full text-xs text-left sm:text-sm text-primary">Confirmar Contraseña</label>
+                            <input type="password" v-model="confirmPassword" class="w-full input bg-primary/20 border-primary/40" placeholder="Confirme la contraseña nueva">    
+                        </div>
+
+                        
+                        
+                        <div class="flex flex-col justify-end gap-3 sm:flex-row">
+                            <button type="button" class="btn-section-card btn-ghost">Cancelar</button>
+                            <button @click="actualizarPassword" type="button" class="font-semibold btn-section-card hover:text-primary-content btn-primary text-primary btn-ghost">Aceptar</button>
                         </div>
                     </fieldset>
                 </template>
             </Card>
 
-            <Card class="col-start-2 row-span-full">
+            <Card class="lg:col-start-2 lg:row-span-full">
                 <template v-slot:title>
-                    <img src="./icons/buscar.png" alt="Buscar Agente" class="w-fit h-fit">
-                    <h2 class="text-primary">Buscar Agente</h2>
+                    <img src="./icons/buscar.png" alt="Buscar Agente" class="img-section-card">
+                    <h2 class="h2-section-card">Buscar Agente</h2>
                 </template>
 
                 <template v-slot:body>
                     <div class="join join-vertical">
-                        <p class="self-center pt-3 pb-5 text-sm text-center">Introduzca el <span class="font-semibold text-primary">identificador del agente</span> para ver su información. Pulse Enter para buscar.</p>
+                        <p class="pb-5 p-card">Introduzca el <span class="font-semibold text-primary">identificador del agente</span> para ver su información. Pulse Enter para buscar.</p>
                         <Search @searched="(agente) => {setAgenteBuscado(agente)}" class="w-[75%] self-center row-start-1 col-span-full" v-bind:function="buscarAgente" v-bind:placeholder="'Buscar Agente'"></Search>
                     </div>
                     

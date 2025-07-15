@@ -105,15 +105,15 @@
 
 <template>
    <LayoutSection>
-    
-    <div class="h-full w-full grid grid-cols-[70%_30%] grid-rows-[auto_auto_auto] gap-5">
-        <Card class="col-start-1 row-span-full">
+
+    <div class="h-full w-full grid grid-cols-1 lg:grid-cols-[70%_30%] grid-rows-[auto_auto_auto_auto] lg:grid-rows-[auto_auto_auto] gap-5">
+        
+        <Card class="w-full h-full md:col-start-1 lg:row-span-full">
             <template v-slot:title>
-                <p class="pt-5 pl-5 text-xl text-primary">Información de la Operación</p>
+                <h2 class="h2-section-card">Información de la Operación</h2>
             </template>
 
             <template v-slot:body>
-
                 <div class="flex flex-col gap-2 p-5 border border-gray-200 shadow-lg rounded-box">
                     <label class="text-xs font-bold label text-primary/60">Identificador de la operación</label>
                     <p v-if="operacion" class="w-full font-semibold"> {{ operacion.id }} </p>
@@ -158,41 +158,35 @@
             </template>
         </Card>
 
-        <Card @click="asignarEquipo" class="col-start-2 row-start-1">
+        <Card @click="asignarEquipo" class="w-full h-full lg:col-start-2 lg:row-start-1 ">
             <template v-slot:title>
-                <div class="flex flex-row justify-center w-full">
-                    <p class="text-primary">Asignar Equipo</p>
-                </div>
+                <h2 class="w-full text-center h2-section-card">Asignar Equipo</h2>
             </template>
             
             <template v-slot:body>
-                <p>Pulse sobre esta sección para asignar esta operación a un equipo. <span class="font-semibold text-primary">Solo puedes asignarlo a un equipo propio.</span></p>
+                <p class="text-center p-card lg:text-left">Pulse sobre esta sección para asignar esta operación a un equipo. <span class="font-semibold text-primary">Solo puedes asignarlo a un equipo propio.</span></p>
             </template>
 
         </Card>
 
-        <Card @click="cambiarModoEdicion" class="col-start-2 row-start-2">
+        <Card @click="cambiarModoEdicion" class="w-full h-full lg:col-start-2 lg:row-start-2">
             <template v-slot:title>
-                <div class="flex flex-row justify-center w-full">
-                    <p class="text-primary">Modificar Información</p>
-                </div>
+                <h2 class="w-full text-center h2-section-card">Modificar Información</h2>
             </template>
           
             <template v-slot:body>
-                   <p>Pulse esta sección para habilitar el <span class="font-semibold text-primary">modo edición</span> de la información del equipo.</p>
+                   <p class="text-center p-card lg:text-left">Pulse esta sección para habilitar el <span class="font-semibold text-primary">modo edición</span> de la información del equipo.</p>
             </template>
 
         </Card>
 
-        <Card @click="eliminarOperacion" class="col-start-2 row-start-3">
+        <Card @click="eliminarOperacion" class="w-full h-full lg:col-start-2 lg:row-start-3">
             <template v-slot:title>
-                <div class="flex flex-row justify-center w-full">
-                    <p class="text-primary">Eliminar Operación</p>
-                </div>
+                <h2 class="w-full text-center h2-section-card">Eliminar Operación</h2>
             </template>
             
             <template v-slot:body>               
-                <p>Una vez eliminada, toda la información asociada a esta operación se perderá definitivamente.
+                <p class="text-center p-card lg:text-left">Una vez eliminada, toda la información asociada a esta operación se perderá definitivamente.
                 <span class="font-semibold text-primary">Esta acción no se puede deshacer.</span></p>
             </template>
 
